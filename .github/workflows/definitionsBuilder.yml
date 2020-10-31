@@ -1,0 +1,23 @@
+name: Definitions Builder
+on:
+  repository_dispatch:
+    types: [serverless-released]
+
+jobs:
+  updateRelease:
+    name: Get serverless latest release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Node.js and npm
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: |
+          npm update --no-save
+          npm update --save-dev --no-save

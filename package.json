@@ -1,0 +1,27 @@
+{
+  "name": "typescript",
+  "version": "0.0.1-alpha",
+  "description": "Serverless typescript definitions",
+  "main": "index.ts",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/serverless/typescript.git"
+  },
+  "keywords": [
+    "serverless",
+    "sls",
+    "typescript"
+  ],
+  "author": "Frédéric Barthelet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/serverless/typescript/issues"
+  },
+  "homepage": "https://github.com/serverless/typescript#readme",
+  "dependencies": {
+    "serverless": "^2.9.0"
+  }
+}
