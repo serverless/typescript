@@ -1,0 +1,6 @@
+.github
+.gitignore
+node_modules
+package-lock.json
+plugin.js
+serverless.yml
