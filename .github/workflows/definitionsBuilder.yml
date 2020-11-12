@@ -40,3 +40,6 @@ jobs:
           tag: ${{ steps.serverless-version.outputs.version }} --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update package.json version
+        run: npm version ${{ steps.serverless-version.outputs.version }} --git-tag-version=false
