@@ -5,67 +5,28 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type AwsArnString = string;
 export type ErrorCode = string;
-export type AwsArn = AwsArnString | AwsCfFunction;
-export type AwsCfFunction = AwsCfImport | AwsCfJoin | AwsCfGetAtt | AwsCfRef | AwsCfSub;
+export type AwsArnString = string;
 export type AwsCfInstruction = string | AwsCfFunction;
-export type FunctionName = string;
-export type AwsAlbListenerArn = string;
-export type AwsAlexaEventToken = string;
-export type AwsLogGroupName = string;
-export type AwsKmsArn =
-  | {
-      [k: string]: unknown;
-    }
-  | string;
-export type AwsResourceCondition = string;
-export type AwsResourceDependsOn = string[];
-export type AwsLambdaLayers = AwsArn[];
-export type AwsLambdaMemorySize = number;
-export type AwsLambdaRole = string | AwsCfImport | AwsCfGetAtt;
-export type AwsLambdaRuntime =
-  | "dotnetcore2.1"
-  | "dotnetcore3.1"
-  | "go1.x"
-  | "java11"
-  | "java8"
-  | "java8.al2"
-  | "nodejs10.x"
-  | "nodejs12.x"
-  | "provided"
-  | "provided.al2"
-  | "python2.7"
-  | "python3.6"
-  | "python3.7"
-  | "python3.8"
-  | "ruby2.5"
-  | "ruby2.7";
-export type AwsLambdaTimeout = number;
-export type AwsLambdaTracing = ("Active" | "PassThrough") | boolean;
-export type AwsLambdaVersionning = boolean;
-export type AwsS3BucketName = string;
-export type AwsIamPolicyStatements = ({
-  [k: string]: unknown;
-} & (
-  | {
-      [k: string]: unknown;
-    }
-  | {
-      [k: string]: unknown;
-    }
-) &
-  (
-    | {
-        [k: string]: unknown;
-      }
-    | {
-        [k: string]: unknown;
-      }
-  ))[];
+export type AwsCfFunction = AwsCfImport | AwsCfJoin | AwsCfGetAtt | AwsCfRef | AwsCfSub;
 
 export interface AWS {
-  configValidationMode?: "error" | "warn" | "off";
+  service: {
+    name?: {
+      [k: string]: unknown;
+    };
+    awsKmsKeyArn?: {
+      [k: string]: unknown;
+    };
+  };
+  frameworkVersion?: string;
+  disabledDeprecations?:
+    | {
+        [k: string]: unknown;
+      }
+    | ErrorCode
+    | ErrorCode[];
+  enableLocalInstallationFallback?: boolean;
   custom?: {
     enterprise?: {
       collectApiGatewayLogs?: boolean;
@@ -82,13 +43,7 @@ export interface AWS {
     };
     [k: string]: unknown;
   };
-  disabledDeprecations?:
-    | {
-        [k: string]: unknown;
-      }
-    | ErrorCode[];
-  enableLocalInstallationFallback?: boolean;
-  frameworkVersion?: string;
+  plugins?: string[];
   functions?: {
     /**
      * This interface was referenced by `undefined`'s JSON-Schema definition
@@ -133,132 +88,21 @@ export interface AWS {
             s3:
               | string
               | {
-                  bucket: string;
-                  event?: string;
-                  existing?: boolean;
-                  rules?: {
-                    prefix?: string;
-                    suffix?: string;
-                  }[];
+                  [k: string]: unknown;
                 };
           }
         | {
             http:
               | string
               | {
-                  async?: boolean;
-                  authorizer?:
-                    | string
-                    | {
-                        arn?: AwsArn;
-                        authorizerId?: AwsCfInstruction;
-                        claims?: string[];
-                        identitySource?: string;
-                        identityValidationExpression?: string;
-                        managedExternally?: boolean;
-                        name?: string;
-                        resultTtlInSeconds?: number;
-                        scopes?: string[];
-                        type?: string | string | string | string;
-                      };
-                  connectionId?: string;
-                  connectionType?: string | string;
-                  cors?:
-                    | boolean
-                    | (
-                        | {
-                            [k: string]: unknown;
-                          }
-                        | {
-                            [k: string]: unknown;
-                          }
-                      );
-                  integration?: string | string | string | string | string | string | string;
-                  method: string;
-                  operationId?: string;
-                  path: string;
-                  private?: boolean;
-                  request?: {
-                    contentHandling?: "CONVERT_TO_BINARY" | "CONVERT_TO_TEXT";
-                    method?: string;
-                    parameters?: {
-                      querystrings?: {
-                        [k: string]:
-                          | boolean
-                          | {
-                              required?: boolean;
-                              mappedValue?: string;
-                            };
-                      };
-                      headers?: {
-                        [k: string]:
-                          | boolean
-                          | {
-                              required?: boolean;
-                              mappedValue?: string;
-                            };
-                      };
-                      paths?: {
-                        [k: string]:
-                          | boolean
-                          | {
-                              required?: boolean;
-                              mappedValue?: string;
-                            };
-                      };
-                    };
-                    passThrough?: "NEVER" | "WHEN_NO_MATCH" | "WHEN_NO_TEMPLATES";
-                    schema?: {
-                      [k: string]: {
-                        [k: string]: unknown;
-                      };
-                    };
-                    template?: {
-                      [k: string]: string;
-                    };
-                    uri?: string;
-                  };
-                  response?: {
-                    contentHandling?: "CONVERT_TO_BINARY" | "CONVERT_TO_TEXT";
-                    headers?: {
-                      [k: string]: string;
-                    };
-                    template?: string;
-                    statusCodes?: {
-                      [k: string]: {
-                        headers?: {
-                          [k: string]: string;
-                        };
-                        pattern?: string;
-                        template?:
-                          | string
-                          | {
-                              [k: string]: string;
-                            };
-                      };
-                    };
-                  };
+                  [k: string]: unknown;
                 };
           }
         | {
             websocket:
               | string
               | {
-                  route: string;
-                  routeResponseSelectionExpression?: {
-                    [k: string]: unknown;
-                  };
-                  authorizer?:
-                    | AwsArnString
-                    | FunctionName
-                    | (
-                        | {
-                            [k: string]: unknown;
-                          }
-                        | {
-                            [k: string]: unknown;
-                          }
-                      );
+                  [k: string]: unknown;
                 };
           }
         | {
@@ -276,74 +120,28 @@ export interface AWS {
           }
         | {
             stream:
-              | AwsArnString
-              | (
-                  | {
-                      arn: AwsCfFunction;
-                      [k: string]: unknown;
-                    }
-                  | {
-                      arn: AwsArnString;
-                      [k: string]: unknown;
-                    }
-                );
-          }
-        | {
-            msk: {
-              arn: AwsArnString | AwsCfImport | AwsCfRef;
-              batchSize?: number;
-              enabled?: boolean;
-              startingPosition?: "LATEST" | "TRIM_HORIZON";
-              topic: string;
-            };
+              | string
+              | {
+                  [k: string]: unknown;
+                };
           }
         | {
             alb: {
-              authorizer?: string[];
-              conditions: {
-                header?: {
-                  name: string;
-                  values: string[];
-                };
-                host?: string[];
-                ip?: (string | string)[];
-                method?: string[];
-                path: string[];
-                query?: {
-                  [k: string]: string;
-                };
-              };
-              healthCheck?:
-                | boolean
-                | {
-                    healthyThresholdCount?: number;
-                    intervalSeconds?: number;
-                    matcher?: {
-                      httpCode?: string;
-                    };
-                    path?: string;
-                    timeoutSeconds?: number;
-                    unhealthyThresholdCount?: number;
-                  };
-              listenerArn: AwsAlbListenerArn | AwsCfRef;
-              multiValueHeaders?: boolean;
-              priority: number;
+              [k: string]: unknown;
             };
           }
         | {
             alexaSkill:
-              | AwsAlexaEventToken
+              | string
               | {
-                  appId: AwsAlexaEventToken;
-                  enabled?: boolean;
+                  [k: string]: unknown;
                 };
           }
         | {
             alexaSmartHome:
-              | AwsAlexaEventToken
+              | string
               | {
-                  appId: AwsAlexaEventToken;
-                  enabled?: boolean;
+                  [k: string]: unknown;
                 };
           }
         | {
@@ -357,32 +155,14 @@ export interface AWS {
           }
         | {
             cloudwatchEvent: {
-              event?: {
-                [k: string]: unknown;
-              };
-              input?:
-                | string
-                | {
-                    [k: string]: unknown;
-                  };
-              inputPath?: string;
-              inputTransformer?: {
-                inputPathsMap?: {
-                  [k: string]: string;
-                };
-                inputTemplate: string;
-              };
-              description?: string;
-              name?: string;
-              enabled?: boolean;
+              [k: string]: unknown;
             };
           }
         | {
             cloudwatchLog:
-              | AwsLogGroupName
+              | string
               | {
-                  logGroup: AwsLogGroupName;
-                  filter?: string;
+                  [k: string]: unknown;
                 };
           }
         | {
@@ -403,75 +183,39 @@ export interface AWS {
             };
           }
         | {
-            eventBridge:
+            eventBridge: (
               | {
                   [k: string]: unknown;
                 }
               | {
                   [k: string]: unknown;
-                };
-          }
-        | {
-            sqs:
-              | AwsArn
-              | {
-                  arn: AwsArn;
-                  batchSize?: number;
-                  enabled?: boolean;
-                };
-          }
-        | {
-            cloudFront: {
-              behavior?: {
-                AllowedMethods?:
-                  | ("GET" | "HEAD")[]
-                  | ("GET" | "HEAD" | "OPTIONS")[]
-                  | ("GET" | "HEAD" | "OPTIONS" | "PUT" | "PATCH" | "POST" | "DELETE")[];
-                CachedMethods?: ("GET" | "HEAD")[] | ("GET" | "HEAD" | "OPTIONS")[];
-                ForwardedValues?: {
-                  Cookies?:
-                    | {
-                        Forward: "all" | "none";
-                      }
-                    | {
-                        Forward: {
-                          [k: string]: unknown;
-                        };
-                        WhitelistedNames: string[];
-                      };
-                  Headers?: string[];
-                  QueryString: boolean;
-                  QueryStringCacheKeys?: string[];
-                };
-                CachePolicyId?: string;
-                Compress?: boolean;
-                FieldLevelEncryptionId?: string;
-                OriginRequestPolicyId?: string;
-                SmoothStreaming?: boolean;
-                TrustedSigners?: string[];
-                ViewerProtocolPolicy?: "allow-all" | "redirect-to-https" | "https-only";
-              };
-              cachePolicy?:
+                }
+            ) &
+              (
                 | {
                     [k: string]: unknown;
                   }
                 | {
                     [k: string]: unknown;
-                  };
-              eventType?: "viewer-request" | "origin-request" | "origin-response" | "viewer-response";
-              isDefaultOrigin?: boolean;
-              includeBody?: boolean;
-              origin?:
-                | string
-                | (
-                    | {
-                        [k: string]: unknown;
-                      }
-                    | {
-                        [k: string]: unknown;
-                      }
-                  );
-              pathPattern?: string;
+                  }
+                | {
+                    [k: string]: unknown;
+                  }
+                | {
+                    [k: string]: unknown;
+                  }
+              );
+          }
+        | {
+            sqs:
+              | string
+              | {
+                  [k: string]: unknown;
+                };
+          }
+        | {
+            cloudFront: {
+              [k: string]: unknown;
             };
           }
         | {
@@ -493,188 +237,18 @@ export interface AWS {
                 };
           }
       )[];
-      awsKmsKeyArn?: AwsKmsArn;
-      condition?: AwsResourceCondition;
-      dependsOn?: AwsResourceDependsOn;
-      description?: string;
-      destinations?: {
-        onSuccess?: string;
-        onFailure?: string;
-      };
-      disableLogs?: boolean;
-      environment?: AwsLambdaEnvironment;
-      fileSystemConfig?: {
-        arn: string | AwsCfGetAtt | AwsCfJoin | AwsCfImport;
-        localMountPath: string;
-      };
       handler?: string;
-      kmsKeyArn?: AwsKmsArn;
-      layers?: AwsLambdaLayers;
-      maximumEventAge?: number;
-      maximumRetryAttempts?: number;
-      memorySize?: AwsLambdaMemorySize;
-      onError?: string | AwsCfFunction;
-      package?: {
-        artifact?: string;
-        exclude?: string[];
-        include?: string[];
-        individually?: boolean;
+      fileSystemConfig?: {
+        localMountPath: string;
+        arn: string;
       };
-      provisionedConcurrency?: number;
-      reservedConcurrency?: number;
-      role?: AwsLambdaRole;
-      runtime?: AwsLambdaRuntime;
-      tags?: AwsResourceTags;
-      timeout?: AwsLambdaTimeout;
-      tracing?: AwsLambdaTracing;
-      versionFunction?: AwsLambdaVersionning;
-      vpc?: AwsLambdaVpcConfig;
+      [k: string]: unknown;
     };
   };
-  package?: {
-    individually?: boolean;
-    path?: string;
-    artifact?: string;
-    exclude?: string[];
-    include?: string[];
-    excludeDevDependencies?: boolean;
-  };
-  plugins?:
-    | {
-        localPath?: string;
-        modules: string[];
-      }
-    | string[];
   provider: {
     name: {
       [k: string]: unknown;
     };
-    apiGateway?: {
-      apiKeySourceType?: string;
-      binaryMediaTypes?: string[];
-      description?: string;
-      metrics?: boolean;
-      minimumCompressionSize?: number;
-      restApiId?: AwsCfInstruction;
-      restApiResources?:
-        | {
-            path?: string;
-            resourceId?: string;
-          }[]
-        | {
-            [k: string]: unknown;
-          };
-      restApiRootResourceId?: AwsCfInstruction;
-      shouldStartNameWithService?: {
-        [k: string]: unknown;
-      };
-      websocketApiId?: AwsCfInstruction;
-    };
-    apiKeys?: (
-      | string
-      | (
-          | {
-              [k: string]: unknown;
-            }
-          | {
-              [k: string]: unknown;
-            }
-        )
-      | {
-          [k: string]: string[];
-        }
-    )[];
-    apiName?: string;
-    alb?: {
-      targetGroupPrefix?: string;
-      authorizers?: {
-        [k: string]:
-          | {
-              type: {
-                [k: string]: unknown;
-              };
-              authorizationEndpoint: {
-                [k: string]: unknown;
-              };
-              clientId: string;
-              clientSecret?: string;
-              issuer: {
-                [k: string]: unknown;
-              };
-              tokenEndpoint: {
-                [k: string]: unknown;
-              };
-              userInfoEndpoint: {
-                [k: string]: unknown;
-              };
-              onUnauthenticatedRequest?: "allow" | "authenticate" | "deny";
-              requestExtraParams?: {
-                [k: string]: string;
-              };
-              scope?: string;
-              sessionCookieName?: string;
-              sessionTimeout?: number;
-            }
-          | {
-              type: {
-                [k: string]: unknown;
-              };
-              userPoolArn: AwsArn;
-              userPoolClientId: string;
-              userPoolDomain: string;
-              onUnauthenticatedRequest?: "allow" | "authenticate" | "deny";
-              requestExtraParams?: {
-                [k: string]: string;
-              };
-              scope?: string;
-              sessionCookieName?: string;
-              sessionTimeout?: number;
-            };
-      };
-    };
-    cfnRole?: AwsArn;
-    cloudFront?: {
-      cachePolicies?: {
-        [k: string]: {
-          Comment?: string;
-          DefaultTTL: number;
-          MaxTTL: number;
-          MinTTL: number;
-          ParametersInCacheKeyAndForwardedToOrigin: {
-            CookiesConfig?: {
-              CookieBehavior: "none" | "whitelist" | "allExcept" | "all";
-              Cookies?: string[];
-            };
-            EnableAcceptEncodingBrotli?: boolean;
-            EnableAcceptEncodingGzip?: boolean;
-            HeadersConfig?: {
-              HeaderBehavior: "none" | "whitelist";
-              Headers?: string[];
-            };
-            QueryStringsConfig?: {
-              QueryStringBehavior: "none" | "whitelist" | "allExcept" | "all";
-              QueryStrings?: string[];
-            };
-          };
-        };
-      };
-    };
-    deploymentBucket?:
-      | AwsS3BucketName
-      | {
-          name?: AwsS3BucketName;
-          maxPreviousDeploymentArtifacts?: number;
-          serverSideEncryption?: "AES256" | "aws:kms";
-          sseCustomerAlgorithim?: string;
-          sseCustomerKey?: string;
-          sseCustomerKeyMD5?: string;
-          sseKMSKeyId?: string;
-          tags?: AwsResourceTags;
-          blockPublicAccess?: boolean;
-        };
-    deploymentPrefix?: string;
-    endpointType?: string;
-    environment?: AwsLambdaEnvironment;
     httpApi?: {
       authorizers?: {
         [k: string]: {
@@ -687,356 +261,63 @@ export interface AWS {
       cors?:
         | boolean
         | {
+            allowedOrigins?: string | string[];
+            allowedHeaders?: string | string[];
+            allowedMethods?: string | string[];
             allowCredentials?: boolean;
-            allowedHeaders?: string[];
-            allowedMethods?: string[];
-            allowedOrigins?: string[];
-            exposedResponseHeaders?: string[];
+            exposedResponseHeaders?: string | string[];
             maxAge?: number;
           };
       id?: string | AwsCfImportLocallyResolvable;
       name?: string;
       payload?: string;
     };
-    iamManagedPolicies?: AwsArnString[];
-    iamRoleStatements?: AwsIamPolicyStatements;
-    kmsKeyArn?: AwsKmsArn;
-    layers?: AwsLambdaLayers;
-    logRetentionInDays?: 1 | 3 | 5 | 7 | 14 | 30 | 60 | 90 | 120 | 150 | 180 | 365 | 400 | 545 | 731 | 1827 | 3653;
     logs?: {
-      frameworkLambda?: boolean;
       httpApi?:
         | boolean
         | {
             format?: string;
           };
-      restApi?:
-        | boolean
-        | {
-            accessLogging?: boolean;
-            executionLogging?: boolean;
-            format?: string;
-            fullExecutionData?: boolean;
-            level?: "INFO" | "ERROR";
-            role?: AwsArn;
-            roleManagedExternally?: boolean;
-          };
-      websocket?:
-        | boolean
-        | {
-            level?: "INFO" | "ERROR";
-          };
       [k: string]: unknown;
     };
-    memorySize?: AwsLambdaMemorySize;
-    notificationArns?: AwsArnString[];
-    profile?: string;
-    region?:
-      | "us-east-1"
-      | "us-east-2"
-      | "us-gov-east-1"
-      | "us-gov-west-1"
-      | "us-west-1"
-      | "us-west-2"
-      | "af-south-1"
-      | "ap-east-1"
-      | "ap-northeast-1"
-      | "ap-northeast-2"
-      | "ap-northeast-3"
-      | "ap-south-1"
-      | "ap-southeast-1"
-      | "ap-southeast-2"
-      | "ca-central-1"
-      | "cn-north-1"
-      | "cn-northwest-1"
-      | "eu-central-1"
-      | "eu-north-1"
-      | "eu-south-1"
-      | "eu-west-1"
-      | "eu-west-2"
-      | "eu-west-3"
-      | "me-south-1"
-      | "sa-east-1";
-    resourcePolicy?: AwsIamPolicyStatements;
-    role?: AwsLambdaRole;
-    rolePermissionsBoundary?: AwsArnString;
-    rollbackConfiguration?: {
-      RollbackTriggers?: {
-        Arn: AwsArnString;
-        Type: {
-          [k: string]: unknown;
-        };
-      }[];
-      MonitoringTimeInMinutes?: number;
-    };
-    runtime?: AwsLambdaRuntime;
-    s3?: {
-      [k: string]: {
-        accelerateConfiguration?: {
-          AccelerationStatus: "Enabled" | "Suspended";
-        };
-        accessControl?: string;
-        analyticsConfigurations?: {
-          Id: string;
-          Prefix?: string;
-          StorageClassAnalysis: {
-            DataExport?: {
-              Destination: {
-                BucketAccountId?: string;
-                BucketArn: AwsArn;
-                Format: "CSV" | "ORC" | "Parquet";
-                Prefix?: string;
-              };
-              OutputSchemaVersion: {
-                [k: string]: unknown;
-              };
-            };
-          };
-          TagFilters?: {
-            Key: string;
-            Value: string;
-          }[];
-        }[];
-        bucketEncryption?: {
-          ServerSideEncryptionConfiguration: {
-            ServerSideEncryptionByDefault?: {
-              KMSMasterKeyID?: AwsArn | string;
-              SSEAlgorithm: "AES256" | "aws:kms";
-            };
-          }[];
-        };
-        bucketName?: AwsS3BucketName;
-        corsConfiguration?: {
-          CorsRules: {
-            AllowedHeaders?: string[];
-            AllowedMethods: ("GET" | "PUT" | "HEAD" | "POST" | "DELETE")[];
-            AllowedOrigins: string[];
-            ExposedHeaders?: string[];
-            Id?: string;
-            MaxAge?: number;
-          }[];
-        };
-        inventoryConfigurations?: {
-          Destination: {
-            BucketAccountId?: string;
-            BucketArn: AwsArn;
-            Format: "CSV" | "ORC" | "Parquet";
-            Prefix?: string;
-          };
-          Enabled: boolean;
-          Id: string;
-          IncludedObjectVersions: "All" | "Current";
-          OptionalFields?: string[];
-          Prefix?: string;
-          ScheduleFrequency: "Daily" | "Weekly";
-        }[];
-        lifecycleConfiguration?: {
-          Rules: (
-            | {
-                [k: string]: unknown;
-              }
-            | {
-                [k: string]: unknown;
-              }
-            | {
-                [k: string]: unknown;
-              }
-            | {
-                [k: string]: unknown;
-              }
-            | {
-                [k: string]: unknown;
-              }
-            | {
-                [k: string]: unknown;
-              }
-            | {
-                [k: string]: unknown;
-              }
-            | {
-                [k: string]: unknown;
-              }
-          )[];
-        };
-        loggingConfiguration?: {
-          DestinationBucketName?: AwsS3BucketName | AwsCfFunction;
-          LogFilePrefix?: string;
-        };
-        metricsConfigurations?: {
-          Id: string;
-          Prefix?: string;
-          TagFilters?: {
-            Key: string;
-            Value: string;
-          }[];
-        }[];
-        name?: AwsS3BucketName;
-        notificationConfiguration?: {
-          LambdaConfigurations?: {
-            Event: string;
-            Filter?: {
-              S3Key: {
-                Rules: {
-                  Name: "prefix" | "suffix";
-                  Value: string;
-                }[];
-              };
-            };
-            Function: AwsArn;
-          }[];
-          QueueConfigurations?: {
-            Event: string;
-            Filter?: {
-              S3Key: {
-                Rules: {
-                  Name: "prefix" | "suffix";
-                  Value: string;
-                }[];
-              };
-            };
-            Queue: AwsArn;
-          }[];
-          TopicConfigurations?: {
-            Event: string;
-            Filter?: {
-              S3Key: {
-                Rules: {
-                  Name: "prefix" | "suffix";
-                  Value: string;
-                }[];
-              };
-            };
-            Topic: AwsArn;
-          }[];
-        };
-        objectLockConfiguration?: {
-          ObjectLockEnabled?: {
-            [k: string]: unknown;
-          };
-          Rule?: {
-            DefaultRetention?: {
-              Days?: number;
-              Mode?: "COMPLIANCE" | "GOVERNANCE";
-              Years?: number;
-            };
-          };
-        };
-        objectLockEnabled?: boolean;
-        publicAccessBlockConfiguration?: {
-          BlockPublicAcls?: boolean;
-          BlockPublicPolicy?: boolean;
-          IgnorePublicAcls?: boolean;
-          RestrictPublicBuckets?: boolean;
-        };
-        tags?: {
-          Key: string;
-          Value: string;
-        }[];
-        versioningConfiguration?: {
-          Status: "Enabled" | "Suspended";
-        };
-        websiteConfiguration?: {
-          ErrorDocument?: string;
-          IndexDocument?: string;
-          RedirectAllRequestsTo?: {
-            HostName: string;
-            Protocol?: "http" | "https";
-          };
-          RoutingRules?: {
-            RedirectRule: {
-              HostName?: string;
-              HttpRedirectCode?: string;
-              Protocol?: "http" | "https";
-              ReplaceKeyPrefixWith?: string;
-              ReplaceKeyWith?: string;
-            };
-            RoutingRuleCondition?: {
-              HttpErrorCodeReturnedEquals?: string;
-              KeyPrefixEquals?: string;
-            };
-          }[];
-        };
-      };
-    };
-    stage?: string;
-    stackName?: string;
-    stackParameters?: {
-      ParameterKey?: string;
-      ParameterValue?: string;
-      UsePreviousValue?: boolean;
-      ResolvedValue?: string;
+    resourcePolicy?: {
+      [k: string]: unknown;
     }[];
-    stackPolicy?: AwsIamPolicyStatements;
-    stackTags?: AwsResourceTags;
-    tags?: AwsResourceTags;
-    timeout?: AwsLambdaTimeout;
-    tracing?: {
-      apiGateway?: boolean;
-      lambda?: AwsLambdaTracing;
-    };
-    usagePlan?:
-      | {
-          quota?: {
-            limit?: number;
-            offset?: number;
-            period?: "DAY" | "WEEK" | "MONTH";
-          };
-          throttle?: {
-            burstLimit?: number;
-            rateLimit?: number;
-          };
-        }
-      | {
-          [k: string]: {
-            quota?: {
-              limit?: number;
-              offset?: number;
-              period?: "DAY" | "WEEK" | "MONTH";
-            };
-            throttle?: {
-              burstLimit?: number;
-              rateLimit?: number;
-            };
-          };
-        }[];
-    vpc?: AwsLambdaVpcConfig;
-    vpcEndpointIds?: AwsCfInstruction[];
-    versionFunctions?: AwsLambdaVersionning;
-    websocketsApiName?: string;
-    websocketsApiRouteSelectionExpression?: string;
+    stage?: string;
     variableSyntax?: string;
+    [k: string]: unknown;
   };
-  service: {
-    name?: {
-      [k: string]: unknown;
-    };
-    awsKmsKeyArn?: AwsKmsArn;
+  package?: {
+    individually?: boolean;
+    path?: string;
+    artifact?: string;
+    exclude?: string[];
+    include?: string[];
+    excludeDevDependencies?: boolean;
   };
+  layers?: {
+    [k: string]: unknown;
+  };
+  configValidationMode?: "error" | "warn" | "off";
   resources?: {
     AWSTemplateFormatVersion?: string;
-    Conditions?: {
-      [k: string]: unknown;
-    };
     Description?: string;
-    Mappings?: {
-      [k: string]: unknown;
-    };
     Metadata?: {
-      [k: string]: unknown;
-    };
-    Outputs?: {
       [k: string]: unknown;
     };
     Parameters?: {
       [k: string]: unknown;
     };
+    Mappings?: {
+      [k: string]: unknown;
+    };
+    Conditions?: {
+      [k: string]: unknown;
+    };
+    Transform?: {
+      [k: string]: unknown;
+    };
     Resources?: {
-      "Fn::Transform"?: {
-        Name: string;
-        Parameters?: {
-          [k: string]: unknown;
-        };
-      };
       /**
        * This interface was referenced by `undefined`'s JSON-Schema definition
        * via the `patternProperty` "^[a-zA-Z0-9]{1,255}$".
@@ -1049,7 +330,7 @@ export interface AWS {
           [k: string]: unknown;
         };
         DeletionPolicy?: string;
-        DependsOn?: AwsResourceDependsOn;
+        DependsOn?: string[];
         Metadata?: {
           [k: string]: unknown;
         };
@@ -1057,13 +338,12 @@ export interface AWS {
           [k: string]: unknown;
         };
         UpdateReplacePolicy?: string;
-        Condition?: AwsResourceCondition;
+        Condition?: string;
         [k: string]: {
           [k: string]: unknown;
         };
       };
     };
-    Transform?: string[];
     extensions?: {
       /**
        * This interface was referenced by `undefined`'s JSON-Schema definition
@@ -1077,7 +357,7 @@ export interface AWS {
           [k: string]: unknown;
         };
         DeletionPolicy?: string;
-        DependsOn?: AwsResourceDependsOn;
+        DependsOn?: string[];
         Metadata?: {
           [k: string]: unknown;
         };
@@ -1085,24 +365,11 @@ export interface AWS {
           [k: string]: unknown;
         };
         UpdateReplacePolicy?: string;
-        Condition?: AwsResourceCondition;
+        Condition?: string;
       };
     };
-  };
-  layers?: {
-    [k: string]: {
-      allowedAccounts?: string[];
-      compatibleRuntimes?: AwsLambdaRuntime[];
-      description?: string;
-      licenseInfo?: string;
-      name?: string;
-      package?: {
-        artifact?: string;
-        exclude?: string[];
-        include?: string[];
-      };
-      path?: string;
-      retain?: boolean;
+    Outputs?: {
+      [k: string]: unknown;
     };
   };
   org?: string;
@@ -1132,29 +399,6 @@ export interface AwsCfRef {
 }
 export interface AwsCfSub {
   "Fn::Sub": unknown;
-}
-export interface AwsLambdaEnvironment {
-  /**
-   * This interface was referenced by `AwsLambdaEnvironment`'s JSON-Schema definition
-   * via the `patternProperty` "^[A-Za-z_][a-zA-Z0-9_]*$".
-   */
-  [k: string]:
-    | {
-        [k: string]: unknown;
-      }
-    | AwsCfInstruction;
-}
-export interface AwsResourceTags {
-  /**
-   * This interface was referenced by `AwsResourceTags`'s JSON-Schema definition
-   * via the `patternProperty` "^(?!aws:)[\w./=+:-]{1,128}$".
-   */
-  [k: string]: string;
-}
-export interface AwsLambdaVpcConfig {
-  securityGroupIds?: AwsCfInstruction[];
-  subnetIds?: AwsCfInstruction[];
-  [k: string]: unknown;
 }
 export interface AwsCfImportLocallyResolvable {
   "Fn::ImportValue": string;
