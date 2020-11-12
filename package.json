@@ -1,11 +1,9 @@
 {
-  "name": "typescript",
-  "version": "0.0.1-alpha",
+  "name": "@serverless/typescript",
+  "version": "2.11.1",
   "description": "Serverless typescript definitions",
-  "main": "index.ts",
-  "scripts": {
-    "test": "npm run test"
-  },
+  "main": "index.d.ts",
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/serverless/typescript.git"
@@ -21,8 +19,10 @@
     "url": "https://github.com/serverless/typescript/issues"
   },
   "homepage": "https://github.com/serverless/typescript#readme",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "json-schema-to-typescript": "^9.1.1",
-    "serverless": "*"
+    "serverless": "*",
+    "typescript": "^4.0.5"
   }
 }
