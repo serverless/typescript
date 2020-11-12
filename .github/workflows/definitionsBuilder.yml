@@ -21,3 +21,22 @@ jobs:
         run: |
           npm update --no-save
           npm update --save-dev --no-save
+
+      - id: serverless-version
+        name: Set Serverless latest version
+        run: echo "::set-output name=version::$(npm list serverless | grep serverless@ | sed 's/.*serverless@/v/g' | tr -d '[[:space:]]')"
+
+      - name: Generate definitions
+        run: npx sls schema
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v5
+        with:
+          author_name: Frédéric Barthelet
+          author_email: fredericb@theodo.fr
+          branch: master
+          message: Add Serverless definitions for ${{ steps.serverless-version.outputs.version }}
+          add: definitions.d.ts
+          tag: ${{ steps.serverless-version.outputs.version }} --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
