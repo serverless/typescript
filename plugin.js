@@ -20,7 +20,7 @@ class ConfigSchemaHandlerTypescriptDefinitionsPlugin {
 
   async generateSchema() {
     // This definition is causing memory trouble
-    delete this.schema.properties.provider.properties.s3.additionalProperties.properties.replicationConfiguration
+    // delete this.schema.properties.provider.properties.s3.additionalProperties.properties.replicationConfiguration
 
     /**
      * format: false -> improves generation performances
