@@ -5,65 +5,6 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type AwsArnString = string;
-export type ErrorCode = string;
-export type AwsArn = AwsArnString | AwsCfFunction;
-export type AwsCfFunction = AwsCfImport | AwsCfJoin | AwsCfGetAtt | AwsCfRef | AwsCfSub;
-export type AwsCfInstruction = string | AwsCfFunction;
-export type FunctionName = string;
-export type AwsAlbListenerArn = string;
-export type AwsAlexaEventToken = string;
-export type AwsLogGroupName = string;
-export type AwsKmsArn =
-  | {
-      [k: string]: unknown;
-    }
-  | string;
-export type AwsResourceCondition = string;
-export type AwsResourceDependsOn = string[];
-export type AwsLambdaLayers = AwsArn[];
-export type AwsLambdaMemorySize = number;
-export type AwsLambdaRole = string | AwsCfImport | AwsCfGetAtt;
-export type AwsLambdaRuntime =
-  | "dotnetcore2.1"
-  | "dotnetcore3.1"
-  | "go1.x"
-  | "java11"
-  | "java8"
-  | "java8.al2"
-  | "nodejs10.x"
-  | "nodejs12.x"
-  | "provided"
-  | "provided.al2"
-  | "python2.7"
-  | "python3.6"
-  | "python3.7"
-  | "python3.8"
-  | "ruby2.5"
-  | "ruby2.7";
-export type AwsLambdaTimeout = number;
-export type AwsLambdaTracing = ("Active" | "PassThrough") | boolean;
-export type AwsLambdaVersionning = boolean;
-export type AwsS3BucketName = string;
-export type AwsIamPolicyStatements = ({
-  [k: string]: unknown;
-} & (
-  | {
-      [k: string]: unknown;
-    }
-  | {
-      [k: string]: unknown;
-    }
-) &
-  (
-    | {
-        [k: string]: unknown;
-      }
-    | {
-        [k: string]: unknown;
-      }
-  ))[];
-
 export interface AWS {
   configValidationMode?: "error" | "warn" | "off";
   custom?: {
@@ -74,7 +15,7 @@ export interface AWS {
       disableAwsSpans?: boolean;
       disableFrameworkInstrumentation?: boolean;
       disableHttpSpans?: boolean;
-      logAccessIamRole?: AwsArnString;
+      logAccessIamRole?: string;
       logIngestMode?: "push" | "pull";
     };
     safeguards?: {
@@ -82,11 +23,7 @@ export interface AWS {
     };
     [k: string]: unknown;
   };
-  disabledDeprecations?:
-    | {
-        [k: string]: unknown;
-      }
-    | ErrorCode[];
+  disabledDeprecations?: "*" | string[];
   enableLocalInstallationFallback?: boolean;
   frameworkVersion?: string;
   functions?: {
@@ -98,9 +35,7 @@ export interface AWS {
       name?: string;
       events?: (
         | {
-            __schemaWorkaround__: {
-              [k: string]: unknown;
-            };
+            __schemaWorkaround__: null;
           }
         | {
             schedule:
@@ -150,8 +85,44 @@ export interface AWS {
                   authorizer?:
                     | string
                     | {
-                        arn?: AwsArn;
-                        authorizerId?: AwsCfInstruction;
+                        arn?:
+                          | string
+                          | (
+                              | {
+                                  "Fn::ImportValue": unknown;
+                                }
+                              | {
+                                  "Fn::Join": [string, unknown[]];
+                                }
+                              | {
+                                  "Fn::GetAtt": string[];
+                                }
+                              | {
+                                  Ref: string;
+                                }
+                              | {
+                                  "Fn::Sub": unknown;
+                                }
+                            );
+                        authorizerId?:
+                          | string
+                          | (
+                              | {
+                                  "Fn::ImportValue": unknown;
+                                }
+                              | {
+                                  "Fn::Join": [string, unknown[]];
+                                }
+                              | {
+                                  "Fn::GetAtt": string[];
+                                }
+                              | {
+                                  Ref: string;
+                                }
+                              | {
+                                  "Fn::Sub": unknown;
+                                }
+                            );
                         claims?: string[];
                         identitySource?: string;
                         identityValidationExpression?: string;
@@ -245,12 +216,10 @@ export interface AWS {
               | string
               | {
                   route: string;
-                  routeResponseSelectionExpression?: {
-                    [k: string]: unknown;
-                  };
+                  routeResponseSelectionExpression?: "$default";
                   authorizer?:
-                    | AwsArnString
-                    | FunctionName
+                    | string
+                    | string
                     | (
                         | {
                             [k: string]: unknown;
@@ -264,7 +233,7 @@ export interface AWS {
         | {
             sns:
               | string
-              | AwsArnString
+              | string
               | (
                   | {
                       [k: string]: unknown;
@@ -276,21 +245,43 @@ export interface AWS {
           }
         | {
             stream:
-              | AwsArnString
+              | string
               | (
                   | {
-                      arn: AwsCfFunction;
+                      arn:
+                        | {
+                            "Fn::ImportValue": unknown;
+                          }
+                        | {
+                            "Fn::Join": [string, unknown[]];
+                          }
+                        | {
+                            "Fn::GetAtt": string[];
+                          }
+                        | {
+                            Ref: string;
+                          }
+                        | {
+                            "Fn::Sub": unknown;
+                          };
                       [k: string]: unknown;
                     }
                   | {
-                      arn: AwsArnString;
+                      arn: string;
                       [k: string]: unknown;
                     }
                 );
           }
         | {
             msk: {
-              arn: AwsArnString | AwsCfImport | AwsCfRef;
+              arn:
+                | string
+                | {
+                    "Fn::ImportValue": unknown;
+                  }
+                | {
+                    Ref: string;
+                  };
               batchSize?: number;
               enabled?: boolean;
               startingPosition?: "LATEST" | "TRIM_HORIZON";
@@ -325,24 +316,28 @@ export interface AWS {
                     timeoutSeconds?: number;
                     unhealthyThresholdCount?: number;
                   };
-              listenerArn: AwsAlbListenerArn | AwsCfRef;
+              listenerArn:
+                | string
+                | {
+                    Ref: string;
+                  };
               multiValueHeaders?: boolean;
               priority: number;
             };
           }
         | {
             alexaSkill:
-              | AwsAlexaEventToken
+              | string
               | {
-                  appId: AwsAlexaEventToken;
+                  appId: string;
                   enabled?: boolean;
                 };
           }
         | {
             alexaSmartHome:
-              | AwsAlexaEventToken
+              | string
               | {
-                  appId: AwsAlexaEventToken;
+                  appId: string;
                   enabled?: boolean;
                 };
           }
@@ -379,9 +374,9 @@ export interface AWS {
           }
         | {
             cloudwatchLog:
-              | AwsLogGroupName
+              | string
               | {
-                  logGroup: AwsLogGroupName;
+                  logGroup: string;
                   filter?: string;
                 };
           }
@@ -413,9 +408,46 @@ export interface AWS {
           }
         | {
             sqs:
-              | AwsArn
+              | (
+                  | string
+                  | (
+                      | {
+                          "Fn::ImportValue": unknown;
+                        }
+                      | {
+                          "Fn::Join": [string, unknown[]];
+                        }
+                      | {
+                          "Fn::GetAtt": string[];
+                        }
+                      | {
+                          Ref: string;
+                        }
+                      | {
+                          "Fn::Sub": unknown;
+                        }
+                    )
+                )
               | {
-                  arn: AwsArn;
+                  arn:
+                    | string
+                    | (
+                        | {
+                            "Fn::ImportValue": unknown;
+                          }
+                        | {
+                            "Fn::Join": [string, unknown[]];
+                          }
+                        | {
+                            "Fn::GetAtt": string[];
+                          }
+                        | {
+                            Ref: string;
+                          }
+                        | {
+                            "Fn::Sub": unknown;
+                          }
+                      );
                   batchSize?: number;
                   enabled?: boolean;
                 };
@@ -434,9 +466,7 @@ export interface AWS {
                         Forward: "all" | "none";
                       }
                     | {
-                        Forward: {
-                          [k: string]: unknown;
-                        };
+                        Forward: "whitelist";
                         WhitelistedNames: string[];
                       };
                   Headers?: string[];
@@ -493,27 +523,109 @@ export interface AWS {
                 };
           }
       )[];
-      awsKmsKeyArn?: AwsKmsArn;
-      condition?: AwsResourceCondition;
-      dependsOn?: AwsResourceDependsOn;
+      awsKmsKeyArn?:
+        | {
+            [k: string]: unknown;
+          }
+        | string;
+      condition?: string;
+      dependsOn?: string[];
       description?: string;
       destinations?: {
         onSuccess?: string;
         onFailure?: string;
       };
       disableLogs?: boolean;
-      environment?: AwsLambdaEnvironment;
+      environment?: {
+        /**
+         * This interface was referenced by `undefined`'s JSON-Schema definition
+         * via the `patternProperty` "^[A-Za-z_][a-zA-Z0-9_]*$".
+         */
+        [k: string]:
+          | ""
+          | (
+              | string
+              | (
+                  | {
+                      "Fn::ImportValue": unknown;
+                    }
+                  | {
+                      "Fn::Join": [string, unknown[]];
+                    }
+                  | {
+                      "Fn::GetAtt": string[];
+                    }
+                  | {
+                      Ref: string;
+                    }
+                  | {
+                      "Fn::Sub": unknown;
+                    }
+                )
+            );
+      };
       fileSystemConfig?: {
-        arn: string | AwsCfGetAtt | AwsCfJoin | AwsCfImport;
+        arn:
+          | string
+          | {
+              "Fn::GetAtt": string[];
+            }
+          | {
+              "Fn::Join": [string, unknown[]];
+            }
+          | {
+              "Fn::ImportValue": unknown;
+            };
         localMountPath: string;
       };
       handler?: string;
-      kmsKeyArn?: AwsKmsArn;
-      layers?: AwsLambdaLayers;
+      kmsKeyArn?:
+        | {
+            [k: string]: unknown;
+          }
+        | string;
+      layers?: (
+        | string
+        | (
+            | {
+                "Fn::ImportValue": unknown;
+              }
+            | {
+                "Fn::Join": [string, unknown[]];
+              }
+            | {
+                "Fn::GetAtt": string[];
+              }
+            | {
+                Ref: string;
+              }
+            | {
+                "Fn::Sub": unknown;
+              }
+          )
+      )[];
       maximumEventAge?: number;
       maximumRetryAttempts?: number;
-      memorySize?: AwsLambdaMemorySize;
-      onError?: string | AwsCfFunction;
+      memorySize?: number;
+      onError?:
+        | string
+        | (
+            | {
+                "Fn::ImportValue": unknown;
+              }
+            | {
+                "Fn::Join": [string, unknown[]];
+              }
+            | {
+                "Fn::GetAtt": string[];
+              }
+            | {
+                Ref: string;
+              }
+            | {
+                "Fn::Sub": unknown;
+              }
+          );
       package?: {
         artifact?: string;
         exclude?: string[];
@@ -522,13 +634,84 @@ export interface AWS {
       };
       provisionedConcurrency?: number;
       reservedConcurrency?: number;
-      role?: AwsLambdaRole;
-      runtime?: AwsLambdaRuntime;
-      tags?: AwsResourceTags;
-      timeout?: AwsLambdaTimeout;
-      tracing?: AwsLambdaTracing;
-      versionFunction?: AwsLambdaVersionning;
-      vpc?: AwsLambdaVpcConfig;
+      role?:
+        | string
+        | {
+            "Fn::ImportValue": unknown;
+          }
+        | {
+            "Fn::GetAtt": string[];
+          };
+      runtime?:
+        | "dotnetcore2.1"
+        | "dotnetcore3.1"
+        | "go1.x"
+        | "java11"
+        | "java8"
+        | "java8.al2"
+        | "nodejs10.x"
+        | "nodejs12.x"
+        | "provided"
+        | "provided.al2"
+        | "python2.7"
+        | "python3.6"
+        | "python3.7"
+        | "python3.8"
+        | "ruby2.5"
+        | "ruby2.7";
+      tags?: {
+        /**
+         * This interface was referenced by `undefined`'s JSON-Schema definition
+         * via the `patternProperty` "^(?!aws:)[\w./=+:-]{1,128}$".
+         */
+        [k: string]: string;
+      };
+      timeout?: number;
+      tracing?: ("Active" | "PassThrough") | boolean;
+      versionFunction?: boolean;
+      vpc?: {
+        securityGroupIds?: (
+          | string
+          | (
+              | {
+                  "Fn::ImportValue": unknown;
+                }
+              | {
+                  "Fn::Join": [string, unknown[]];
+                }
+              | {
+                  "Fn::GetAtt": string[];
+                }
+              | {
+                  Ref: string;
+                }
+              | {
+                  "Fn::Sub": unknown;
+                }
+            )
+        )[];
+        subnetIds?: (
+          | string
+          | (
+              | {
+                  "Fn::ImportValue": unknown;
+                }
+              | {
+                  "Fn::Join": [string, unknown[]];
+                }
+              | {
+                  "Fn::GetAtt": string[];
+                }
+              | {
+                  Ref: string;
+                }
+              | {
+                  "Fn::Sub": unknown;
+                }
+            )
+        )[];
+        [k: string]: unknown;
+      };
     };
   };
   package?: {
@@ -546,16 +729,32 @@ export interface AWS {
       }
     | string[];
   provider: {
-    name: {
-      [k: string]: unknown;
-    };
+    name: "aws";
     apiGateway?: {
       apiKeySourceType?: string;
       binaryMediaTypes?: string[];
       description?: string;
       metrics?: boolean;
       minimumCompressionSize?: number;
-      restApiId?: AwsCfInstruction;
+      restApiId?:
+        | string
+        | (
+            | {
+                "Fn::ImportValue": unknown;
+              }
+            | {
+                "Fn::Join": [string, unknown[]];
+              }
+            | {
+                "Fn::GetAtt": string[];
+              }
+            | {
+                Ref: string;
+              }
+            | {
+                "Fn::Sub": unknown;
+              }
+          );
       restApiResources?:
         | {
             path?: string;
@@ -564,11 +763,45 @@ export interface AWS {
         | {
             [k: string]: unknown;
           };
-      restApiRootResourceId?: AwsCfInstruction;
-      shouldStartNameWithService?: {
-        [k: string]: unknown;
-      };
-      websocketApiId?: AwsCfInstruction;
+      restApiRootResourceId?:
+        | string
+        | (
+            | {
+                "Fn::ImportValue": unknown;
+              }
+            | {
+                "Fn::Join": [string, unknown[]];
+              }
+            | {
+                "Fn::GetAtt": string[];
+              }
+            | {
+                Ref: string;
+              }
+            | {
+                "Fn::Sub": unknown;
+              }
+          );
+      shouldStartNameWithService?: true;
+      websocketApiId?:
+        | string
+        | (
+            | {
+                "Fn::ImportValue": unknown;
+              }
+            | {
+                "Fn::Join": [string, unknown[]];
+              }
+            | {
+                "Fn::GetAtt": string[];
+              }
+            | {
+                Ref: string;
+              }
+            | {
+                "Fn::Sub": unknown;
+              }
+          );
     };
     apiKeys?: (
       | string
@@ -590,9 +823,7 @@ export interface AWS {
       authorizers?: {
         [k: string]:
           | {
-              type: {
-                [k: string]: unknown;
-              };
+              type: "oidc";
               authorizationEndpoint: {
                 [k: string]: unknown;
               };
@@ -616,10 +847,26 @@ export interface AWS {
               sessionTimeout?: number;
             }
           | {
-              type: {
-                [k: string]: unknown;
-              };
-              userPoolArn: AwsArn;
+              type: "cognito";
+              userPoolArn:
+                | string
+                | (
+                    | {
+                        "Fn::ImportValue": unknown;
+                      }
+                    | {
+                        "Fn::Join": [string, unknown[]];
+                      }
+                    | {
+                        "Fn::GetAtt": string[];
+                      }
+                    | {
+                        Ref: string;
+                      }
+                    | {
+                        "Fn::Sub": unknown;
+                      }
+                  );
               userPoolClientId: string;
               userPoolDomain: string;
               onUnauthenticatedRequest?: "allow" | "authenticate" | "deny";
@@ -632,7 +879,25 @@ export interface AWS {
             };
       };
     };
-    cfnRole?: AwsArn;
+    cfnRole?:
+      | string
+      | (
+          | {
+              "Fn::ImportValue": unknown;
+            }
+          | {
+              "Fn::Join": [string, unknown[]];
+            }
+          | {
+              "Fn::GetAtt": string[];
+            }
+          | {
+              Ref: string;
+            }
+          | {
+              "Fn::Sub": unknown;
+            }
+        );
     cloudFront?: {
       cachePolicies?: {
         [k: string]: {
@@ -660,28 +925,137 @@ export interface AWS {
       };
     };
     deploymentBucket?:
-      | AwsS3BucketName
+      | string
       | {
-          name?: AwsS3BucketName;
+          name?: string;
           maxPreviousDeploymentArtifacts?: number;
           serverSideEncryption?: "AES256" | "aws:kms";
           sseCustomerAlgorithim?: string;
           sseCustomerKey?: string;
           sseCustomerKeyMD5?: string;
           sseKMSKeyId?: string;
-          tags?: AwsResourceTags;
+          tags?: {
+            /**
+             * This interface was referenced by `undefined`'s JSON-Schema definition
+             * via the `patternProperty` "^(?!aws:)[\w./=+:-]{1,128}$".
+             */
+            [k: string]: string;
+          };
           blockPublicAccess?: boolean;
         };
     deploymentPrefix?: string;
     endpointType?: string;
-    environment?: AwsLambdaEnvironment;
+    environment?: {
+      /**
+       * This interface was referenced by `undefined`'s JSON-Schema definition
+       * via the `patternProperty` "^[A-Za-z_][a-zA-Z0-9_]*$".
+       */
+      [k: string]:
+        | ""
+        | (
+            | string
+            | (
+                | {
+                    "Fn::ImportValue": unknown;
+                  }
+                | {
+                    "Fn::Join": [string, unknown[]];
+                  }
+                | {
+                    "Fn::GetAtt": string[];
+                  }
+                | {
+                    Ref: string;
+                  }
+                | {
+                    "Fn::Sub": unknown;
+                  }
+              )
+          );
+    };
     httpApi?: {
       authorizers?: {
         [k: string]: {
           name?: string;
-          identitySource: AwsCfInstruction;
-          issuerUrl: AwsCfInstruction;
-          audience: AwsCfInstruction | AwsCfInstruction[];
+          identitySource:
+            | string
+            | (
+                | {
+                    "Fn::ImportValue": unknown;
+                  }
+                | {
+                    "Fn::Join": [string, unknown[]];
+                  }
+                | {
+                    "Fn::GetAtt": string[];
+                  }
+                | {
+                    Ref: string;
+                  }
+                | {
+                    "Fn::Sub": unknown;
+                  }
+              );
+          issuerUrl:
+            | string
+            | (
+                | {
+                    "Fn::ImportValue": unknown;
+                  }
+                | {
+                    "Fn::Join": [string, unknown[]];
+                  }
+                | {
+                    "Fn::GetAtt": string[];
+                  }
+                | {
+                    Ref: string;
+                  }
+                | {
+                    "Fn::Sub": unknown;
+                  }
+              );
+          audience:
+            | (
+                | string
+                | (
+                    | {
+                        "Fn::ImportValue": unknown;
+                      }
+                    | {
+                        "Fn::Join": [string, unknown[]];
+                      }
+                    | {
+                        "Fn::GetAtt": string[];
+                      }
+                    | {
+                        Ref: string;
+                      }
+                    | {
+                        "Fn::Sub": unknown;
+                      }
+                  )
+              )
+            | (
+                | string
+                | (
+                    | {
+                        "Fn::ImportValue": unknown;
+                      }
+                    | {
+                        "Fn::Join": [string, unknown[]];
+                      }
+                    | {
+                        "Fn::GetAtt": string[];
+                      }
+                    | {
+                        Ref: string;
+                      }
+                    | {
+                        "Fn::Sub": unknown;
+                      }
+                  )
+              )[];
         };
       };
       cors?:
@@ -694,14 +1068,59 @@ export interface AWS {
             exposedResponseHeaders?: string[];
             maxAge?: number;
           };
-      id?: string | AwsCfImportLocallyResolvable;
+      id?:
+        | string
+        | {
+            "Fn::ImportValue": string;
+          };
       name?: string;
       payload?: string;
+      metrics?: boolean;
     };
-    iamManagedPolicies?: AwsArnString[];
-    iamRoleStatements?: AwsIamPolicyStatements;
-    kmsKeyArn?: AwsKmsArn;
-    layers?: AwsLambdaLayers;
+    iamManagedPolicies?: string[];
+    iamRoleStatements?: ({
+      [k: string]: unknown;
+    } & (
+      | {
+          [k: string]: unknown;
+        }
+      | {
+          [k: string]: unknown;
+        }
+    ) &
+      (
+        | {
+            [k: string]: unknown;
+          }
+        | {
+            [k: string]: unknown;
+          }
+      ))[];
+    kmsKeyArn?:
+      | {
+          [k: string]: unknown;
+        }
+      | string;
+    layers?: (
+      | string
+      | (
+          | {
+              "Fn::ImportValue": unknown;
+            }
+          | {
+              "Fn::Join": [string, unknown[]];
+            }
+          | {
+              "Fn::GetAtt": string[];
+            }
+          | {
+              Ref: string;
+            }
+          | {
+              "Fn::Sub": unknown;
+            }
+        )
+    )[];
     logRetentionInDays?: 1 | 3 | 5 | 7 | 14 | 30 | 60 | 90 | 120 | 150 | 180 | 365 | 400 | 545 | 731 | 1827 | 3653;
     logs?: {
       frameworkLambda?: boolean;
@@ -718,7 +1137,25 @@ export interface AWS {
             format?: string;
             fullExecutionData?: boolean;
             level?: "INFO" | "ERROR";
-            role?: AwsArn;
+            role?:
+              | string
+              | (
+                  | {
+                      "Fn::ImportValue": unknown;
+                    }
+                  | {
+                      "Fn::Join": [string, unknown[]];
+                    }
+                  | {
+                      "Fn::GetAtt": string[];
+                    }
+                  | {
+                      Ref: string;
+                    }
+                  | {
+                      "Fn::Sub": unknown;
+                    }
+                );
             roleManagedExternally?: boolean;
           };
       websocket?:
@@ -728,8 +1165,8 @@ export interface AWS {
           };
       [k: string]: unknown;
     };
-    memorySize?: AwsLambdaMemorySize;
-    notificationArns?: AwsArnString[];
+    memorySize?: number;
+    notificationArns?: string[];
     profile?: string;
     region?:
       | "us-east-1"
@@ -757,19 +1194,57 @@ export interface AWS {
       | "eu-west-3"
       | "me-south-1"
       | "sa-east-1";
-    resourcePolicy?: AwsIamPolicyStatements;
-    role?: AwsLambdaRole;
-    rolePermissionsBoundary?: AwsArnString;
+    resourcePolicy?: ({
+      [k: string]: unknown;
+    } & (
+      | {
+          [k: string]: unknown;
+        }
+      | {
+          [k: string]: unknown;
+        }
+    ) &
+      (
+        | {
+            [k: string]: unknown;
+          }
+        | {
+            [k: string]: unknown;
+          }
+      ))[];
+    role?:
+      | string
+      | {
+          "Fn::ImportValue": unknown;
+        }
+      | {
+          "Fn::GetAtt": string[];
+        };
+    rolePermissionsBoundary?: string;
     rollbackConfiguration?: {
       RollbackTriggers?: {
-        Arn: AwsArnString;
-        Type: {
-          [k: string]: unknown;
-        };
+        Arn: string;
+        Type: "AWS::CloudWatch::Alarm";
       }[];
       MonitoringTimeInMinutes?: number;
     };
-    runtime?: AwsLambdaRuntime;
+    runtime?:
+      | "dotnetcore2.1"
+      | "dotnetcore3.1"
+      | "go1.x"
+      | "java11"
+      | "java8"
+      | "java8.al2"
+      | "nodejs10.x"
+      | "nodejs12.x"
+      | "provided"
+      | "provided.al2"
+      | "python2.7"
+      | "python3.6"
+      | "python3.7"
+      | "python3.8"
+      | "ruby2.5"
+      | "ruby2.7";
     s3?: {
       [k: string]: {
         accelerateConfiguration?: {
@@ -783,13 +1258,29 @@ export interface AWS {
             DataExport?: {
               Destination: {
                 BucketAccountId?: string;
-                BucketArn: AwsArn;
+                BucketArn:
+                  | string
+                  | (
+                      | {
+                          "Fn::ImportValue": unknown;
+                        }
+                      | {
+                          "Fn::Join": [string, unknown[]];
+                        }
+                      | {
+                          "Fn::GetAtt": string[];
+                        }
+                      | {
+                          Ref: string;
+                        }
+                      | {
+                          "Fn::Sub": unknown;
+                        }
+                    );
                 Format: "CSV" | "ORC" | "Parquet";
                 Prefix?: string;
               };
-              OutputSchemaVersion: {
-                [k: string]: unknown;
-              };
+              OutputSchemaVersion: "V_1";
             };
           };
           TagFilters?: {
@@ -800,12 +1291,33 @@ export interface AWS {
         bucketEncryption?: {
           ServerSideEncryptionConfiguration: {
             ServerSideEncryptionByDefault?: {
-              KMSMasterKeyID?: AwsArn | string;
+              KMSMasterKeyID?:
+                | (
+                    | string
+                    | (
+                        | {
+                            "Fn::ImportValue": unknown;
+                          }
+                        | {
+                            "Fn::Join": [string, unknown[]];
+                          }
+                        | {
+                            "Fn::GetAtt": string[];
+                          }
+                        | {
+                            Ref: string;
+                          }
+                        | {
+                            "Fn::Sub": unknown;
+                          }
+                      )
+                  )
+                | string;
               SSEAlgorithm: "AES256" | "aws:kms";
             };
           }[];
         };
-        bucketName?: AwsS3BucketName;
+        bucketName?: string;
         corsConfiguration?: {
           CorsRules: {
             AllowedHeaders?: string[];
@@ -819,7 +1331,25 @@ export interface AWS {
         inventoryConfigurations?: {
           Destination: {
             BucketAccountId?: string;
-            BucketArn: AwsArn;
+            BucketArn:
+              | string
+              | (
+                  | {
+                      "Fn::ImportValue": unknown;
+                    }
+                  | {
+                      "Fn::Join": [string, unknown[]];
+                    }
+                  | {
+                      "Fn::GetAtt": string[];
+                    }
+                  | {
+                      Ref: string;
+                    }
+                  | {
+                      "Fn::Sub": unknown;
+                    }
+                );
             Format: "CSV" | "ORC" | "Parquet";
             Prefix?: string;
           };
@@ -859,7 +1389,25 @@ export interface AWS {
           )[];
         };
         loggingConfiguration?: {
-          DestinationBucketName?: AwsS3BucketName | AwsCfFunction;
+          DestinationBucketName?:
+            | string
+            | (
+                | {
+                    "Fn::ImportValue": unknown;
+                  }
+                | {
+                    "Fn::Join": [string, unknown[]];
+                  }
+                | {
+                    "Fn::GetAtt": string[];
+                  }
+                | {
+                    Ref: string;
+                  }
+                | {
+                    "Fn::Sub": unknown;
+                  }
+              );
           LogFilePrefix?: string;
         };
         metricsConfigurations?: {
@@ -870,7 +1418,7 @@ export interface AWS {
             Value: string;
           }[];
         }[];
-        name?: AwsS3BucketName;
+        name?: string;
         notificationConfiguration?: {
           LambdaConfigurations?: {
             Event: string;
@@ -882,7 +1430,25 @@ export interface AWS {
                 }[];
               };
             };
-            Function: AwsArn;
+            Function:
+              | string
+              | (
+                  | {
+                      "Fn::ImportValue": unknown;
+                    }
+                  | {
+                      "Fn::Join": [string, unknown[]];
+                    }
+                  | {
+                      "Fn::GetAtt": string[];
+                    }
+                  | {
+                      Ref: string;
+                    }
+                  | {
+                      "Fn::Sub": unknown;
+                    }
+                );
           }[];
           QueueConfigurations?: {
             Event: string;
@@ -894,7 +1460,25 @@ export interface AWS {
                 }[];
               };
             };
-            Queue: AwsArn;
+            Queue:
+              | string
+              | (
+                  | {
+                      "Fn::ImportValue": unknown;
+                    }
+                  | {
+                      "Fn::Join": [string, unknown[]];
+                    }
+                  | {
+                      "Fn::GetAtt": string[];
+                    }
+                  | {
+                      Ref: string;
+                    }
+                  | {
+                      "Fn::Sub": unknown;
+                    }
+                );
           }[];
           TopicConfigurations?: {
             Event: string;
@@ -906,13 +1490,29 @@ export interface AWS {
                 }[];
               };
             };
-            Topic: AwsArn;
+            Topic:
+              | string
+              | (
+                  | {
+                      "Fn::ImportValue": unknown;
+                    }
+                  | {
+                      "Fn::Join": [string, unknown[]];
+                    }
+                  | {
+                      "Fn::GetAtt": string[];
+                    }
+                  | {
+                      Ref: string;
+                    }
+                  | {
+                      "Fn::Sub": unknown;
+                    }
+                );
           }[];
         };
         objectLockConfiguration?: {
-          ObjectLockEnabled?: {
-            [k: string]: unknown;
-          };
+          ObjectLockEnabled?: "Enabled";
           Rule?: {
             DefaultRetention?: {
               Days?: number;
@@ -966,13 +1566,42 @@ export interface AWS {
       UsePreviousValue?: boolean;
       ResolvedValue?: string;
     }[];
-    stackPolicy?: AwsIamPolicyStatements;
-    stackTags?: AwsResourceTags;
-    tags?: AwsResourceTags;
-    timeout?: AwsLambdaTimeout;
+    stackPolicy?: ({
+      [k: string]: unknown;
+    } & (
+      | {
+          [k: string]: unknown;
+        }
+      | {
+          [k: string]: unknown;
+        }
+    ) &
+      (
+        | {
+            [k: string]: unknown;
+          }
+        | {
+            [k: string]: unknown;
+          }
+      ))[];
+    stackTags?: {
+      /**
+       * This interface was referenced by `undefined`'s JSON-Schema definition
+       * via the `patternProperty` "^(?!aws:)[\w./=+:-]{1,128}$".
+       */
+      [k: string]: string;
+    };
+    tags?: {
+      /**
+       * This interface was referenced by `undefined`'s JSON-Schema definition
+       * via the `patternProperty` "^(?!aws:)[\w./=+:-]{1,128}$".
+       */
+      [k: string]: string;
+    };
+    timeout?: number;
     tracing?: {
       apiGateway?: boolean;
-      lambda?: AwsLambdaTracing;
+      lambda?: ("Active" | "PassThrough") | boolean;
     };
     usagePlan?:
       | {
@@ -999,9 +1628,70 @@ export interface AWS {
             };
           };
         }[];
-    vpc?: AwsLambdaVpcConfig;
-    vpcEndpointIds?: AwsCfInstruction[];
-    versionFunctions?: AwsLambdaVersionning;
+    vpc?: {
+      securityGroupIds?: (
+        | string
+        | (
+            | {
+                "Fn::ImportValue": unknown;
+              }
+            | {
+                "Fn::Join": [string, unknown[]];
+              }
+            | {
+                "Fn::GetAtt": string[];
+              }
+            | {
+                Ref: string;
+              }
+            | {
+                "Fn::Sub": unknown;
+              }
+          )
+      )[];
+      subnetIds?: (
+        | string
+        | (
+            | {
+                "Fn::ImportValue": unknown;
+              }
+            | {
+                "Fn::Join": [string, unknown[]];
+              }
+            | {
+                "Fn::GetAtt": string[];
+              }
+            | {
+                Ref: string;
+              }
+            | {
+                "Fn::Sub": unknown;
+              }
+          )
+      )[];
+      [k: string]: unknown;
+    };
+    vpcEndpointIds?: (
+      | string
+      | (
+          | {
+              "Fn::ImportValue": unknown;
+            }
+          | {
+              "Fn::Join": [string, unknown[]];
+            }
+          | {
+              "Fn::GetAtt": string[];
+            }
+          | {
+              Ref: string;
+            }
+          | {
+              "Fn::Sub": unknown;
+            }
+        )
+    )[];
+    versionFunctions?: boolean;
     websocketsApiName?: string;
     websocketsApiRouteSelectionExpression?: string;
     variableSyntax?: string;
@@ -1010,7 +1700,11 @@ export interface AWS {
     name?: {
       [k: string]: unknown;
     };
-    awsKmsKeyArn?: AwsKmsArn;
+    awsKmsKeyArn?:
+      | {
+          [k: string]: unknown;
+        }
+      | string;
   };
   resources?: {
     AWSTemplateFormatVersion?: string;
@@ -1049,7 +1743,7 @@ export interface AWS {
           [k: string]: unknown;
         };
         DeletionPolicy?: string;
-        DependsOn?: AwsResourceDependsOn;
+        DependsOn?: string[];
         Metadata?: {
           [k: string]: unknown;
         };
@@ -1057,7 +1751,7 @@ export interface AWS {
           [k: string]: unknown;
         };
         UpdateReplacePolicy?: string;
-        Condition?: AwsResourceCondition;
+        Condition?: string;
         [k: string]: {
           [k: string]: unknown;
         };
@@ -1077,7 +1771,7 @@ export interface AWS {
           [k: string]: unknown;
         };
         DeletionPolicy?: string;
-        DependsOn?: AwsResourceDependsOn;
+        DependsOn?: string[];
         Metadata?: {
           [k: string]: unknown;
         };
@@ -1085,14 +1779,31 @@ export interface AWS {
           [k: string]: unknown;
         };
         UpdateReplacePolicy?: string;
-        Condition?: AwsResourceCondition;
+        Condition?: string;
       };
     };
   };
   layers?: {
     [k: string]: {
       allowedAccounts?: string[];
-      compatibleRuntimes?: AwsLambdaRuntime[];
+      compatibleRuntimes?: (
+        | "dotnetcore2.1"
+        | "dotnetcore3.1"
+        | "go1.x"
+        | "java11"
+        | "java8"
+        | "java8.al2"
+        | "nodejs10.x"
+        | "nodejs12.x"
+        | "provided"
+        | "provided.al2"
+        | "python2.7"
+        | "python3.6"
+        | "python3.7"
+        | "python3.8"
+        | "ruby2.5"
+        | "ruby2.7"
+      )[];
       description?: string;
       licenseInfo?: string;
       name?: string;
@@ -1117,45 +1828,4 @@ export interface AWS {
           [k: string]: unknown;
         };
   };
-}
-export interface AwsCfImport {
-  "Fn::ImportValue": unknown;
-}
-export interface AwsCfJoin {
-  "Fn::Join": [string, unknown[]];
-}
-export interface AwsCfGetAtt {
-  "Fn::GetAtt": string[];
-}
-export interface AwsCfRef {
-  Ref: string;
-}
-export interface AwsCfSub {
-  "Fn::Sub": unknown;
-}
-export interface AwsLambdaEnvironment {
-  /**
-   * This interface was referenced by `AwsLambdaEnvironment`'s JSON-Schema definition
-   * via the `patternProperty` "^[A-Za-z_][a-zA-Z0-9_]*$".
-   */
-  [k: string]:
-    | {
-        [k: string]: unknown;
-      }
-    | AwsCfInstruction;
-}
-export interface AwsResourceTags {
-  /**
-   * This interface was referenced by `AwsResourceTags`'s JSON-Schema definition
-   * via the `patternProperty` "^(?!aws:)[\w./=+:-]{1,128}$".
-   */
-  [k: string]: string;
-}
-export interface AwsLambdaVpcConfig {
-  securityGroupIds?: AwsCfInstruction[];
-  subnetIds?: AwsCfInstruction[];
-  [k: string]: unknown;
-}
-export interface AwsCfImportLocallyResolvable {
-  "Fn::ImportValue": string;
 }
