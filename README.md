@@ -23,7 +23,6 @@ import type { AWS } from '@serverless/typescript';
 
 const serverlessConfiguration: AWS = {
   service: 'aws-nodejs-typescript',
-  },
   frameworkVersion: '*',
   provider: {
     name: 'aws',
