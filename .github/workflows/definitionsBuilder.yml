@@ -44,7 +44,7 @@ jobs:
       - name: Update package.json version
         run: npm version ${{ steps.serverless-version.outputs.version }} --git-tag-version=false
 
-      # - name: Publish
-      #   uses: JS-DevTools/npm-publish@v1
-      #   with:
-      #     token: ${{ secrets.NPM_TOKEN }}
+      - name: Publish
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
