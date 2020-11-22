@@ -18,9 +18,7 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
-        run: |
-          npm update --no-save
-          npm update --save-dev --no-save
+        run: npm i
 
       - id: serverless-version
         name: Set Serverless latest version
@@ -29,6 +27,9 @@ jobs:
       - name: Generate definitions
         run: npx sls schema
 
+      - name: Update package.json version
+        run: npm version ${{ steps.serverless-version.outputs.version }} --git-tag-version=false
+
       - name: Commit changes
         uses: EndBug/add-and-commit@v5
         with:
@@ -36,13 +37,10 @@ jobs:
           author_email: fredericb@theodo.fr
           branch: master
           message: Add Serverless definitions for ${{ steps.serverless-version.outputs.version }}
-          add: index.d.ts
+          add: index.d.ts package.json
           tag: ${{ steps.serverless-version.outputs.version }} --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update package.json version
-        run: npm version ${{ steps.serverless-version.outputs.version }} --git-tag-version=false
 
       - name: Publish
         uses: JS-DevTools/npm-publish@v1
