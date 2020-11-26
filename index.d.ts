@@ -1696,16 +1696,17 @@ export interface AWS {
     websocketsApiRouteSelectionExpression?: string;
     variableSyntax?: string;
   };
-  service: {
-    name?: {
-      [k: string]: unknown;
-    };
-    awsKmsKeyArn?:
-      | {
-          [k: string]: unknown;
-        }
-      | string;
-  };
+  service:
+    | string
+    | {
+        name: string;
+        awsKmsKeyArn?:
+          | {
+              [k: string]: unknown;
+            }
+          | string;
+      };
+  useDotenv?: true;
   resources?: {
     AWSTemplateFormatVersion?: string;
     Conditions?: {
