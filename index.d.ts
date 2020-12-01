@@ -450,6 +450,7 @@ export interface AWS {
                       );
                   batchSize?: number;
                   enabled?: boolean;
+                  maximumBatchingWindow?: number;
                 };
           }
         | {
@@ -1737,6 +1738,7 @@ export interface AWS {
        * via the `patternProperty` "^[a-zA-Z0-9]{1,255}$".
        */
       [k: string]: {
+        Type: string;
         Properties?: {
           [k: string]: unknown;
         };
@@ -1753,9 +1755,6 @@ export interface AWS {
         };
         UpdateReplacePolicy?: string;
         Condition?: string;
-        [k: string]: {
-          [k: string]: unknown;
-        };
       };
     };
     Transform?: string[];
