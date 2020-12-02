@@ -32,7 +32,7 @@ class ConfigSchemaHandlerTypescriptDefinitionsPlugin {
      * format: false -> improves generation performances
      * ignoreMinAndMaxItems: true -> maxItems: 100 in provider.s3.corsConfiguration definition is generating 100 tuples
      */
-    const compiledDefinitions = await compile(normalizedSchema, 'AWS', { format: false, ignoreMinAndMaxItems: true })
+    const compiledDefinitions = await compile(normalizedSchema, 'AWS', { format: false, ignoreMinAndMaxItems: true, unreachableDefinitions: true })
     fs.writeFileSync('index.d.ts', compiledDefinitions)
   }
 }
