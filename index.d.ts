@@ -5,6 +5,396 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsKmsArn".
+ */
+export type AwsKmsArn =
+  | {
+      [k: string]: unknown;
+    }
+  | string;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "errorCode".
+ */
+export type ErrorCode = string;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "functionName".
+ */
+export type FunctionName = string;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "serviceName".
+ */
+export type ServiceName = string;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsAlbListenerArn".
+ */
+export type AwsAlbListenerArn = string;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsAlexaEventToken".
+ */
+export type AwsAlexaEventToken = string;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsApiGatewayAbbreviatedArn".
+ */
+export type AwsApiGatewayAbbreviatedArn = string;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsArn".
+ */
+export type AwsArn =
+  | string
+  | (
+      | {
+          "Fn::ImportValue": unknown;
+        }
+      | {
+          "Fn::Join": [string, unknown[]];
+        }
+      | {
+          "Fn::GetAtt": string[];
+        }
+      | {
+          Ref: string;
+        }
+      | {
+          "Fn::Sub": unknown;
+        }
+    );
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsArnString".
+ */
+export type AwsArnString = string;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsCfFunction".
+ */
+export type AwsCfFunction =
+  | {
+      "Fn::ImportValue": unknown;
+    }
+  | {
+      "Fn::Join": [string, unknown[]];
+    }
+  | {
+      "Fn::GetAtt": string[];
+    }
+  | {
+      Ref: string;
+    }
+  | {
+      "Fn::Sub": unknown;
+    };
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsCfInstruction".
+ */
+export type AwsCfInstruction =
+  | string
+  | (
+      | {
+          "Fn::ImportValue": unknown;
+        }
+      | {
+          "Fn::Join": [string, unknown[]];
+        }
+      | {
+          "Fn::GetAtt": string[];
+        }
+      | {
+          Ref: string;
+        }
+      | {
+          "Fn::Sub": unknown;
+        }
+    );
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsIamPolicyAction".
+ */
+export type AwsIamPolicyAction = string[];
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsIamPolicyPrincipal".
+ */
+export type AwsIamPolicyPrincipal =
+  | "*"
+  | {
+      AWS?:
+        | "*"
+        | (
+            | string
+            | (
+                | {
+                    "Fn::ImportValue": unknown;
+                  }
+                | {
+                    "Fn::Join": [string, unknown[]];
+                  }
+                | {
+                    "Fn::GetAtt": string[];
+                  }
+                | {
+                    Ref: string;
+                  }
+                | {
+                    "Fn::Sub": unknown;
+                  }
+              )
+          )[];
+      Federated?: string[];
+      Service?: string[];
+      CanonicalUser?: string[];
+    };
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsIamPolicyResource".
+ */
+export type AwsIamPolicyResource =
+  | "*"
+  | (
+      | string
+      | (
+          | {
+              "Fn::ImportValue": unknown;
+            }
+          | {
+              "Fn::Join": [string, unknown[]];
+            }
+          | {
+              "Fn::GetAtt": string[];
+            }
+          | {
+              Ref: string;
+            }
+          | {
+              "Fn::Sub": unknown;
+            }
+        )
+    )
+  | (
+      | "*"
+      | (
+          | string
+          | (
+              | {
+                  "Fn::ImportValue": unknown;
+                }
+              | {
+                  "Fn::Join": [string, unknown[]];
+                }
+              | {
+                  "Fn::GetAtt": string[];
+                }
+              | {
+                  Ref: string;
+                }
+              | {
+                  "Fn::Sub": unknown;
+                }
+            )
+        )
+    )[];
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsIamPolicyStatements".
+ */
+export type AwsIamPolicyStatements = ({
+  [k: string]: unknown;
+} & (
+  | {
+      [k: string]: unknown;
+    }
+  | {
+      [k: string]: unknown;
+    }
+) &
+  (
+    | {
+        [k: string]: unknown;
+      }
+    | {
+        [k: string]: unknown;
+      }
+  ))[];
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsLambdaLayers".
+ */
+export type AwsLambdaLayers = (
+  | string
+  | (
+      | {
+          "Fn::ImportValue": unknown;
+        }
+      | {
+          "Fn::Join": [string, unknown[]];
+        }
+      | {
+          "Fn::GetAtt": string[];
+        }
+      | {
+          Ref: string;
+        }
+      | {
+          "Fn::Sub": unknown;
+        }
+    )
+)[];
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsLambdaMemorySize".
+ */
+export type AwsLambdaMemorySize = number;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsLambdaRole".
+ */
+export type AwsLambdaRole =
+  | string
+  | {
+      "Fn::ImportValue": unknown;
+    }
+  | {
+      "Fn::GetAtt": string[];
+    };
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsLambdaRuntime".
+ */
+export type AwsLambdaRuntime =
+  | "dotnetcore2.1"
+  | "dotnetcore3.1"
+  | "go1.x"
+  | "java11"
+  | "java8"
+  | "java8.al2"
+  | "nodejs10.x"
+  | "nodejs12.x"
+  | "provided"
+  | "provided.al2"
+  | "python2.7"
+  | "python3.6"
+  | "python3.7"
+  | "python3.8"
+  | "ruby2.5"
+  | "ruby2.7";
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsLambdaTimeout".
+ */
+export type AwsLambdaTimeout = number;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsLambdaTracing".
+ */
+export type AwsLambdaTracing = ("Active" | "PassThrough") | boolean;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsLambdaVersionning".
+ */
+export type AwsLambdaVersionning = boolean;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsLogGroupName".
+ */
+export type AwsLogGroupName = string;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsResourceCondition".
+ */
+export type AwsResourceCondition = string;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsResourceDependsOn".
+ */
+export type AwsResourceDependsOn = string[];
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsResourcePolicyResource".
+ */
+export type AwsResourcePolicyResource =
+  | "*"
+  | (
+      | string
+      | (
+          | {
+              "Fn::ImportValue": unknown;
+            }
+          | {
+              "Fn::Join": [string, unknown[]];
+            }
+          | {
+              "Fn::GetAtt": string[];
+            }
+          | {
+              Ref: string;
+            }
+          | {
+              "Fn::Sub": unknown;
+            }
+        )
+    )
+  | string
+  | (
+      | "*"
+      | (
+          | string
+          | (
+              | {
+                  "Fn::ImportValue": unknown;
+                }
+              | {
+                  "Fn::Join": [string, unknown[]];
+                }
+              | {
+                  "Fn::GetAtt": string[];
+                }
+              | {
+                  Ref: string;
+                }
+              | {
+                  "Fn::Sub": unknown;
+                }
+            )
+        )
+      | string
+    )[];
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsResourcePolicyStatements".
+ */
+export type AwsResourcePolicyStatements = ({
+  [k: string]: unknown;
+} & (
+  | {
+      [k: string]: unknown;
+    }
+  | {
+      [k: string]: unknown;
+    }
+) &
+  (
+    | {
+        [k: string]: unknown;
+      }
+    | {
+        [k: string]: unknown;
+      }
+  ))[];
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsS3BucketName".
+ */
+export type AwsS3BucketName = string;
+
 export interface AWS {
   configValidationMode?: "error" | "warn" | "off";
   custom?: {
@@ -144,7 +534,7 @@ export interface AWS {
                             [k: string]: unknown;
                           }
                       );
-                  integration?: string | string | string | string | string | string | string;
+                  integration?: string | string | string | string | string | string | string | string | string | string;
                   method: string;
                   operationId?: string;
                   path: string;
@@ -580,6 +970,7 @@ export interface AWS {
         localMountPath: string;
       };
       handler?: string;
+      image?: string;
       kmsKeyArn?:
         | {
             [k: string]: unknown;
@@ -1828,4 +2219,136 @@ export interface AWS {
           [k: string]: unknown;
         };
   };
+}
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsCfGetAtt".
+ */
+export interface AwsCfGetAtt {
+  "Fn::GetAtt": string[];
+}
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsCfImport".
+ */
+export interface AwsCfImport {
+  "Fn::ImportValue": unknown;
+}
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsCfImportLocallyResolvable".
+ */
+export interface AwsCfImportLocallyResolvable {
+  "Fn::ImportValue": string;
+}
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsCfJoin".
+ */
+export interface AwsCfJoin {
+  "Fn::Join": [string, unknown[]];
+}
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsCfRef".
+ */
+export interface AwsCfRef {
+  Ref: string;
+}
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsCfSub".
+ */
+export interface AwsCfSub {
+  "Fn::Sub": unknown;
+}
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsLambdaEnvironment".
+ */
+export interface AwsLambdaEnvironment {
+  /**
+   * This interface was referenced by `AwsLambdaEnvironment`'s JSON-Schema definition
+   * via the `patternProperty` "^[A-Za-z_][a-zA-Z0-9_]*$".
+   */
+  [k: string]:
+    | ""
+    | (
+        | string
+        | (
+            | {
+                "Fn::ImportValue": unknown;
+              }
+            | {
+                "Fn::Join": [string, unknown[]];
+              }
+            | {
+                "Fn::GetAtt": string[];
+              }
+            | {
+                Ref: string;
+              }
+            | {
+                "Fn::Sub": unknown;
+              }
+          )
+      );
+}
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsLambdaVpcConfig".
+ */
+export interface AwsLambdaVpcConfig {
+  securityGroupIds?: (
+    | string
+    | (
+        | {
+            "Fn::ImportValue": unknown;
+          }
+        | {
+            "Fn::Join": [string, unknown[]];
+          }
+        | {
+            "Fn::GetAtt": string[];
+          }
+        | {
+            Ref: string;
+          }
+        | {
+            "Fn::Sub": unknown;
+          }
+      )
+  )[];
+  subnetIds?: (
+    | string
+    | (
+        | {
+            "Fn::ImportValue": unknown;
+          }
+        | {
+            "Fn::Join": [string, unknown[]];
+          }
+        | {
+            "Fn::GetAtt": string[];
+          }
+        | {
+            Ref: string;
+          }
+        | {
+            "Fn::Sub": unknown;
+          }
+      )
+  )[];
+  [k: string]: unknown;
+}
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsResourceTags".
+ */
+export interface AwsResourceTags {
+  /**
+   * This interface was referenced by `AwsResourceTags`'s JSON-Schema definition
+   * via the `patternProperty` "^(?!aws:)[\w./=+:-]{1,128}$".
+   */
+  [k: string]: string;
 }
