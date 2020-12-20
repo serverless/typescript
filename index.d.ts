@@ -689,7 +689,7 @@ export interface AWS {
                 host?: string[];
                 ip?: (string | string)[];
                 method?: string[];
-                path: string[];
+                path?: string[];
                 query?: {
                   [k: string]: string;
                 };
@@ -1319,8 +1319,10 @@ export interface AWS {
     deploymentBucket?:
       | string
       | {
-          name?: string;
+          blockPublicAccess?: boolean;
+          skipPolicySetup?: boolean;
           maxPreviousDeploymentArtifacts?: number;
+          name?: string;
           serverSideEncryption?: "AES256" | "aws:kms";
           sseCustomerAlgorithim?: string;
           sseCustomerKey?: string;
@@ -1333,7 +1335,6 @@ export interface AWS {
              */
             [k: string]: string;
           };
-          blockPublicAccess?: boolean;
         };
     deploymentPrefix?: string;
     endpointType?: string;
