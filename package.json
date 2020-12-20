@@ -3,7 +3,13 @@
   "version": "2.16.1",
   "description": "Serverless typescript definitions",
   "main": "index.d.ts",
-  "scripts": {},
+  "scripts": {
+    "build": "tsc",
+    "lint:fix": "eslint src --fix",
+    "watch": "tsc -w",
+    "test:lint": "eslint src",
+    "test:type": "tsc --noEmit"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/serverless/typescript.git"
@@ -21,7 +27,15 @@
   "homepage": "https://github.com/serverless/typescript#readme",
   "dependencies": {},
   "devDependencies": {
-    "json-schema-to-typescript": "^9.1.1",
+    "@types/json-schema": "^7.0.6",
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "@typescript-eslint/parser": "^4.10.0",
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.0",
+    "json-schema-to-typescript": "^10.0.2",
+    "prettier": "^2.2.1",
     "serverless": "*",
     "typescript": "^4.0.5"
   }

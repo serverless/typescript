@@ -4,4 +4,4 @@ provider:
   name: aws
 
 plugins:
-  - ./plugin
+  - ./dist/plugin
