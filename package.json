@@ -34,8 +34,8 @@
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.0",
-    "json-schema-to-typescript": "^10.0.2",
     "prettier": "^2.2.1",
+    "quicktype-core": "^6.0.69",
     "serverless": "*",
     "typescript": "^4.0.5"
   }
