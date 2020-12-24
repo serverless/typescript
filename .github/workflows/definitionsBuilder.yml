@@ -20,6 +20,9 @@ jobs:
       - name: Install dependencies
         run: npm i
 
+      - name: Build plugin
+        run: npm run build
+
       - id: serverless-version
         name: Set Serverless latest version
         run: echo "::set-output name=version::$(npm list serverless | grep serverless@ | sed 's/.*serverless@/v/g' | tr -d '[[:space:]]')"
