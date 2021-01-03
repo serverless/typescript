@@ -408,9 +408,6 @@ export interface AWS {
       logAccessIamRole?: string;
       logIngestMode?: "push" | "pull";
     };
-    safeguards?: {
-      isDisabled?: boolean;
-    };
     [k: string]: unknown;
   };
   disabledDeprecations?: "*" | string[];
@@ -1494,6 +1491,7 @@ export interface AWS {
           [k: string]: unknown;
         }
       | string;
+    lambdaHashingVersion?: "20201221";
     layers?: (
       | string
       | (
@@ -1920,6 +1918,104 @@ export interface AWS {
           BlockPublicPolicy?: boolean;
           IgnorePublicAcls?: boolean;
           RestrictPublicBuckets?: boolean;
+        };
+        replicationConfiguration?: {
+          Role:
+            | string
+            | (
+                | {
+                    "Fn::ImportValue": unknown;
+                  }
+                | {
+                    "Fn::Join": [string, unknown[]];
+                  }
+                | {
+                    "Fn::GetAtt": string[];
+                  }
+                | {
+                    Ref: string;
+                  }
+                | {
+                    "Fn::Sub": unknown;
+                  }
+              );
+          Rules: {
+            DeleteMarkerReplication?: {
+              Status?: "Disabled" | "Enabled";
+            };
+            Destination: {
+              AccessControlTranslation?: {
+                Owner: "Destination";
+              };
+              Account?: string;
+              Bucket:
+                | string
+                | (
+                    | {
+                        "Fn::ImportValue": unknown;
+                      }
+                    | {
+                        "Fn::Join": [string, unknown[]];
+                      }
+                    | {
+                        "Fn::GetAtt": string[];
+                      }
+                    | {
+                        Ref: string;
+                      }
+                    | {
+                        "Fn::Sub": unknown;
+                      }
+                  );
+              EncryptionConfiguration?: {
+                ReplicaKmsKeyID: string;
+              };
+              Metrics?: {
+                EventThreshold: {
+                  Minutes: number;
+                };
+                Status: "Disabled" | "Enabled";
+              };
+              ReplicationTime?: {
+                Status: "Disabled" | "Enabled";
+                Time: {
+                  Minutes: number;
+                };
+              };
+              StorageClass?:
+                | "DEEP_ARCHIVE"
+                | "GLACIER"
+                | "INTELLIGENT_TIERING"
+                | "ONEZONE_IA"
+                | "OUTPOSTS"
+                | "REDUCED_REDUNDANCY"
+                | "STANDARD"
+                | "STANDARD_IA";
+            };
+            Filter?: {
+              And?: {
+                Prefix?: string;
+                TagFilters?: {
+                  Key: string;
+                  Value: string;
+                }[];
+              };
+              Prefix?: string;
+              TagFilter?: {
+                Key: string;
+                Value: string;
+              };
+            };
+            Id?: string;
+            Prefix?: string;
+            Priority?: number;
+            SourceSelectionCriteria?: {
+              SseKmsEncryptedObjects: {
+                Status: "Disabled" | "Enabled";
+              };
+            };
+            Status: "Disabled" | "Enabled";
+          }[];
         };
         tags?: {
           Key: string;
