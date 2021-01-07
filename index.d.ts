@@ -46,6 +46,24 @@ export type AwsAlexaEventToken = string;
 export type AwsApiGatewayAbbreviatedArn = string;
 /**
  * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "awsApiGatewayApiKeys".
+ */
+export type AwsApiGatewayApiKeys = (
+  | string
+  | (
+      | {
+          [k: string]: unknown;
+        }
+      | {
+          [k: string]: unknown;
+        }
+    )
+  | {
+      [k: string]: string[];
+    }
+)[];
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
  * via the `definition` "awsArn".
  */
 export type AwsArn =
@@ -738,6 +756,34 @@ export interface AWS {
             };
           }
         | {
+            iotFleetProvisioning: {
+              enabled?: boolean;
+              provisioningRoleArn:
+                | string
+                | (
+                    | {
+                        "Fn::ImportValue": unknown;
+                      }
+                    | {
+                        "Fn::Join": [string, unknown[]];
+                      }
+                    | {
+                        "Fn::GetAtt": string[];
+                      }
+                    | {
+                        Ref: string;
+                      }
+                    | {
+                        "Fn::Sub": unknown;
+                      }
+                  );
+              templateBody: {
+                [k: string]: unknown;
+              };
+              templateName?: string;
+            };
+          }
+        | {
             cloudwatchEvent: {
               event?: {
                 [k: string]: unknown;
@@ -1051,7 +1097,7 @@ export interface AWS {
       tags?: {
         /**
          * This interface was referenced by `undefined`'s JSON-Schema definition
-         * via the `patternProperty` "^(?!aws:)[\w./=+:-]{1,128}$".
+         * via the `patternProperty` "^(?!aws:)[\w./=+:-_\x20]{1,128}$".
          */
         [k: string]: string;
       };
@@ -1120,11 +1166,43 @@ export interface AWS {
   provider: {
     name: "aws";
     apiGateway?: {
+      apiKeys?: (
+        | string
+        | (
+            | {
+                [k: string]: unknown;
+              }
+            | {
+                [k: string]: unknown;
+              }
+          )
+        | {
+            [k: string]: string[];
+          }
+      )[];
       apiKeySourceType?: string;
       binaryMediaTypes?: string[];
       description?: string;
       metrics?: boolean;
       minimumCompressionSize?: number;
+      resourcePolicy?: ({
+        [k: string]: unknown;
+      } & (
+        | {
+            [k: string]: unknown;
+          }
+        | {
+            [k: string]: unknown;
+          }
+      ) &
+        (
+          | {
+              [k: string]: unknown;
+            }
+          | {
+              [k: string]: unknown;
+            }
+        ))[];
       restApiId?:
         | string
         | (
@@ -1172,6 +1250,31 @@ export interface AWS {
               }
           );
       shouldStartNameWithService?: true;
+      usagePlan?:
+        | {
+            quota?: {
+              limit?: number;
+              offset?: number;
+              period?: "DAY" | "WEEK" | "MONTH";
+            };
+            throttle?: {
+              burstLimit?: number;
+              rateLimit?: number;
+            };
+          }
+        | {
+            [k: string]: {
+              quota?: {
+                limit?: number;
+                offset?: number;
+                period?: "DAY" | "WEEK" | "MONTH";
+              };
+              throttle?: {
+                burstLimit?: number;
+                rateLimit?: number;
+              };
+            };
+          }[];
       websocketApiId?:
         | string
         | (
@@ -1328,7 +1431,7 @@ export interface AWS {
           tags?: {
             /**
              * This interface was referenced by `undefined`'s JSON-Schema definition
-             * via the `patternProperty` "^(?!aws:)[\w./=+:-]{1,128}$".
+             * via the `patternProperty` "^(?!aws:)[\w./=+:-_\x20]{1,128}$".
              */
             [k: string]: string;
           };
@@ -2076,14 +2179,14 @@ export interface AWS {
     stackTags?: {
       /**
        * This interface was referenced by `undefined`'s JSON-Schema definition
-       * via the `patternProperty` "^(?!aws:)[\w./=+:-]{1,128}$".
+       * via the `patternProperty` "^(?!aws:)[\w./=+:-_\x20]{1,128}$".
        */
       [k: string]: string;
     };
     tags?: {
       /**
        * This interface was referenced by `undefined`'s JSON-Schema definition
-       * via the `patternProperty` "^(?!aws:)[\w./=+:-]{1,128}$".
+       * via the `patternProperty` "^(?!aws:)[\w./=+:-_\x20]{1,128}$".
        */
       [k: string]: string;
     };
@@ -2445,7 +2548,7 @@ export interface AwsLambdaVpcConfig {
 export interface AwsResourceTags {
   /**
    * This interface was referenced by `AwsResourceTags`'s JSON-Schema definition
-   * via the `patternProperty` "^(?!aws:)[\w./=+:-]{1,128}$".
+   * via the `patternProperty` "^(?!aws:)[\w./=+:-_\x20]{1,128}$".
    */
   [k: string]: string;
 }
