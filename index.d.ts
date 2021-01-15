@@ -316,9 +316,9 @@ export type AwsLambdaTimeout = number;
 export type AwsLambdaTracing = ("Active" | "PassThrough") | boolean;
 /**
  * This interface was referenced by `AWS`'s JSON-Schema
- * via the `definition` "awsLambdaVersionning".
+ * via the `definition` "awsLambdaVersioning".
  */
-export type AwsLambdaVersionning = boolean;
+export type AwsLambdaVersioning = boolean;
 /**
  * This interface was referenced by `AWS`'s JSON-Schema
  * via the `definition` "awsLogGroupName".
@@ -2298,6 +2298,7 @@ export interface AWS {
             }
           | string;
       };
+  unresolvedVariablesNotificationMode?: "error" | "warn";
   useDotenv?: true;
   resources?: {
     AWSTemplateFormatVersion?: string;
