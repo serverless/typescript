@@ -412,6 +412,11 @@ export type AwsResourcePolicyStatements = ({
  * via the `definition` "awsS3BucketName".
  */
 export type AwsS3BucketName = string;
+/**
+ * This interface was referenced by `AWS`'s JSON-Schema
+ * via the `definition` "ecrImageUri".
+ */
+export type EcrImageUri = string;
 
 export interface AWS {
   configValidationMode?: "error" | "warn" | "off";
@@ -1013,7 +1018,15 @@ export interface AWS {
         localMountPath: string;
       };
       handler?: string;
-      image?: string;
+      image?:
+        | string
+        | {
+            name?: string;
+            uri?: string;
+            workingDirectory?: string;
+            command?: string[];
+            entryPoint?: string[];
+          };
       kmsKeyArn?:
         | {
             [k: string]: unknown;
@@ -1589,6 +1602,20 @@ export interface AWS {
             [k: string]: unknown;
           }
       ))[];
+    ecr?: {
+      images: {
+        /**
+         * This interface was referenced by `undefined`'s JSON-Schema definition
+         * via the `patternProperty` "^[a-z][a-z0-9-_]{1,31}$".
+         */
+        [k: string]:
+          | {
+              uri?: string;
+              path?: string;
+            }
+          | string;
+      };
+    };
     kmsKeyArn?:
       | {
           [k: string]: unknown;
