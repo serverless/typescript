@@ -683,6 +683,21 @@ export interface AWS {
                 );
           }
         | {
+            kafka: {
+              accessConfigurations: {
+                vpcSubnet?: string[];
+                vpcSecurityGroup?: string[];
+                saslScram256Auth?: string[];
+                saslScram512Auth?: string[];
+              };
+              batchSize?: number;
+              enabled?: boolean;
+              bootstrapServers: string[];
+              startingPosition?: "LATEST" | "TRIM_HORIZON";
+              topic: string;
+            };
+          }
+        | {
             msk: {
               arn:
                 | string
@@ -1110,7 +1125,7 @@ export interface AWS {
       tags?: {
         /**
          * This interface was referenced by `undefined`'s JSON-Schema definition
-         * via the `patternProperty` "^(?!aws:)[\w./=+:-_\x20]{1,128}$".
+         * via the `patternProperty` "^(?!aws:)[\w./=+:\-_\x20]{1,128}$".
          */
         [k: string]: string;
       };
@@ -1444,7 +1459,7 @@ export interface AWS {
           tags?: {
             /**
              * This interface was referenced by `undefined`'s JSON-Schema definition
-             * via the `patternProperty` "^(?!aws:)[\w./=+:-_\x20]{1,128}$".
+             * via the `patternProperty` "^(?!aws:)[\w./=+:\-_\x20]{1,128}$".
              */
             [k: string]: string;
           };
@@ -2206,14 +2221,14 @@ export interface AWS {
     stackTags?: {
       /**
        * This interface was referenced by `undefined`'s JSON-Schema definition
-       * via the `patternProperty` "^(?!aws:)[\w./=+:-_\x20]{1,128}$".
+       * via the `patternProperty` "^(?!aws:)[\w./=+:\-_\x20]{1,128}$".
        */
       [k: string]: string;
     };
     tags?: {
       /**
        * This interface was referenced by `undefined`'s JSON-Schema definition
-       * via the `patternProperty` "^(?!aws:)[\w./=+:-_\x20]{1,128}$".
+       * via the `patternProperty` "^(?!aws:)[\w./=+:\-_\x20]{1,128}$".
        */
       [k: string]: string;
     };
@@ -2576,7 +2591,7 @@ export interface AwsLambdaVpcConfig {
 export interface AwsResourceTags {
   /**
    * This interface was referenced by `AwsResourceTags`'s JSON-Schema definition
-   * via the `patternProperty` "^(?!aws:)[\w./=+:-_\x20]{1,128}$".
+   * via the `patternProperty` "^(?!aws:)[\w./=+:\-_\x20]{1,128}$".
    */
   [k: string]: string;
 }
