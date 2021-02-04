@@ -296,6 +296,7 @@ export type AwsLambdaRuntime =
   | "java8.al2"
   | "nodejs10.x"
   | "nodejs12.x"
+  | "nodejs14.x"
   | "provided"
   | "provided.al2"
   | "python2.7"
