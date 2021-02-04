@@ -1627,6 +1627,7 @@ export interface AWS {
           | {
               uri?: string;
               path?: string;
+              file?: string;
             }
           | string;
       };
