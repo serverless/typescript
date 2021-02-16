@@ -1600,6 +1600,51 @@ export interface AWS {
       payload?: string;
       metrics?: boolean;
     };
+    iam?: {
+      role?:
+        | string
+        | {
+            managedPolicies?: string[];
+            statements?: ({
+              [k: string]: unknown;
+            } & (
+              | {
+                  [k: string]: unknown;
+                }
+              | {
+                  [k: string]: unknown;
+                }
+            ) &
+              (
+                | {
+                    [k: string]: unknown;
+                  }
+                | {
+                    [k: string]: unknown;
+                  }
+              ))[];
+            permissionBoundary?: string;
+          };
+      deploymentRole?:
+        | string
+        | (
+            | {
+                "Fn::ImportValue": unknown;
+              }
+            | {
+                "Fn::Join": [string, unknown[]];
+              }
+            | {
+                "Fn::GetAtt": string[];
+              }
+            | {
+                Ref: string;
+              }
+            | {
+                "Fn::Sub": unknown;
+              }
+          );
+    };
     iamManagedPolicies?: string[];
     iamRoleStatements?: ({
       [k: string]: unknown;
