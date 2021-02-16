@@ -1599,6 +1599,7 @@ export interface AWS {
       name?: string;
       payload?: string;
       metrics?: boolean;
+      disableDefaultEndpoint?: boolean;
     };
     iam?: {
       role?:
