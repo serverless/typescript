@@ -1,6 +1,6 @@
 {
   "name": "@serverless/typescript",
-  "version": "2.25.2",
+  "version": "2.27.1",
   "description": "Serverless typescript definitions",
   "main": "index.d.ts",
   "scripts": {

@@ -1496,6 +1496,9 @@ export interface AWS {
               )
           );
     };
+    eventBridge?: {
+      useCloudFormation?: true;
+    };
     httpApi?: {
       authorizers?: {
         [k: string]: {
@@ -1599,6 +1602,7 @@ export interface AWS {
       name?: string;
       payload?: string;
       metrics?: boolean;
+      useProviderTags?: true;
       disableDefaultEndpoint?: boolean;
     };
     iam?: {
@@ -2392,6 +2396,7 @@ export interface AWS {
       };
   unresolvedVariablesNotificationMode?: "error" | "warn";
   useDotenv?: true;
+  variablesResolutionMode?: "20210219";
   resources?: {
     AWSTemplateFormatVersion?: string;
     Conditions?: {
