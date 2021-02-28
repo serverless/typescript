@@ -591,9 +591,18 @@ export interface AWS {
                     };
                     passThrough?: "NEVER" | "WHEN_NO_MATCH" | "WHEN_NO_TEMPLATES";
                     schema?: {
-                      [k: string]: {
-                        [k: string]: unknown;
-                      };
+                      [k: string]:
+                        | {
+                            [k: string]: unknown;
+                          }
+                        | string;
+                    };
+                    schemas?: {
+                      [k: string]:
+                        | {
+                            [k: string]: unknown;
+                          }
+                        | string;
                     };
                     template?: {
                       [k: string]: string;
@@ -1279,6 +1288,17 @@ export interface AWS {
                 "Fn::Sub": unknown;
               }
           );
+      request?: {
+        schemas?: {
+          [k: string]: {
+            schema: {
+              [k: string]: unknown;
+            };
+            name?: string;
+            description?: string;
+          };
+        };
+      };
       shouldStartNameWithService?: true;
       usagePlan?:
         | {
