@@ -10,10 +10,10 @@ interface Serverless {
 }
 
 class ConfigSchemaHandlerTypescriptDefinitionsPlugin {
-  private schema: JSONSchema4;
+  private serverless: Serverless;
 
   constructor(serverless: Serverless) {
-    this.schema = _.cloneDeep(serverless.configSchemaHandler.schema);
+    this.serverless = serverless;
   }
 
   commands = {
@@ -28,10 +28,11 @@ class ConfigSchemaHandlerTypescriptDefinitionsPlugin {
   };
 
   async generateSchema() {
+    const schema = _.cloneDeep(this.serverless.configSchemaHandler.schema);
     /**
      * ignoreMinAndMaxItems: true -> maxItems: 100 in provider.s3.corsConfiguration definition is generating 100 tuples
      */
-    const compiledDefinitions = await compile(this.schema, "AWS", {
+    const compiledDefinitions = await compile(schema, "AWS", {
       ignoreMinAndMaxItems: true,
     });
     fs.writeFileSync("index.d.ts", compiledDefinitions);
