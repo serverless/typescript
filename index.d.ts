@@ -5,9 +5,9 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
+export type AwsArnString = string;
 export type ErrorCode = string;
 export type AwsArn = AwsArnString | AwsCfFunction;
-export type AwsArnString = string;
 export type AwsCfFunction = AwsCfImport | AwsCfJoin | AwsCfGetAtt | AwsCfRef | AwsCfSub;
 export type AwsCfInstruction = string | AwsCfFunction;
 export type FunctionName = string;
@@ -102,6 +102,16 @@ export type ServiceName = string;
 export interface AWS {
   configValidationMode?: "error" | "warn" | "off";
   custom?: {
+    enterprise?: {
+      collectApiGatewayLogs?: boolean;
+      collectLambdaLogs?: boolean;
+      compressLogs?: boolean;
+      disableAwsSpans?: boolean;
+      disableFrameworkInstrumentation?: boolean;
+      disableHttpSpans?: boolean;
+      logAccessIamRole?: AwsArnString;
+      logIngestMode?: "push" | "pull";
+    };
     [k: string]: unknown;
   };
   disabledDeprecations?: "*" | ErrorCode[];
@@ -782,7 +792,7 @@ export interface AWS {
     };
     iam?: {
       role?:
-        | AwsArnString
+        | AwsLambdaRole
         | {
             managedPolicies?: AwsArn[];
             statements?: AwsIamPolicyStatements;
@@ -1271,6 +1281,18 @@ export interface AWS {
       retain?: boolean;
     };
   };
+  org?: string;
+  app?: string;
+  outputs?: {
+    [k: string]:
+      | string
+      | number
+      | boolean
+      | unknown[]
+      | {
+          [k: string]: unknown;
+        };
+  };
 }
 export interface AwsCfImport {
   "Fn::ImportValue": unknown;
@@ -1306,9 +1328,8 @@ export interface AwsResourceTags {
   [k: string]: string;
 }
 export interface AwsLambdaVpcConfig {
-  securityGroupIds?: AwsCfInstruction[];
-  subnetIds?: AwsCfInstruction[];
-  [k: string]: unknown;
+  securityGroupIds: AwsCfInstruction[];
+  subnetIds: AwsCfInstruction[];
 }
 export interface AwsCfImportLocallyResolvable {
   "Fn::ImportValue": string;
