@@ -546,6 +546,9 @@ export interface AWS {
                         | {
                             [k: string]: unknown;
                           }
+                        | {
+                            [k: string]: unknown;
+                          }
                       );
                   method?: string;
                   path: string;
@@ -587,6 +590,7 @@ export interface AWS {
         exclude?: string[];
         include?: string[];
         individually?: boolean;
+        patterns?: string[];
       };
       provisionedConcurrency?: number;
       reservedConcurrency?: number;
@@ -600,12 +604,13 @@ export interface AWS {
     };
   };
   package?: {
-    individually?: boolean;
-    path?: string;
     artifact?: string;
     exclude?: string[];
-    include?: string[];
     excludeDevDependencies?: boolean;
+    include?: string[];
+    individually?: boolean;
+    path?: string;
+    patterns?: string[];
   };
   plugins?:
     | {
@@ -766,12 +771,26 @@ export interface AWS {
     };
     httpApi?: {
       authorizers?: {
-        [k: string]: {
-          name?: string;
-          identitySource: AwsCfInstruction;
-          issuerUrl: AwsCfInstruction;
-          audience: AwsCfInstruction | AwsCfInstruction[];
-        };
+        [k: string]:
+          | {
+              type?: "jwt";
+              name?: string;
+              identitySource: AwsCfInstruction[];
+              issuerUrl: AwsCfInstruction;
+              audience: AwsCfInstruction | AwsCfInstruction[];
+            }
+          | {
+              type: "request";
+              name?: string;
+              functionName?: string;
+              functionArn?: AwsCfInstruction;
+              managedExternally?: boolean;
+              resultTtlInSeconds?: number;
+              enableSimpleResponses?: boolean;
+              payloadVersion?: "1.0" | "2.0";
+              identitySource?: AwsCfInstruction[];
+              [k: string]: unknown;
+            };
       };
       cors?:
         | boolean
@@ -794,6 +813,7 @@ export interface AWS {
       role?:
         | AwsLambdaRole
         | {
+            name?: string;
             managedPolicies?: AwsArn[];
             statements?: AwsIamPolicyStatements;
             permissionBoundary?: AwsArnString;
@@ -1189,7 +1209,7 @@ export interface AWS {
       };
   unresolvedVariablesNotificationMode?: "error" | "warn";
   useDotenv?: true;
-  variablesResolutionMode?: "20210219";
+  variablesResolutionMode?: "20210219" | "20210326";
   resources?: {
     AWSTemplateFormatVersion?: string;
     Conditions?: {
