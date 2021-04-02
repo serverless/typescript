@@ -24,7 +24,7 @@ export type AwsResourceDependsOn = string[];
 export type EcrImageUri = string;
 export type AwsLambdaLayers = AwsArn[];
 export type AwsLambdaMemorySize = number;
-export type AwsLambdaRole = string | AwsCfImport | AwsCfGetAtt;
+export type AwsLambdaRole = string | AwsCfSub | AwsCfImport | AwsCfGetAtt;
 export type AwsLambdaRuntime =
   | "dotnetcore2.1"
   | "dotnetcore3.1"
@@ -1296,6 +1296,7 @@ export interface AWS {
         artifact?: string;
         exclude?: string[];
         include?: string[];
+        patterns?: string[];
       };
       path?: string;
       retain?: boolean;
