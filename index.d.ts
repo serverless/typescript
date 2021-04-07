@@ -834,6 +834,9 @@ export interface AWS {
               uri?: EcrImageUri;
               path?: string;
               file?: string;
+              buildArgs?: {
+                [k: string]: string;
+              };
             }
           | string;
       };
