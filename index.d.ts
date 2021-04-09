@@ -1317,7 +1317,95 @@ export interface AWS {
           [k: string]: unknown;
         };
   };
+  stepFunctions?: {
+    stateMachines: {
+      [m: string]: {
+        name: string;
+        definition: {
+          StartAt: string;
+          States: States;
+        };
+      };
+    };
+  };
 }
+
+interface BaseTask {
+  Type: 'Task';
+  Resource: string;
+  Parameters?: {
+    [p: string]: string;
+  };
+  ResultPath: string | null;
+}
+
+interface Task extends BaseTask {
+  Next: string;
+}
+
+interface EndTask extends BaseTask {
+  End: true;
+}
+
+interface Branch {
+  StartAt: string;
+  States: States;
+}
+
+interface Parallel {
+  Type: 'Parallel';
+  Branches: Branch[];
+  Catch: Catch[];
+  End: boolean;
+}
+
+interface IsNull {
+  Variable: string;
+  IsNull: boolean;
+  Next?: string;
+}
+
+interface BooleanEquals {
+  Variable: string;
+  BooleanEquals: boolean;
+  Next?: string;
+}
+
+type Test = IsNull | BooleanEquals
+
+interface And {
+  And: Test[];
+  Next: string;
+}
+
+type Choice = And | Test;
+
+interface Catch {
+  ErrorEquals: string[];
+  Next: string;
+}
+
+interface Choices {
+  Type: 'Choice';
+  Choices: Choice[];
+  Default?: string;
+}
+
+interface Wait {
+  Type: 'Wait';
+  TimestampPath: string;
+  Next: string;
+}
+
+interface Fail {
+  Type: 'Fail';
+  Error?: string;
+}
+
+interface States {
+  [s: string]: Task | EndTask | Parallel | Choices | Wait | Fail;
+}
+
 export interface AwsCfImport {
   "Fn::ImportValue": unknown;
 }
