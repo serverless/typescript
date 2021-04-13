@@ -775,7 +775,7 @@ export interface AWS {
           | {
               type?: "jwt";
               name?: string;
-              identitySource: AwsCfInstruction[];
+              identitySource: AwsCfInstruction;
               issuerUrl: AwsCfInstruction;
               audience: AwsCfInstruction | AwsCfInstruction[];
             }
@@ -788,7 +788,7 @@ export interface AWS {
               resultTtlInSeconds?: number;
               enableSimpleResponses?: boolean;
               payloadVersion?: "1.0" | "2.0";
-              identitySource?: AwsCfInstruction[];
+              identitySource?: AwsCfInstruction | AwsCfInstruction[];
               [k: string]: unknown;
             };
       };
@@ -837,6 +837,7 @@ export interface AWS {
               buildArgs?: {
                 [k: string]: string;
               };
+              cacheFrom?: unknown[];
             }
           | string;
       };
