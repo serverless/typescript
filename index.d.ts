@@ -1334,7 +1334,7 @@ interface BaseTask {
   Type: 'Task';
   Resource: string;
   Parameters?: {
-    [p: string]: string;
+    [p: string]: any;
   };
   ResultPath: string | null;
 }
@@ -1352,11 +1352,19 @@ interface Branch {
   States: States;
 }
 
-interface Parallel {
+interface ParallelBase {
   Type: 'Parallel';
   Branches: Branch[];
-  Catch: Catch[];
-  End: boolean;
+  Retry?: Retry[];
+  Catch?: Catch[];
+}
+
+interface Parallel extends ParallelBase {
+  Next: string;
+}
+
+interface ParallelEnd extends ParallelBase {
+  End: true;
 }
 
 interface IsNull {
@@ -1380,8 +1388,16 @@ interface And {
 
 type Choice = And | Test;
 
+interface Retry {
+  ErrorEquals: string[];
+  IntervalSeconds?: number;
+  BackoffRate?: number;
+  MaxAttempts?: number;
+}
+
 interface Catch {
   ErrorEquals: string[];
+  ResultPath?: string | null;
   Next: string;
 }
 
@@ -1400,10 +1416,11 @@ interface Wait {
 interface Fail {
   Type: 'Fail';
   Error?: string;
+  Cause?: any;
 }
 
 interface States {
-  [s: string]: Task | EndTask | Parallel | Choices | Wait | Fail;
+  [s: string]: Task | EndTask | Parallel | ParallelEnd | Choices | Wait | Fail;
 }
 
 export interface AwsCfImport {
