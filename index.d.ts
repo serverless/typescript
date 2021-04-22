@@ -378,6 +378,7 @@ export interface AWS {
               listenerArn: AwsAlbListenerArn | AwsCfRef;
               multiValueHeaders?: boolean;
               priority: number;
+              targetGroupName?: string;
             };
           }
         | {
@@ -817,6 +818,7 @@ export interface AWS {
             managedPolicies?: AwsArn[];
             statements?: AwsIamPolicyStatements;
             permissionBoundary?: AwsArnString;
+            permissionsBoundary?: AwsArnString;
             tags?: AwsResourceTags;
           };
       deploymentRole?: AwsArn;
@@ -1353,8 +1355,11 @@ export interface AwsResourceTags {
   [k: string]: string;
 }
 export interface AwsLambdaVpcConfig {
-  securityGroupIds: AwsCfInstruction[];
-  subnetIds: AwsCfInstruction[];
+  securityGroupIds: AwsCfInstruction[] | AwsCfSplit;
+  subnetIds: AwsCfInstruction[] | AwsCfSplit;
+}
+export interface AwsCfSplit {
+  "Fn::Split": [string, AwsCfFunction];
 }
 export interface AwsCfImportLocallyResolvable {
   "Fn::ImportValue": string;
