@@ -1236,6 +1236,7 @@ export interface AWS {
     };
     Resources?: {
       "Fn::Transform"?: {
+        Type: string;
         Name: string;
         Parameters?: {
           [k: string]: unknown;

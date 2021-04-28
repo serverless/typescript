@@ -10,7 +10,6 @@
     "outDir": "dist",
     "preserveConstEnums": true,
     "strict": true,
-    "skipLibCheck": true,
     "target": "ESNext"
   },
   "include": ["src"],
