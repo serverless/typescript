@@ -815,6 +815,7 @@ export interface AWS {
         | AwsLambdaRole
         | {
             name?: string;
+            path?: string;
             managedPolicies?: AwsArn[];
             statements?: AwsIamPolicyStatements;
             permissionBoundary?: AwsArnString;
@@ -1359,7 +1360,7 @@ export interface AwsLambdaVpcConfig {
   subnetIds: AwsCfInstruction[] | AwsCfSplit;
 }
 export interface AwsCfSplit {
-  "Fn::Split": [string, AwsCfFunction];
+  "Fn::Split": (string | AwsCfFunction)[];
 }
 export interface AwsCfImportLocallyResolvable {
   "Fn::ImportValue": string;
