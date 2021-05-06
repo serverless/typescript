@@ -827,6 +827,7 @@ export interface AWS {
     iamManagedPolicies?: AwsArn[];
     iamRoleStatements?: AwsIamPolicyStatements;
     ecr?: {
+      scanOnPush?: boolean;
       images: {
         /**
          * This interface was referenced by `undefined`'s JSON-Schema definition
