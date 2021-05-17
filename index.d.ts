@@ -97,6 +97,7 @@ export type AwsIamPolicyStatements = ({
         [k: string]: unknown;
       }
   ))[];
+export type AwsCfArrayInstruction = AwsCfInstruction[] | AwsCfSplit;
 export type ServiceName = string;
 
 export interface AWS {
@@ -626,6 +627,7 @@ export interface AWS {
       apiKeySourceType?: string;
       binaryMediaTypes?: string[];
       description?: string;
+      disableDefaultEndpoint?: boolean;
       metrics?: boolean;
       minimumCompressionSize?: number;
       resourcePolicy?: AwsResourcePolicyStatements;
@@ -1203,7 +1205,7 @@ export interface AWS {
           };
         }[];
     vpc?: AwsLambdaVpcConfig;
-    vpcEndpointIds?: AwsCfInstruction[];
+    vpcEndpointIds?: AwsCfArrayInstruction;
     versionFunctions?: AwsLambdaVersioning;
     websocketsApiName?: string;
     websocketsApiRouteSelectionExpression?: string;
