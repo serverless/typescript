@@ -48,16 +48,9 @@ export type AwsLambdaTracing = ("Active" | "PassThrough") | boolean;
 export type AwsLambdaVersioning = boolean;
 export type AwsApiGatewayApiKeys = (
   | string
-  | (
-      | {
-          [k: string]: unknown;
-        }
-      | {
-          [k: string]: unknown;
-        }
-    )
+  | AwsApiGatewayApiKeysProperties
   | {
-      [k: string]: string[];
+      [k: string]: (string | AwsApiGatewayApiKeysProperties)[];
     }
 )[];
 export type AwsResourcePolicyStatements = ({
@@ -820,8 +813,8 @@ export interface AWS {
             path?: string;
             managedPolicies?: AwsArn[];
             statements?: AwsIamPolicyStatements;
-            permissionBoundary?: AwsArnString;
-            permissionsBoundary?: AwsArnString;
+            permissionBoundary?: AwsArn;
+            permissionsBoundary?: AwsArn;
             tags?: AwsResourceTags;
           };
       deploymentRole?: AwsArn;
@@ -1364,6 +1357,12 @@ export interface AwsLambdaVpcConfig {
 }
 export interface AwsCfSplit {
   "Fn::Split": (string | AwsCfFunction)[];
+}
+export interface AwsApiGatewayApiKeysProperties {
+  name?: string;
+  value?: string;
+  description?: string;
+  customerId?: string;
 }
 export interface AwsCfImportLocallyResolvable {
   "Fn::ImportValue": string;
