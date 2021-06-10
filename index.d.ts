@@ -613,6 +613,7 @@ export interface AWS {
         modules: string[];
       }
     | string[];
+  projectDir?: string;
   provider: {
     name: "aws";
     apiGateway?: {
@@ -1202,7 +1203,6 @@ export interface AWS {
     versionFunctions?: AwsLambdaVersioning;
     websocketsApiName?: string;
     websocketsApiRouteSelectionExpression?: string;
-    variableSyntax?: string;
   };
   service:
     | ServiceName
