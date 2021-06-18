@@ -7,8 +7,8 @@
 
 export type AwsArnString = string;
 export type ErrorCode = string;
-export type AwsArn = AwsArnString | AwsCfFunction;
 export type AwsCfFunction = AwsCfImport | AwsCfJoin | AwsCfGetAtt | AwsCfRef | AwsCfSub;
+export type AwsArn = AwsArnString | AwsCfFunction;
 export type AwsCfInstruction = string | AwsCfFunction;
 export type FunctionName = string;
 export type AwsAlbListenerArn = string;
@@ -46,6 +46,7 @@ export type AwsLambdaRuntime =
 export type AwsLambdaTimeout = number;
 export type AwsLambdaTracing = ("Active" | "PassThrough") | boolean;
 export type AwsLambdaVersioning = boolean;
+export type AwsHttpApiPayload = "1.0" | "2.0";
 export type AwsApiGatewayApiKeys = (
   | string
   | AwsApiGatewayApiKeysProperties
@@ -155,7 +156,7 @@ export interface AWS {
             s3:
               | string
               | {
-                  bucket: string;
+                  bucket: string | AwsCfFunction;
                   event?: string;
                   existing?: boolean;
                   rules?: {
@@ -596,6 +597,9 @@ export interface AWS {
       tracing?: AwsLambdaTracing;
       versionFunction?: AwsLambdaVersioning;
       vpc?: AwsLambdaVpcConfig;
+      httpApi?: {
+        payload?: AwsHttpApiPayload;
+      };
     };
   };
   package?: {
@@ -784,7 +788,7 @@ export interface AWS {
               managedExternally?: boolean;
               resultTtlInSeconds?: number;
               enableSimpleResponses?: boolean;
-              payloadVersion?: "1.0" | "2.0";
+              payloadVersion?: AwsHttpApiPayload;
               identitySource?: AwsCfInstruction | AwsCfInstruction[];
               [k: string]: unknown;
             };
