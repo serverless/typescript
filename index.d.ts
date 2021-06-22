@@ -109,6 +109,7 @@ export interface AWS {
     };
     [k: string]: unknown;
   };
+  deprecationsNotificationMode?: "error" | "warn";
   disabledDeprecations?: "*" | ErrorCode[];
   enableLocalInstallationFallback?: boolean;
   frameworkVersion?: string;
