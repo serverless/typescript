@@ -1357,11 +1357,14 @@ export interface AwsResourceTags {
   [k: string]: string;
 }
 export interface AwsLambdaVpcConfig {
-  securityGroupIds: AwsCfInstruction[] | AwsCfSplit;
-  subnetIds: AwsCfInstruction[] | AwsCfSplit;
+  securityGroupIds: AwsCfInstruction[] | AwsCfSplit | AwsCfFindInMap;
+  subnetIds: AwsCfInstruction[] | AwsCfSplit | AwsCfFindInMap;
 }
 export interface AwsCfSplit {
   "Fn::Split": (string | AwsCfFunction)[];
+}
+export interface AwsCfFindInMap {
+  "Fn::FindInMap": (string | AwsCfFunction)[];
 }
 export interface AwsApiGatewayApiKeysProperties {
   name?: string;
