@@ -109,7 +109,7 @@ export interface AWS {
     };
     [k: string]: unknown;
   };
-  deprecationsNotificationMode?: "error" | "warn";
+  deprecationsNotificationMode?: "error" | "warn" | "warn:summary";
   disabledDeprecations?: "*" | ErrorCode[];
   enableLocalInstallationFallback?: boolean;
   frameworkVersion?: string;
@@ -324,6 +324,7 @@ export interface AWS {
               accessConfigurations: {
                 vpcSubnet?: string[];
                 vpcSecurityGroup?: string[];
+                saslPlainAuth?: string[];
                 saslScram256Auth?: string[];
                 saslScram512Auth?: string[];
               };
@@ -766,6 +767,7 @@ export interface AWS {
           tags?: AwsResourceTags;
         };
     deploymentPrefix?: string;
+    disableDefaultOutputExportNames?: true;
     endpointType?: string;
     environment?: AwsLambdaEnvironment;
     eventBridge?: {
