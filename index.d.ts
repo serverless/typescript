@@ -11,6 +11,7 @@ export type AwsCfFunction = AwsCfImport | AwsCfJoin | AwsCfGetAtt | AwsCfRef | A
 export type AwsArn = AwsArnString | AwsCfFunction;
 export type AwsCfInstruction = string | AwsCfFunction;
 export type FunctionName = string;
+export type AwsSecretsManagerArnString = string;
 export type AwsAlbListenerArn = string;
 export type AwsAlexaEventToken = string;
 export type AwsLogGroupName = string;
@@ -123,15 +124,13 @@ export interface AWS {
       name?: string;
       events?: (
         | {
-            __schemaWorkaround__: {
-              [k: string]: unknown;
-            };
+            __schemaWorkaround__: null;
           }
         | {
             schedule:
               | string
               | {
-                  rate: string;
+                  rate: string[];
                   enabled?: boolean;
                   name?: string;
                   description?: string;
@@ -186,18 +185,19 @@ export interface AWS {
                         scopes?: string[];
                         type?: string | string | string | string;
                       };
-                  connectionId?: string;
+                  connectionId?: AwsCfInstruction;
                   connectionType?: string | string;
                   cors?:
                     | boolean
-                    | (
-                        | {
-                            [k: string]: unknown;
-                          }
-                        | {
-                            [k: string]: unknown;
-                          }
-                      );
+                    | {
+                        allowCredentials?: boolean;
+                        cacheControl?: string;
+                        headers?: string[];
+                        maxAge?: number;
+                        methods?: ("GET" | "POST" | "PUT" | "PATCH" | "OPTIONS" | "HEAD" | "DELETE" | "ANY")[];
+                        origin?: string;
+                        origins?: string[];
+                      };
                   integration?: string | string | string | string | string | string | string | string | string | string;
                   method: string;
                   operationId?: string;
@@ -212,7 +212,7 @@ export interface AWS {
                           | boolean
                           | {
                               required?: boolean;
-                              mappedValue?: string;
+                              mappedValue?: AwsCfInstruction;
                             };
                       };
                       headers?: {
@@ -220,7 +220,7 @@ export interface AWS {
                           | boolean
                           | {
                               required?: boolean;
-                              mappedValue?: string;
+                              mappedValue?: AwsCfInstruction;
                             };
                       };
                       paths?: {
@@ -228,7 +228,7 @@ export interface AWS {
                           | boolean
                           | {
                               required?: boolean;
-                              mappedValue?: string;
+                              mappedValue?: AwsCfInstruction;
                             };
                       };
                     };
@@ -250,7 +250,7 @@ export interface AWS {
                     template?: {
                       [k: string]: string;
                     };
-                    uri?: string;
+                    uri?: AwsCfInstruction;
                   };
                   response?: {
                     contentHandling?: "CONVERT_TO_BINARY" | "CONVERT_TO_TEXT";
@@ -325,15 +325,24 @@ export interface AWS {
               accessConfigurations: {
                 vpcSubnet?: string[];
                 vpcSecurityGroup?: string[];
-                saslPlainAuth?: string[];
-                saslScram256Auth?: string[];
-                saslScram512Auth?: string[];
+                saslPlainAuth?: AwsSecretsManagerArnString[];
+                saslScram256Auth?: AwsSecretsManagerArnString[];
+                saslScram512Auth?: AwsSecretsManagerArnString[];
               };
               batchSize?: number;
               enabled?: boolean;
               bootstrapServers: string[];
               startingPosition?: "LATEST" | "TRIM_HORIZON";
               topic: string;
+            };
+          }
+        | {
+            activemq: {
+              arn: string | AwsCfImport | AwsCfRef;
+              basicAuthArn: AwsSecretsManagerArnString | AwsCfImport | AwsCfRef;
+              batchSize?: number;
+              enabled?: boolean;
+              queue: string;
             };
           }
         | {
@@ -508,6 +517,7 @@ export interface AWS {
                 SmoothStreaming?: boolean;
                 TrustedSigners?: string[];
                 ViewerProtocolPolicy?: "allow-all" | "redirect-to-https" | "https-only";
+                TrustedKeyGroups?: (string | AwsCfRef)[];
               };
               cachePolicy?:
                 | {
@@ -813,6 +823,7 @@ export interface AWS {
       metrics?: boolean;
       useProviderTags?: true;
       disableDefaultEndpoint?: boolean;
+      shouldStartNameWithService?: true;
     };
     iam?: {
       role?:
@@ -1346,11 +1357,10 @@ export interface AwsLambdaEnvironment {
    * This interface was referenced by `AwsLambdaEnvironment`'s JSON-Schema definition
    * via the `patternProperty` "^[A-Za-z_][a-zA-Z0-9_]*$".
    */
-  [k: string]:
-    | {
-        [k: string]: unknown;
-      }
-    | AwsCfInstruction;
+  [k: string]: "" | AwsCfInstruction | AwsCfIf;
+}
+export interface AwsCfIf {
+  "Fn::If": string[];
 }
 export interface AwsResourceTags {
   /**
@@ -1374,6 +1384,7 @@ export interface AwsApiGatewayApiKeysProperties {
   value?: string;
   description?: string;
   customerId?: string;
+  enabled?: boolean;
 }
 export interface AwsCfImportLocallyResolvable {
   "Fn::ImportValue": string;
