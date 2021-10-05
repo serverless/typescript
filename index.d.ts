@@ -15,6 +15,7 @@ export type AwsSecretsManagerArnString = string;
 export type AwsAlbListenerArn = string;
 export type AwsAlexaEventToken = string;
 export type AwsLogGroupName = string;
+export type AwsLambdaArchitecture = "arm64" | "x86_64";
 export type AwsKmsArn =
   | {
       [k: string]: unknown;
@@ -564,6 +565,7 @@ export interface AWS {
                 };
           }
       )[];
+      architecture?: AwsLambdaArchitecture;
       awsKmsKeyArn?: AwsKmsArn;
       condition?: AwsResourceCondition;
       dependsOn?: AwsResourceDependsOn;
@@ -633,6 +635,49 @@ export interface AWS {
   projectDir?: string;
   provider: {
     name: "aws";
+    alb?: {
+      targetGroupPrefix?: string;
+      authorizers?: {
+        [k: string]:
+          | {
+              type: "oidc";
+              authorizationEndpoint: {
+                [k: string]: unknown;
+              };
+              clientId: string;
+              clientSecret?: string;
+              issuer: {
+                [k: string]: unknown;
+              };
+              tokenEndpoint: {
+                [k: string]: unknown;
+              };
+              userInfoEndpoint: {
+                [k: string]: unknown;
+              };
+              onUnauthenticatedRequest?: "allow" | "authenticate" | "deny";
+              requestExtraParams?: {
+                [k: string]: string;
+              };
+              scope?: string;
+              sessionCookieName?: string;
+              sessionTimeout?: number;
+            }
+          | {
+              type: "cognito";
+              userPoolArn: AwsArn;
+              userPoolClientId: string;
+              userPoolDomain: string;
+              onUnauthenticatedRequest?: "allow" | "authenticate" | "deny";
+              requestExtraParams?: {
+                [k: string]: string;
+              };
+              scope?: string;
+              sessionCookieName?: string;
+              sessionTimeout?: number;
+            };
+      };
+    };
     apiGateway?: {
       apiKeys?: AwsApiGatewayApiKeys;
       apiKeySourceType?: string;
@@ -693,49 +738,7 @@ export interface AWS {
     };
     apiKeys?: AwsApiGatewayApiKeys;
     apiName?: string;
-    alb?: {
-      targetGroupPrefix?: string;
-      authorizers?: {
-        [k: string]:
-          | {
-              type: "oidc";
-              authorizationEndpoint: {
-                [k: string]: unknown;
-              };
-              clientId: string;
-              clientSecret?: string;
-              issuer: {
-                [k: string]: unknown;
-              };
-              tokenEndpoint: {
-                [k: string]: unknown;
-              };
-              userInfoEndpoint: {
-                [k: string]: unknown;
-              };
-              onUnauthenticatedRequest?: "allow" | "authenticate" | "deny";
-              requestExtraParams?: {
-                [k: string]: string;
-              };
-              scope?: string;
-              sessionCookieName?: string;
-              sessionTimeout?: number;
-            }
-          | {
-              type: "cognito";
-              userPoolArn: AwsArn;
-              userPoolClientId: string;
-              userPoolDomain: string;
-              onUnauthenticatedRequest?: "allow" | "authenticate" | "deny";
-              requestExtraParams?: {
-                [k: string]: string;
-              };
-              scope?: string;
-              sessionCookieName?: string;
-              sessionTimeout?: number;
-            };
-      };
-    };
+    architecture?: AwsLambdaArchitecture;
     cfnRole?: AwsArn;
     cloudFront?: {
       cachePolicies?: {
@@ -961,6 +964,7 @@ export interface AWS {
               KMSMasterKeyID?: AwsArn | string;
               SSEAlgorithm: "AES256" | "aws:kms";
             };
+            BucketKeyEnabled?: boolean;
           }[];
         };
         bucketName?: AwsS3BucketName;
@@ -1310,6 +1314,7 @@ export interface AWS {
   layers?: {
     [k: string]: {
       allowedAccounts?: string[];
+      compatibleArchitectures?: AwsLambdaArchitecture[];
       compatibleRuntimes?: AwsLambdaRuntime[];
       description?: string;
       licenseInfo?: string;
