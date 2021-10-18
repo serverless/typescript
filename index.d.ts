@@ -773,6 +773,7 @@ export interface AWS {
           skipPolicySetup?: boolean;
           maxPreviousDeploymentArtifacts?: number;
           name?: AwsS3BucketName;
+          versioning?: boolean;
           serverSideEncryption?: "AES256" | "aws:kms";
           sseCustomerAlgorithim?: string;
           sseCustomerKey?: string;
