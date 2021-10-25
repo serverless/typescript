@@ -347,6 +347,15 @@ export interface AWS {
             };
           }
         | {
+            rabbitmq: {
+              arn: string | AwsCfImport | AwsCfRef;
+              basicAuthArn: AwsSecretsManagerArnString | AwsCfImport | AwsCfRef;
+              batchSize?: number;
+              enabled?: boolean;
+              queue: string;
+            };
+          }
+        | {
             msk: {
               arn: AwsArnString | AwsCfImport | AwsCfRef;
               batchSize?: number;
