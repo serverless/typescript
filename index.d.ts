@@ -613,7 +613,7 @@ export interface AWS {
         patterns?: string[];
       };
       provisionedConcurrency?: number;
-      reservedConcurrency?: number;
+      reservedConcurrency?: number | AwsCfFunction | AwsCfIf;
       role?: AwsLambdaRole;
       runtime?: AwsLambdaRuntime;
       tags?: AwsResourceTags;
@@ -795,7 +795,7 @@ export interface AWS {
     endpointType?: string;
     environment?: AwsLambdaEnvironment;
     eventBridge?: {
-      useCloudFormation?: true;
+      useCloudFormation?: boolean;
     };
     httpApi?: {
       authorizers?: {
@@ -875,7 +875,7 @@ export interface AWS {
       };
     };
     kmsKeyArn?: AwsKmsArn;
-    lambdaHashingVersion?: "20201221";
+    lambdaHashingVersion?: "20200924" | "20201221";
     layers?: AwsLambdaLayers;
     logRetentionInDays?: 1 | 3 | 5 | 7 | 14 | 30 | 60 | 90 | 120 | 150 | 180 | 365 | 400 | 545 | 731 | 1827 | 3653;
     logs?: {
