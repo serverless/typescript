@@ -8,8 +8,8 @@
 export type AwsArnString = string;
 export type ErrorCode = string;
 export type AwsCfFunction = AwsCfImport | AwsCfJoin | AwsCfGetAtt | AwsCfRef | AwsCfSub;
-export type AwsArn = AwsArnString | AwsCfFunction;
 export type AwsCfInstruction = string | AwsCfFunction;
+export type AwsArn = AwsArnString | AwsCfFunction;
 export type FunctionName = string;
 export type AwsSecretsManagerArnString = string;
 export type AwsAlbListenerArn = string;
@@ -158,7 +158,7 @@ export interface AWS {
             s3:
               | string
               | {
-                  bucket: string | AwsCfFunction;
+                  bucket: string | AwsCfFunction | AwsCfIf;
                   event?: string;
                   existing?: boolean;
                   rules?: {
@@ -497,6 +497,7 @@ export interface AWS {
                   batchSize?: number;
                   enabled?: boolean;
                   maximumBatchingWindow?: number;
+                  functionResponseType?: "ReportBatchItemFailures";
                 };
           }
         | {
@@ -792,6 +793,7 @@ export interface AWS {
         };
     deploymentPrefix?: string;
     disableDefaultOutputExportNames?: true;
+    disableRollback?: true;
     endpointType?: string;
     environment?: AwsLambdaEnvironment;
     eventBridge?: {
@@ -870,6 +872,7 @@ export interface AWS {
                 [k: string]: string;
               };
               cacheFrom?: unknown[];
+              platform?: string;
             }
           | string;
       };
@@ -1367,15 +1370,15 @@ export interface AwsCfRef {
 export interface AwsCfSub {
   "Fn::Sub": unknown;
 }
+export interface AwsCfIf {
+  "Fn::If": AwsCfInstruction[];
+}
 export interface AwsLambdaEnvironment {
   /**
    * This interface was referenced by `AwsLambdaEnvironment`'s JSON-Schema definition
    * via the `patternProperty` "^[A-Za-z_][a-zA-Z0-9_]*$".
    */
   [k: string]: "" | AwsCfInstruction | AwsCfIf;
-}
-export interface AwsCfIf {
-  "Fn::If": string[];
 }
 export interface AwsResourceTags {
   /**
