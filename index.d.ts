@@ -15,6 +15,9 @@ export type AwsSecretsManagerArnString = string;
 export type AwsAlbListenerArn = string;
 export type AwsAlexaEventToken = string;
 export type AwsLogGroupName = string;
+export type FilterPatterns = {
+  [k: string]: unknown;
+}[];
 export type AwsLambdaArchitecture = "arm64" | "x86_64";
 export type AwsKmsArn =
   | {
@@ -491,13 +494,14 @@ export interface AWS {
           }
         | {
             sqs:
-              | AwsArn
+              | AwsArnString
               | {
                   arn: AwsArn;
                   batchSize?: number;
                   enabled?: boolean;
                   maximumBatchingWindow?: number;
                   functionResponseType?: "ReportBatchItemFailures";
+                  filterPatterns?: FilterPatterns;
                 };
           }
         | {
@@ -914,6 +918,9 @@ export interface AWS {
       | "us-east-2"
       | "us-gov-east-1"
       | "us-gov-west-1"
+      | "us-iso-east-1"
+      | "us-iso-west-1"
+      | "us-isob-east-1"
       | "us-west-1"
       | "us-west-2"
       | "af-south-1"
