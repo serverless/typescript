@@ -332,6 +332,8 @@ export interface AWS {
                 saslPlainAuth?: AwsSecretsManagerArnString[];
                 saslScram256Auth?: AwsSecretsManagerArnString[];
                 saslScram512Auth?: AwsSecretsManagerArnString[];
+                clientCertificateTlsAuth?: AwsSecretsManagerArnString[];
+                serverRootCaCertificate?: AwsSecretsManagerArnString[];
               };
               batchSize?: number;
               enabled?: boolean;
@@ -722,7 +724,7 @@ export interface AWS {
           };
         };
       };
-      shouldStartNameWithService?: true;
+      shouldStartNameWithService?: boolean;
       usagePlan?:
         | {
             quota?: {
@@ -797,7 +799,7 @@ export interface AWS {
         };
     deploymentPrefix?: string;
     disableDefaultOutputExportNames?: true;
-    disableRollback?: true;
+    disableRollback?: boolean;
     endpointType?: string;
     environment?: AwsLambdaEnvironment;
     eventBridge?: {
@@ -842,7 +844,7 @@ export interface AWS {
       metrics?: boolean;
       useProviderTags?: true;
       disableDefaultEndpoint?: boolean;
-      shouldStartNameWithService?: true;
+      shouldStartNameWithService?: boolean;
     };
     iam?: {
       role?:
