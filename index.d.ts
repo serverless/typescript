@@ -108,7 +108,7 @@ export interface AWS {
       collectLambdaLogs?: boolean;
       compressLogs?: boolean;
       disableAwsSpans?: boolean;
-      disableFrameworkInstrumentation?: boolean;
+      disableFrameworksInstrumentation?: boolean;
       disableHttpSpans?: boolean;
       logAccessIamRole?: AwsArnString;
       logIngestMode?: "push" | "pull";
@@ -187,7 +187,7 @@ export interface AWS {
                         name?: string;
                         resultTtlInSeconds?: number;
                         scopes?: string[];
-                        type?: string | string | string | string;
+                        type?: string | string | string | string | string;
                       };
                   connectionId?: AwsCfInstruction;
                   connectionType?: string | string;
