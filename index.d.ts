@@ -483,6 +483,7 @@ export interface AWS {
                 | "VerifyAuthChallengeResponse"
                 | "UserMigration";
               existing?: boolean;
+              forceDeploy?: boolean;
             };
           }
         | {
@@ -657,20 +658,12 @@ export interface AWS {
         [k: string]:
           | {
               type: "oidc";
-              authorizationEndpoint: {
-                [k: string]: unknown;
-              };
+              authorizationEndpoint: string;
               clientId: string;
               clientSecret?: string;
-              issuer: {
-                [k: string]: unknown;
-              };
-              tokenEndpoint: {
-                [k: string]: unknown;
-              };
-              userInfoEndpoint: {
-                [k: string]: unknown;
-              };
+              issuer: string;
+              tokenEndpoint: string;
+              userInfoEndpoint: string;
               onUnauthenticatedRequest?: "allow" | "authenticate" | "deny";
               requestExtraParams?: {
                 [k: string]: string;
@@ -764,17 +757,17 @@ export interface AWS {
           MaxTTL: number;
           MinTTL: number;
           ParametersInCacheKeyAndForwardedToOrigin: {
-            CookiesConfig?: {
+            CookiesConfig: {
               CookieBehavior: "none" | "whitelist" | "allExcept" | "all";
               Cookies?: string[];
             };
             EnableAcceptEncodingBrotli?: boolean;
-            EnableAcceptEncodingGzip?: boolean;
-            HeadersConfig?: {
+            EnableAcceptEncodingGzip: boolean;
+            HeadersConfig: {
               HeaderBehavior: "none" | "whitelist";
               Headers?: string[];
             };
-            QueryStringsConfig?: {
+            QueryStringsConfig: {
               QueryStringBehavior: "none" | "whitelist" | "allExcept" | "all";
               QueryStrings?: string[];
             };
@@ -877,7 +870,7 @@ export interface AWS {
               buildArgs?: {
                 [k: string]: string;
               };
-              cacheFrom?: unknown[];
+              cacheFrom?: string[];
               platform?: string;
             }
           | string;
