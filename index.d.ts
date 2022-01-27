@@ -19,11 +19,7 @@ export type FilterPatterns = {
   [k: string]: unknown;
 }[];
 export type AwsLambdaArchitecture = "arm64" | "x86_64";
-export type AwsKmsArn =
-  | {
-      [k: string]: unknown;
-    }
-  | string;
+export type AwsKmsArn = AwsCfFunction | string;
 export type AwsResourceCondition = string;
 export type AwsResourceDependsOn = string[];
 export type EcrImageUri = string;
@@ -31,23 +27,19 @@ export type AwsLambdaLayers = AwsArn[];
 export type AwsLambdaMemorySize = number;
 export type AwsLambdaRole = string | AwsCfSub | AwsCfImport | AwsCfGetAtt;
 export type AwsLambdaRuntime =
-  | "dotnetcore2.1"
   | "dotnetcore3.1"
   | "go1.x"
   | "java11"
   | "java8"
   | "java8.al2"
-  | "nodejs10.x"
   | "nodejs12.x"
   | "nodejs14.x"
   | "provided"
   | "provided.al2"
-  | "python2.7"
   | "python3.6"
   | "python3.7"
   | "python3.8"
   | "python3.9"
-  | "ruby2.5"
   | "ruby2.7";
 export type AwsLambdaTimeout = number;
 export type AwsLambdaTracing = ("Active" | "PassThrough") | boolean;
@@ -97,6 +89,7 @@ export type AwsIamPolicyStatements = ({
         [k: string]: unknown;
       }
   ))[];
+export type Stage = string;
 export type AwsCfArrayInstruction = AwsCfInstruction[] | AwsCfSplit;
 export type ServiceName = string;
 
@@ -117,7 +110,6 @@ export interface AWS {
   };
   deprecationNotificationMode?: "error" | "warn" | "warn:summary";
   disabledDeprecations?: "*" | ErrorCode[];
-  enableLocalInstallationFallback?: boolean;
   frameworkVersion?: string;
   functions?: {
     /**
@@ -237,13 +229,6 @@ export interface AWS {
                       };
                     };
                     passThrough?: "NEVER" | "WHEN_NO_MATCH" | "WHEN_NO_TEMPLATES";
-                    schema?: {
-                      [k: string]:
-                        | {
-                            [k: string]: unknown;
-                          }
-                        | string;
-                    };
                     schemas?: {
                       [k: string]:
                         | {
@@ -515,19 +500,6 @@ export interface AWS {
                   | ("GET" | "HEAD" | "OPTIONS")[]
                   | ("GET" | "HEAD" | "OPTIONS" | "PUT" | "PATCH" | "POST" | "DELETE")[];
                 CachedMethods?: ("GET" | "HEAD")[] | ("GET" | "HEAD" | "OPTIONS")[];
-                ForwardedValues?: {
-                  Cookies?:
-                    | {
-                        Forward: "all" | "none";
-                      }
-                    | {
-                        Forward: "whitelist";
-                        WhitelistedNames: string[];
-                      };
-                  Headers?: string[];
-                  QueryString: boolean;
-                  QueryStringCacheKeys?: string[];
-                };
                 CachePolicyId?: string;
                 Compress?: boolean;
                 FieldLevelEncryptionId?: string;
@@ -643,6 +615,15 @@ export interface AWS {
     path?: string;
     patterns?: string[];
   };
+  params?: {
+    /**
+     * This interface was referenced by `undefined`'s JSON-Schema definition
+     * via the `patternProperty` "^[a-zA-Z0-9-]+$".
+     */
+    [k: string]: {
+      [k: string]: unknown;
+    };
+  };
   plugins?:
     | {
         localPath?: string;
@@ -745,7 +726,6 @@ export interface AWS {
           }[];
       websocketApiId?: AwsCfInstruction;
     };
-    apiKeys?: AwsApiGatewayApiKeys;
     apiName?: string;
     architecture?: AwsLambdaArchitecture;
     cfnRole?: AwsArn;
@@ -791,7 +771,6 @@ export interface AWS {
           tags?: AwsResourceTags;
         };
     deploymentPrefix?: string;
-    disableDefaultOutputExportNames?: true;
     disableRollback?: boolean;
     endpointType?: string;
     environment?: AwsLambdaEnvironment;
@@ -937,7 +916,6 @@ export interface AWS {
       | "eu-west-3"
       | "me-south-1"
       | "sa-east-1";
-    resourcePolicy?: AwsResourcePolicyStatements;
     role?: AwsLambdaRole;
     rolePermissionsBoundary?: AwsArnString;
     rollbackConfiguration?: {
@@ -1195,7 +1173,7 @@ export interface AWS {
         };
       };
     };
-    stage?: string;
+    stage?: Stage;
     stackName?: string;
     stackParameters?: {
       ParameterKey?: string;
@@ -1211,44 +1189,13 @@ export interface AWS {
       apiGateway?: boolean;
       lambda?: AwsLambdaTracing;
     };
-    usagePlan?:
-      | {
-          quota?: {
-            limit?: number;
-            offset?: number;
-            period?: "DAY" | "WEEK" | "MONTH";
-          };
-          throttle?: {
-            burstLimit?: number;
-            rateLimit?: number;
-          };
-        }
-      | {
-          [k: string]: {
-            quota?: {
-              limit?: number;
-              offset?: number;
-              period?: "DAY" | "WEEK" | "MONTH";
-            };
-            throttle?: {
-              burstLimit?: number;
-              rateLimit?: number;
-            };
-          };
-        }[];
     vpc?: AwsLambdaVpcConfig;
     vpcEndpointIds?: AwsCfArrayInstruction;
     versionFunctions?: AwsLambdaVersioning;
     websocketsApiName?: string;
     websocketsApiRouteSelectionExpression?: string;
   };
-  service:
-    | ServiceName
-    | {
-        name: ServiceName;
-        awsKmsKeyArn?: AwsKmsArn;
-      };
-  unresolvedVariablesNotificationMode?: "error" | "warn";
+  service: ServiceName;
   useDotenv?: true;
   variablesResolutionMode?: "20210219" | "20210326";
   resources?: {
