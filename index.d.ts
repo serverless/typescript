@@ -321,6 +321,7 @@ export interface AWS {
                 serverRootCaCertificate?: AwsSecretsManagerArnString[];
               };
               batchSize?: number;
+              maximumBatchingWindow?: number;
               enabled?: boolean;
               bootstrapServers: string[];
               startingPosition?: "LATEST" | "TRIM_HORIZON";
@@ -332,6 +333,7 @@ export interface AWS {
               arn: string | AwsCfImport | AwsCfRef;
               basicAuthArn: AwsSecretsManagerArnString | AwsCfImport | AwsCfRef;
               batchSize?: number;
+              maximumBatchingWindow?: number;
               enabled?: boolean;
               queue: string;
             };
@@ -341,6 +343,7 @@ export interface AWS {
               arn: string | AwsCfImport | AwsCfRef;
               basicAuthArn: AwsSecretsManagerArnString | AwsCfImport | AwsCfRef;
               batchSize?: number;
+              maximumBatchingWindow?: number;
               enabled?: boolean;
               queue: string;
             };
@@ -349,6 +352,7 @@ export interface AWS {
             msk: {
               arn: AwsArnString | AwsCfImport | AwsCfRef;
               batchSize?: number;
+              maximumBatchingWindow?: number;
               enabled?: boolean;
               startingPosition?: "LATEST" | "TRIM_HORIZON";
               topic: string;
@@ -905,6 +909,7 @@ export interface AWS {
       | "ap-south-1"
       | "ap-southeast-1"
       | "ap-southeast-2"
+      | "ap-southeast-3"
       | "ca-central-1"
       | "cn-north-1"
       | "cn-northwest-1"
