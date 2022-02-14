@@ -1199,6 +1199,7 @@ export interface AWS {
     versionFunctions?: AwsLambdaVersioning;
     websocketsApiName?: string;
     websocketsApiRouteSelectionExpression?: string;
+    websocketsDescription?: string;
   };
   service: ServiceName;
   useDotenv?: true;
