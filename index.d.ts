@@ -27,6 +27,7 @@ export type AwsLambdaLayers = AwsArn[];
 export type AwsLambdaMemorySize = number;
 export type AwsLambdaRole = string | AwsCfSub | AwsCfImport | AwsCfGetAtt;
 export type AwsLambdaRuntime =
+  | "dotnet6"
   | "dotnetcore3.1"
   | "go1.x"
   | "java11"
@@ -95,6 +96,7 @@ export type ServiceName = string;
 
 export interface AWS {
   configValidationMode?: "error" | "warn" | "off";
+  console?: boolean;
   custom?: {
     enterprise?: {
       collectApiGatewayLogs?: boolean;
@@ -108,6 +110,7 @@ export interface AWS {
     };
     [k: string]: unknown;
   };
+  dashboard?: boolean;
   deprecationNotificationMode?: "error" | "warn" | "warn:summary";
   disabledDeprecations?: "*" | ErrorCode[];
   frameworkVersion?: string;
