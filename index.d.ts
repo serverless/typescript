@@ -24,6 +24,24 @@ export type AwsResourceCondition = string;
 export type AwsResourceDependsOn = string[];
 export type EcrImageUri = string;
 export type AwsLambdaLayers = AwsArn[];
+export type AwsLogRetentionInDays =
+  | 1
+  | 3
+  | 5
+  | 7
+  | 14
+  | 30
+  | 60
+  | 90
+  | 120
+  | 150
+  | 180
+  | 365
+  | 400
+  | 545
+  | 731
+  | 1827
+  | 3653;
 export type AwsLambdaMemorySize = number;
 export type AwsLambdaRole = string | AwsCfSub | AwsCfImport | AwsCfGetAtt;
 export type AwsLambdaRuntime =
@@ -588,6 +606,7 @@ export interface AWS {
           };
       kmsKeyArn?: AwsKmsArn;
       layers?: AwsLambdaLayers;
+      logRetentionInDays?: AwsLogRetentionInDays;
       maximumEventAge?: number;
       maximumRetryAttempts?: number;
       memorySize?: AwsLambdaMemorySize;
@@ -865,7 +884,7 @@ export interface AWS {
     kmsKeyArn?: AwsKmsArn;
     lambdaHashingVersion?: "20200924" | "20201221";
     layers?: AwsLambdaLayers;
-    logRetentionInDays?: 1 | 3 | 5 | 7 | 14 | 30 | 60 | 90 | 120 | 150 | 180 | 365 | 400 | 545 | 731 | 1827 | 3653;
+    logRetentionInDays?: AwsLogRetentionInDays;
     logs?: {
       frameworkLambda?: boolean;
       httpApi?:
@@ -1346,8 +1365,8 @@ export interface AwsResourceTags {
   [k: string]: string;
 }
 export interface AwsLambdaVpcConfig {
-  securityGroupIds: AwsCfInstruction[] | AwsCfSplit | AwsCfFindInMap;
-  subnetIds: AwsCfInstruction[] | AwsCfSplit | AwsCfFindInMap;
+  securityGroupIds: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
+  subnetIds: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
 }
 export interface AwsCfSplit {
   "Fn::Split": (string | AwsCfFunction)[];
