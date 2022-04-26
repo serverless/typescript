@@ -114,7 +114,12 @@ export type ServiceName = string;
 
 export interface AWS {
   configValidationMode?: "error" | "warn" | "off";
-  console?: boolean;
+  console?:
+    | boolean
+    | {
+        disableLogsCollection?: boolean;
+        disableRequestResponseCollection?: boolean;
+      };
   custom?: {
     enterprise?: {
       collectApiGatewayLogs?: boolean;
@@ -128,7 +133,9 @@ export interface AWS {
     };
     [k: string]: unknown;
   };
-  dashboard?: boolean;
+  dashboard?: {
+    disableMonitoring?: boolean;
+  };
   deprecationNotificationMode?: "error" | "warn" | "warn:summary";
   disabledDeprecations?: "*" | ErrorCode[];
   frameworkVersion?: string;
@@ -367,6 +374,7 @@ export interface AWS {
               maximumBatchingWindow?: number;
               enabled?: boolean;
               queue: string;
+              virtualHost?: string;
             };
           }
         | {
@@ -585,11 +593,22 @@ export interface AWS {
       dependsOn?: AwsResourceDependsOn;
       description?: string;
       destinations?: {
-        onSuccess?: string;
-        onFailure?: string;
+        onSuccess?:
+          | string
+          | {
+              arn: AwsCfFunction;
+              type: "function" | "sns" | "sqs" | "eventBus";
+            };
+        onFailure?:
+          | string
+          | {
+              arn: AwsCfFunction;
+              type: "function" | "sns" | "sqs" | "eventBus";
+            };
       };
       disableLogs?: boolean;
       environment?: AwsLambdaEnvironment;
+      ephemeralStorageSize?: number;
       fileSystemConfig?: {
         arn: string | AwsCfGetAtt | AwsCfJoin | AwsCfImport;
         localMountPath: string;
@@ -625,6 +644,21 @@ export interface AWS {
       tags?: AwsResourceTags;
       timeout?: AwsLambdaTimeout;
       tracing?: AwsLambdaTracing;
+      url?:
+        | boolean
+        | {
+            authorizer?: "aws_iam";
+            cors?:
+              | boolean
+              | {
+                  allowCredentials?: boolean;
+                  allowedHeaders?: string[];
+                  allowedMethods?: string[];
+                  allowedOrigins?: string[];
+                  exposedResponseHeaders?: string[];
+                  maxAge?: number;
+                };
+          };
       versionFunction?: AwsLambdaVersioning;
       vpc?: AwsLambdaVpcConfig;
       httpApi?: {
@@ -906,6 +940,10 @@ export interface AWS {
       websocket?:
         | boolean
         | {
+            accessLogging?: boolean;
+            executionLogging?: boolean;
+            format?: string;
+            fullExecutionData?: boolean;
             level?: "INFO" | "ERROR";
           };
       [k: string]: unknown;
