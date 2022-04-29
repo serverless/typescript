@@ -830,6 +830,7 @@ export interface AWS {
           sseKMSKeyId?: string;
           tags?: AwsResourceTags;
         };
+    deploymentMethod?: "direct" | "change-set";
     deploymentPrefix?: string;
     disableRollback?: boolean;
     endpointType?: string;
