@@ -53,6 +53,7 @@ export type AwsLambdaRuntime =
   | "java8.al2"
   | "nodejs12.x"
   | "nodejs14.x"
+  | "nodejs16.x"
   | "provided"
   | "provided.al2"
   | "python3.6"
@@ -185,8 +186,8 @@ export interface AWS {
                   event?: string;
                   existing?: boolean;
                   rules?: {
-                    prefix?: string;
-                    suffix?: string;
+                    prefix?: string | AwsCfFunction;
+                    suffix?: string | AwsCfFunction;
                   }[];
                 };
           }
@@ -991,6 +992,7 @@ export interface AWS {
       MonitoringTimeInMinutes?: number;
     };
     runtime?: AwsLambdaRuntime;
+    deploymentMethod?: "changesets" | "direct";
     s3?: {
       [k: string]: {
         accelerateConfiguration?: {
@@ -1257,6 +1259,9 @@ export interface AWS {
     vpc?: AwsLambdaVpcConfig;
     vpcEndpointIds?: AwsCfArrayInstruction;
     versionFunctions?: AwsLambdaVersioning;
+    websocket?: {
+      useProviderTags?: boolean;
+    };
     websocketsApiName?: string;
     websocketsApiRouteSelectionExpression?: string;
     websocketsDescription?: string;
