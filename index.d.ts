@@ -41,6 +41,10 @@ export type AwsLogRetentionInDays =
   | 545
   | 731
   | 1827
+  | 2192
+  | 2557
+  | 2922
+  | 3288
   | 3653;
 export type AwsLambdaMemorySize = number;
 export type AwsLambdaRole = string | AwsCfSub | AwsCfImport | AwsCfGetAtt;
@@ -120,6 +124,7 @@ export interface AWS {
     | {
         disableLogsCollection?: boolean;
         disableRequestResponseCollection?: boolean;
+        org?: string;
       };
   custom?: {
     enterprise?: {
@@ -185,6 +190,7 @@ export interface AWS {
                   bucket: string | AwsCfFunction | AwsCfIf;
                   event?: string;
                   existing?: boolean;
+                  forceDeploy?: boolean;
                   rules?: {
                     prefix?: string | AwsCfFunction;
                     suffix?: string | AwsCfFunction;
@@ -386,6 +392,7 @@ export interface AWS {
               enabled?: boolean;
               startingPosition?: "LATEST" | "TRIM_HORIZON";
               topic: string;
+              saslScram512?: AwsArnString;
             };
           }
         | {
