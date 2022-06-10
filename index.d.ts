@@ -122,8 +122,17 @@ export interface AWS {
   console?:
     | boolean
     | {
-        disableLogsCollection?: boolean;
-        disableRequestResponseCollection?: boolean;
+        monitoring?: {
+          logs?: {
+            disabled?: boolean;
+          };
+          request?: {
+            disabled?: boolean;
+          };
+          response?: {
+            disabled?: boolean;
+          };
+        };
         org?: string;
       };
   custom?: {
@@ -1405,7 +1414,29 @@ export interface AwsLambdaEnvironment {
    * This interface was referenced by `AwsLambdaEnvironment`'s JSON-Schema definition
    * via the `patternProperty` "^[A-Za-z_][a-zA-Z0-9_]*$".
    */
-  [k: string]: "" | AwsCfInstruction | AwsCfIf;
+  [k: string]: "" | AwsCfInstruction | AwsCfIf | AwsCfSelect;
+}
+export interface AwsCfSelect {
+  "Fn::Select": (
+    | number
+    | string
+    | unknown[]
+    | AwsCfFindInMap
+    | AwsCfGetAtt
+    | AwsCfGetAZs
+    | AwsCfIf
+    | AwsCfSplit
+    | AwsCfRef
+  )[];
+}
+export interface AwsCfFindInMap {
+  "Fn::FindInMap": (string | AwsCfFunction)[];
+}
+export interface AwsCfGetAZs {
+  "Fn::GetAZs": string | AwsCfRef;
+}
+export interface AwsCfSplit {
+  "Fn::Split": (string | AwsCfFunction)[];
 }
 export interface AwsResourceTags {
   /**
@@ -1417,12 +1448,6 @@ export interface AwsResourceTags {
 export interface AwsLambdaVpcConfig {
   securityGroupIds: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
   subnetIds: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
-}
-export interface AwsCfSplit {
-  "Fn::Split": (string | AwsCfFunction)[];
-}
-export interface AwsCfFindInMap {
-  "Fn::FindInMap": (string | AwsCfFunction)[];
 }
 export interface AwsApiGatewayApiKeysProperties {
   name?: string;
