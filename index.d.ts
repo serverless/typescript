@@ -15,11 +15,11 @@ export type AwsSecretsManagerArnString = string;
 export type AwsAlbListenerArn = string;
 export type AwsAlexaEventToken = string;
 export type AwsLogGroupName = string;
+export type AwsKmsArn = AwsCfFunction | string;
 export type FilterPatterns = {
   [k: string]: unknown;
 }[];
 export type AwsLambdaArchitecture = "arm64" | "x86_64";
-export type AwsKmsArn = AwsCfFunction | string;
 export type AwsResourceCondition = string;
 export type AwsResourceDependsOn = string[];
 export type EcrImageUri = string;
@@ -516,9 +516,12 @@ export interface AWS {
                 | "DefineAuthChallenge"
                 | "CreateAuthChallenge"
                 | "VerifyAuthChallengeResponse"
-                | "UserMigration";
+                | "UserMigration"
+                | "CustomSMSSender"
+                | "CustomEmailSender";
               existing?: boolean;
               forceDeploy?: boolean;
+              kmsKeyId?: AwsKmsArn;
             };
           }
         | {
