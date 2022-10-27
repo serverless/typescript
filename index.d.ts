@@ -370,6 +370,7 @@ export interface AWS {
               bootstrapServers: string[];
               startingPosition?: "LATEST" | "TRIM_HORIZON";
               topic: string;
+              consumerGroupId?: string;
             };
           }
         | {
@@ -402,6 +403,7 @@ export interface AWS {
               startingPosition?: "LATEST" | "TRIM_HORIZON";
               topic: string;
               saslScram512?: AwsArnString;
+              consumerGroupId?: string;
             };
           }
         | {
@@ -561,6 +563,22 @@ export interface AWS {
                 TrustedSigners?: string[];
                 ViewerProtocolPolicy?: "allow-all" | "redirect-to-https" | "https-only";
                 TrustedKeyGroups?: (string | AwsCfRef)[];
+                MaxTTL?: number;
+                MinTTL?: number;
+                DefaultTTL?: number;
+                ForwardedValues?: {
+                  Cookies?:
+                    | {
+                        Forward: "all" | "none";
+                      }
+                    | {
+                        Forward: "whitelist";
+                        WhitelistedNames: string[];
+                      };
+                  Headers?: string[];
+                  QueryString: boolean;
+                  QueryStringCacheKeys?: string[];
+                };
               };
               cachePolicy?:
                 | {
