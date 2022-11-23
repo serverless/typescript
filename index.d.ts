@@ -58,6 +58,7 @@ export type AwsLambdaRuntime =
   | "nodejs12.x"
   | "nodejs14.x"
   | "nodejs16.x"
+  | "nodejs18.x"
   | "provided"
   | "provided.al2"
   | "python3.6"
@@ -122,18 +123,7 @@ export interface AWS {
   console?:
     | boolean
     | {
-        monitoring?: {
-          logs?: {
-            disabled?: boolean;
-          };
-          request?: {
-            disabled?: boolean;
-          };
-          response?: {
-            disabled?: boolean;
-          };
-        };
-        org?: string;
+        [k: string]: unknown;
       };
   custom?: {
     enterprise?: {
@@ -222,7 +212,7 @@ export interface AWS {
                         managedExternally?: boolean;
                         name?: string;
                         resultTtlInSeconds?: number;
-                        scopes?: string[];
+                        scopes?: (string | AwsCfInstruction)[];
                         type?: string | string | string | string | string;
                       };
                   connectionId?: AwsCfInstruction;
@@ -368,7 +358,8 @@ export interface AWS {
               maximumBatchingWindow?: number;
               enabled?: boolean;
               bootstrapServers: string[];
-              startingPosition?: "LATEST" | "TRIM_HORIZON";
+              startingPosition?: "LATEST" | "TRIM_HORIZON" | "AT_TIMESTAMP";
+              startingPositionTimestamp?: number;
               topic: string;
               consumerGroupId?: string;
             };
@@ -797,6 +788,7 @@ export interface AWS {
         };
       };
       shouldStartNameWithService?: boolean;
+      stage?: string;
       usagePlan?:
         | {
             quota?: {
@@ -1012,11 +1004,14 @@ export interface AWS {
       | "cn-north-1"
       | "cn-northwest-1"
       | "eu-central-1"
+      | "eu-central-2"
       | "eu-north-1"
       | "eu-south-1"
+      | "eu-south-2"
       | "eu-west-1"
       | "eu-west-2"
       | "eu-west-3"
+      | "me-central-1"
       | "me-south-1"
       | "sa-east-1";
     role?: AwsLambdaRole;
@@ -1435,7 +1430,7 @@ export interface AwsLambdaEnvironment {
    * This interface was referenced by `AwsLambdaEnvironment`'s JSON-Schema definition
    * via the `patternProperty` "^[A-Za-z_][a-zA-Z0-9_]*$".
    */
-  [k: string]: "" | AwsCfInstruction | AwsCfIf | AwsCfSelect;
+  [k: string]: "" | AwsCfInstruction | AwsCfIf | AwsCfSelect | AwsCfToJsonString;
 }
 export interface AwsCfSelect {
   "Fn::Select": (
@@ -1458,6 +1453,13 @@ export interface AwsCfGetAZs {
 }
 export interface AwsCfSplit {
   "Fn::Split": (string | AwsCfFunction)[];
+}
+export interface AwsCfToJsonString {
+  "Fn::ToJsonString":
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[];
 }
 export interface AwsResourceTags {
   /**
