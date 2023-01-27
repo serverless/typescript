@@ -7,18 +7,25 @@
 
 export type AwsArnString = string;
 export type ErrorCode = string;
-export type AwsCfFunction = AwsCfImport | AwsCfJoin | AwsCfGetAtt | AwsCfRef | AwsCfSub;
+export type AwsCfFunction =
+  | AwsCfImport
+  | AwsCfJoin
+  | AwsCfGetAtt
+  | AwsCfRef
+  | AwsCfSub
+  | AwsCfBase64
+  | AwsCfToJsonString;
 export type AwsCfInstruction = string | AwsCfFunction;
 export type AwsArn = AwsArnString | AwsCfFunction;
 export type FunctionName = string;
 export type AwsSecretsManagerArnString = string;
+export type FilterPatterns = {
+  [k: string]: unknown;
+}[];
 export type AwsAlbListenerArn = string;
 export type AwsAlexaEventToken = string;
 export type AwsLogGroupName = string;
 export type AwsKmsArn = AwsCfFunction | string;
-export type FilterPatterns = {
-  [k: string]: unknown;
-}[];
 export type AwsLambdaArchitecture = "arm64" | "x86_64";
 export type AwsResourceCondition = string;
 export type AwsResourceDependsOn = string[];
@@ -362,6 +369,7 @@ export interface AWS {
               startingPositionTimestamp?: number;
               topic: string;
               consumerGroupId?: string;
+              filterPatterns?: FilterPatterns;
             };
           }
         | {
@@ -372,6 +380,7 @@ export interface AWS {
               maximumBatchingWindow?: number;
               enabled?: boolean;
               queue: string;
+              filterPatterns?: FilterPatterns;
             };
           }
         | {
@@ -383,6 +392,7 @@ export interface AWS {
               enabled?: boolean;
               queue: string;
               virtualHost?: string;
+              filterPatterns?: FilterPatterns;
             };
           }
         | {
@@ -395,6 +405,7 @@ export interface AWS {
               topic: string;
               saslScram512?: AwsArnString;
               consumerGroupId?: string;
+              filterPatterns?: FilterPatterns;
             };
           }
         | {
@@ -536,6 +547,7 @@ export interface AWS {
                   maximumBatchingWindow?: number;
                   functionResponseType?: "ReportBatchItemFailures";
                   filterPatterns?: FilterPatterns;
+                  maximumConcurrency?: number;
                 };
           }
         | {
@@ -550,6 +562,7 @@ export interface AWS {
                 Compress?: boolean;
                 FieldLevelEncryptionId?: string;
                 OriginRequestPolicyId?: string;
+                ResponseHeadersPolicyId?: string;
                 SmoothStreaming?: boolean;
                 TrustedSigners?: string[];
                 ViewerProtocolPolicy?: "allow-all" | "redirect-to-https" | "https-only";
@@ -653,8 +666,10 @@ export interface AWS {
             entryPoint?: string[];
           };
       kmsKeyArn?: AwsKmsArn;
+      snapStart?: boolean;
       layers?: AwsLambdaLayers;
       logRetentionInDays?: AwsLogRetentionInDays;
+      logDataProtectionPolicy?: AwsLogDataProtectionPolicy;
       maximumEventAge?: number;
       maximumRetryAttempts?: number;
       memorySize?: AwsLambdaMemorySize;
@@ -949,6 +964,7 @@ export interface AWS {
     lambdaHashingVersion?: "20200924" | "20201221";
     layers?: AwsLambdaLayers;
     logRetentionInDays?: AwsLogRetentionInDays;
+    logDataProtectionPolicy?: AwsLogDataProtectionPolicy;
     logs?: {
       frameworkLambda?: boolean;
       httpApi?:
@@ -1000,6 +1016,7 @@ export interface AWS {
       | "ap-southeast-1"
       | "ap-southeast-2"
       | "ap-southeast-3"
+      | "ap-southeast-4"
       | "ca-central-1"
       | "cn-north-1"
       | "cn-northwest-1"
@@ -1422,6 +1439,17 @@ export interface AwsCfRef {
 export interface AwsCfSub {
   "Fn::Sub": unknown;
 }
+export interface AwsCfBase64 {
+  "Fn::Base64"?: unknown;
+  [k: string]: unknown;
+}
+export interface AwsCfToJsonString {
+  "Fn::ToJsonString":
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[];
+}
 export interface AwsCfIf {
   "Fn::If": AwsCfInstruction[];
 }
@@ -1430,7 +1458,7 @@ export interface AwsLambdaEnvironment {
    * This interface was referenced by `AwsLambdaEnvironment`'s JSON-Schema definition
    * via the `patternProperty` "^[A-Za-z_][a-zA-Z0-9_]*$".
    */
-  [k: string]: "" | AwsCfInstruction | AwsCfIf | AwsCfSelect | AwsCfToJsonString;
+  [k: string]: "" | AwsCfInstruction | AwsCfIf | AwsCfSelect;
 }
 export interface AwsCfSelect {
   "Fn::Select": (
@@ -1454,12 +1482,11 @@ export interface AwsCfGetAZs {
 export interface AwsCfSplit {
   "Fn::Split": (string | AwsCfFunction)[];
 }
-export interface AwsCfToJsonString {
-  "Fn::ToJsonString":
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[];
+export interface AwsLogDataProtectionPolicy {
+  Name: string;
+  Description?: string;
+  Version: string;
+  Statement: unknown[];
 }
 export interface AwsResourceTags {
   /**
