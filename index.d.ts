@@ -73,6 +73,12 @@ export type AwsLambdaRuntime =
   | "python3.8"
   | "python3.9"
   | "ruby2.7";
+export type AwsLambdaRuntimeManagement =
+  | ("auto" | "onFunctionUpdate")
+  | {
+      mode?: "auto" | "onFunctionUpdate" | "manual";
+      arn?: AwsArn;
+    };
 export type AwsLambdaTimeout = number;
 export type AwsLambdaTracing = ("Active" | "PassThrough") | boolean;
 export type AwsLambdaVersioning = boolean;
@@ -166,7 +172,7 @@ export interface AWS {
             schedule:
               | string
               | {
-                  rate: string[];
+                  rate: (AwsCfFunction | string)[];
                   enabled?: boolean;
                   name?: string;
                   description?: string;
@@ -681,10 +687,11 @@ export interface AWS {
         individually?: boolean;
         patterns?: string[];
       };
-      provisionedConcurrency?: number;
+      provisionedConcurrency?: number | AwsCfFunction | AwsCfIf;
       reservedConcurrency?: number | AwsCfFunction | AwsCfIf;
       role?: AwsLambdaRole;
       runtime?: AwsLambdaRuntime;
+      runtimeManagement?: AwsLambdaRuntimeManagement;
       tags?: AwsResourceTags;
       timeout?: AwsLambdaTimeout;
       tracing?: AwsLambdaTracing;
@@ -1041,6 +1048,7 @@ export interface AWS {
       MonitoringTimeInMinutes?: number;
     };
     runtime?: AwsLambdaRuntime;
+    runtimeManagement?: AwsLambdaRuntimeManagement;
     deploymentMethod?: "changesets" | "direct";
     s3?: {
       [k: string]: {
