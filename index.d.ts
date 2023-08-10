@@ -57,22 +57,23 @@ export type AwsLambdaMemorySize = number;
 export type AwsLambdaRole = string | AwsCfSub | AwsCfImport | AwsCfGetAtt;
 export type AwsLambdaRuntime =
   | "dotnet6"
-  | "dotnetcore3.1"
   | "go1.x"
+  | "java17"
   | "java11"
   | "java8"
   | "java8.al2"
-  | "nodejs12.x"
   | "nodejs14.x"
   | "nodejs16.x"
   | "nodejs18.x"
   | "provided"
   | "provided.al2"
-  | "python3.6"
   | "python3.7"
   | "python3.8"
   | "python3.9"
-  | "ruby2.7";
+  | "python3.10"
+  | "python3.11"
+  | "ruby2.7"
+  | "ruby3.2";
 export type AwsLambdaRuntimeManagement =
   | ("auto" | "onFunctionUpdate")
   | {
@@ -193,6 +194,8 @@ export interface AWS {
                       [k: string]: unknown;
                     };
                   };
+                  method?: "eventBus" | "scheduler";
+                  timezone?: string;
                 };
           }
         | {
@@ -407,7 +410,8 @@ export interface AWS {
               batchSize?: number;
               maximumBatchingWindow?: number;
               enabled?: boolean;
-              startingPosition?: "LATEST" | "TRIM_HORIZON";
+              startingPosition?: "LATEST" | "TRIM_HORIZON" | "AT_TIMESTAMP";
+              startingPositionTimestamp?: number;
               topic: string;
               saslScram512?: AwsArnString;
               consumerGroupId?: string;
@@ -418,12 +422,17 @@ export interface AWS {
             alb: {
               authorizer?: string[];
               conditions: {
-                header?: {
-                  name: string;
-                  values: string[];
-                };
+                header?:
+                  | {
+                      name: string;
+                      values: string[];
+                    }[]
+                  | {
+                      name: string;
+                      values: string[];
+                    };
                 host?: string[];
-                ip?: (string | string)[];
+                ip?: string[];
                 method?: string[];
                 path?: string[];
                 query?: {
@@ -567,8 +576,8 @@ export interface AWS {
                 CachePolicyId?: string;
                 Compress?: boolean;
                 FieldLevelEncryptionId?: string;
-                OriginRequestPolicyId?: string;
-                ResponseHeadersPolicyId?: string;
+                OriginRequestPolicyId?: string | AwsCfFunction;
+                ResponseHeadersPolicyId?: string | AwsCfFunction;
                 SmoothStreaming?: boolean;
                 TrustedSigners?: string[];
                 ViewerProtocolPolicy?: "allow-all" | "redirect-to-https" | "https-only";
@@ -709,6 +718,7 @@ export interface AWS {
                   exposedResponseHeaders?: string[];
                   maxAge?: number;
                 };
+            invokeMode?: "BUFFERED" | "RESPONSE_STREAM";
           };
       versionFunction?: AwsLambdaVersioning;
       vpc?: AwsLambdaVpcConfig;
@@ -1320,6 +1330,9 @@ export interface AWS {
       useProviderTags?: boolean;
     };
     websocketsApiName?: string;
+    kinesis?: {
+      consumerNamingMode?: "serviceSpecific";
+    };
     websocketsApiRouteSelectionExpression?: string;
     websocketsDescription?: string;
   };
