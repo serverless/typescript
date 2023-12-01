@@ -65,8 +65,10 @@ export type AwsLambdaRuntime =
   | "nodejs14.x"
   | "nodejs16.x"
   | "nodejs18.x"
+  | "nodejs20.x"
   | "provided"
   | "provided.al2"
+  | "provided.al2023"
   | "python3.7"
   | "python3.8"
   | "python3.9"
@@ -149,6 +151,7 @@ export interface AWS {
       disableHttpSpans?: boolean;
       logAccessIamRole?: AwsArnString;
       logIngestMode?: "push" | "pull";
+      disableWrapping?: boolean;
     };
     [k: string]: unknown;
   };
@@ -1030,6 +1033,7 @@ export interface AWS {
       | "ap-northeast-2"
       | "ap-northeast-3"
       | "ap-south-1"
+      | "ap-south-2"
       | "ap-southeast-1"
       | "ap-southeast-2"
       | "ap-southeast-3"
@@ -1045,6 +1049,7 @@ export interface AWS {
       | "eu-west-1"
       | "eu-west-2"
       | "eu-west-3"
+      | "il-central-1"
       | "me-central-1"
       | "me-south-1"
       | "sa-east-1";
