@@ -1,4 +1,4 @@
-name: Definitions Builder
+name: Update and Release Serverless Definitions
 on:
   workflow_dispatch:
   repository_dispatch:
@@ -28,7 +28,7 @@ jobs:
         name: Set Serverless latest version
         run: echo "::set-output name=version::$(npm list serverless | grep serverless@ | sed 's/.*serverless@/v/g' | tr -d '[[:space:]]')"
 
-      - name: Generate definitions
+      - name: Generate TypeScript Definitions
         run: npx sls schema
 
       - name: Update package.json version
@@ -37,8 +37,8 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v5
         with:
-          author_name: Frédéric Barthelet
-          author_email: fredericb@theodo.fr
+          author_name: Eslam λ Hefnawy
+          author_email: eslam@serverless.com
           branch: master
           message: Add Serverless definitions for ${{ steps.serverless-version.outputs.version }}
           add: index.d.ts package.json
