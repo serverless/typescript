@@ -24,9 +24,11 @@ jobs:
       - name: Build plugin
         run: npm run build
 
-      - id: serverless-version
-        name: Set Serverless latest version
-        run: echo "::set-output name=version::$(npm list serverless | grep serverless@ | sed 's/.*serverless@/v/g' | tr -d '[[:space:]]')"
+      - name: Set Serverless latest version
+        id: serverless-version
+        run: |
+          version=$(npm list serverless | grep serverless@ | sed 's/.*serverless@/v/g' | tr -d '[[:space:]]')
+          echo "version=$version" >> $GITHUB_ENV
 
       - name: Generate TypeScript Definitions
         run: npx sls schema
@@ -34,7 +36,7 @@ jobs:
           SERVERLESS_ACCESS_KEY: ${{secrets.SERVERLESS_ACCESS_KEY}}
 
       - name: Update package.json version
-        run: npm version ${{ steps.serverless-version.outputs.version }} --git-tag-version=false
+        run: npm version ${{ env.version }} --git-tag-version=false
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v5
@@ -42,9 +44,9 @@ jobs:
           author_name: Eslam λ Hefnawy
           author_email: eslam@serverless.com
           branch: master
-          message: Add Serverless definitions for ${{ steps.serverless-version.outputs.version }}
+          message: Add Serverless definitions for ${{ env.version }}
           add: index.d.ts package.json
-          tag: ${{ steps.serverless-version.outputs.version }} --force
+          tag: ${{ env.version }} --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
