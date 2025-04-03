@@ -731,7 +731,16 @@ export interface AWS {
         individually?: boolean;
         patterns?: string[];
       };
-      provisionedConcurrency?: number | AwsCfFunction | AwsCfIf;
+      provisionedConcurrency?:
+        | (
+            | number
+            | {
+                executions: number;
+                alias?: string;
+              }
+          )
+        | AwsCfFunction
+        | AwsCfIf;
       reservedConcurrency?: number | AwsCfFunction | AwsCfIf;
       role?: AwsLambdaRole;
       runtime?: AwsLambdaRuntime;
