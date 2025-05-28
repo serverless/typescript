@@ -770,6 +770,7 @@ export interface AWS {
       httpApi?: {
         payload?: AwsHttpApiPayload;
       };
+      alarms?: unknown[];
     };
   };
   licenseKey?: string;
