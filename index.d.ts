@@ -916,6 +916,8 @@ export interface AWS {
       websocketApiId?: AwsCfInstruction;
     };
     apiName?: string;
+    domain?: string | AwsCustomDomain;
+    domains?: (string | AwsCustomDomain)[] | AwsCustomDomain;
     architecture?: AwsLambdaArchitecture;
     cfnRole?: AwsArn;
     cloudFront?: {
@@ -1604,6 +1606,33 @@ export interface AwsApiGatewayApiKeysProperties {
   description?: string;
   customerId?: string;
   enabled?: boolean;
+}
+export interface AwsCustomDomain {
+  name?: string;
+  basePath?: string;
+  certificateName?: string;
+  certificateArn?: string;
+  createRoute53Record?: boolean;
+  createRoute53IPv6Record?: boolean;
+  route53Profile?: string;
+  route53Region?: string;
+  endpointType?: string;
+  apiType?: string;
+  tlsTruststoreUri?: string;
+  tlsTruststoreVersion?: string;
+  hostedZoneId?: string;
+  hostedZonePrivate?: boolean;
+  splitHorizonDns?: boolean;
+  enabled?: boolean | string;
+  securityPolicy?: string;
+  autoDomain?: boolean;
+  autoDomainWaitFor?: string;
+  allowPathMatching?: boolean;
+  route53Params?: {
+    [k: string]: unknown;
+  };
+  preserveExternalPathMappings?: boolean;
+  [k: string]: unknown;
 }
 export interface AwsCfImportLocallyResolvable {
   "Fn::ImportValue": string;
