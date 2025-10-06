@@ -5,7 +5,8 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type ErrorCode = string;
+export type AwsArn = AwsArnString | AwsCfFunction;
+export type AwsArnString = string;
 export type AwsCfFunction =
   | AwsCfImport
   | AwsCfJoin
@@ -14,9 +15,8 @@ export type AwsCfFunction =
   | AwsCfSub
   | AwsCfBase64
   | AwsCfToJsonString;
+export type ErrorCode = string;
 export type AwsCfInstruction = string | AwsCfFunction;
-export type AwsArn = AwsArnString | AwsCfFunction;
-export type AwsArnString = string;
 export type FunctionName = string;
 export type AwsSecretsManagerArnString = string;
 export type FilterPatterns = {
@@ -92,6 +92,24 @@ export type AwsLambdaTimeout = number;
 export type AwsLambdaTracing = ("Active" | "PassThrough") | boolean;
 export type AwsLambdaVersioning = boolean;
 export type AwsHttpApiPayload = "1.0" | "2.0";
+export type AwsIamPolicyStatements = ({
+  [k: string]: unknown;
+} & (
+  | {
+      [k: string]: unknown;
+    }
+  | {
+      [k: string]: unknown;
+    }
+) &
+  (
+    | {
+        [k: string]: unknown;
+      }
+    | {
+        [k: string]: unknown;
+      }
+  ))[];
 export type AwsApiGatewayApiKeys = (
   | string
   | AwsApiGatewayApiKeysProperties
@@ -118,24 +136,6 @@ export type AwsResourcePolicyStatements = ({
       }
   ))[];
 export type AwsS3BucketName = string;
-export type AwsIamPolicyStatements = ({
-  [k: string]: unknown;
-} & (
-  | {
-      [k: string]: unknown;
-    }
-  | {
-      [k: string]: unknown;
-    }
-) &
-  (
-    | {
-        [k: string]: unknown;
-      }
-    | {
-        [k: string]: unknown;
-      }
-  ))[];
 export type Stage = string;
 export type AwsCfArrayInstruction = AwsCfInstruction[] | AwsCfSplit;
 export type ServiceName = string;
@@ -160,6 +160,10 @@ export interface AWS {
         [k: string]: unknown;
       };
   custom?: {
+    "serverless-iam-roles-per-function"?: {
+      defaultInherit?: boolean;
+      iamGlobalPermissionsBoundary?: AwsArn;
+    };
     [k: string]: unknown;
   };
   dashboard?: {
@@ -770,6 +774,21 @@ export interface AWS {
       httpApi?: {
         payload?: AwsHttpApiPayload;
       };
+      iam?: {
+        inheritStatements?: boolean;
+        role?: {
+          name?: string;
+          statements?: AwsIamPolicyStatements;
+          permissionsBoundary?: AwsArn;
+          managedPolicies?: AwsArn[];
+          path?: string;
+          tags?: AwsResourceTags;
+        };
+      };
+      iamRoleStatementsInherit?: boolean;
+      iamRoleStatementsName?: string;
+      iamPermissionsBoundary?: AwsArn;
+      iamRoleStatements?: AwsIamPolicyStatements;
       alarms?: unknown[];
     };
   };
