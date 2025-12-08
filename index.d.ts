@@ -59,6 +59,7 @@ export type AwsLambdaRuntime =
   | "dotnet6"
   | "dotnet8"
   | "go1.x"
+  | "java25"
   | "java21"
   | "java17"
   | "java11"
@@ -69,6 +70,7 @@ export type AwsLambdaRuntime =
   | "nodejs18.x"
   | "nodejs20.x"
   | "nodejs22.x"
+  | "nodejs24.x"
   | "provided"
   | "provided.al2"
   | "provided.al2023"
@@ -79,6 +81,7 @@ export type AwsLambdaRuntime =
   | "python3.11"
   | "python3.12"
   | "python3.13"
+  | "python3.14"
   | "ruby2.7"
   | "ruby3.2"
   | "ruby3.3";
@@ -139,6 +142,11 @@ export type AwsS3BucketName = string;
 export type Stage = string;
 export type AwsCfArrayInstruction = AwsCfInstruction[] | AwsCfSplit;
 export type ServiceName = string;
+/**
+ * This interface was referenced by `undefined`'s JSON-Schema definition
+ * via the `patternProperty` "^Fn::ForEach::[a-zA-Z0-9]+$".
+ */
+export type AwsCfForEach = unknown[];
 
 export interface AWS {
   org?: string;
@@ -334,6 +342,7 @@ export interface AWS {
                       [k: string]: string;
                     };
                     template?: string;
+                    transferMode?: string | string;
                     statusCodes?: {
                       [k: string]: {
                         headers?: {
@@ -751,6 +760,7 @@ export interface AWS {
       build?: string;
       runtimeManagement?: AwsLambdaRuntimeManagement;
       tags?: AwsResourceTags;
+      tenancy?: AwsLambdaTenancy;
       timeout?: AwsLambdaTimeout;
       tracing?: AwsLambdaTracing;
       url?:
@@ -880,6 +890,11 @@ export interface AWS {
       binaryMediaTypes?: string[];
       description?: string;
       disableDefaultEndpoint?: boolean;
+      endpoint?: {
+        securityPolicy?: string;
+        accessMode?: string;
+        disable?: boolean;
+      };
       metrics?: boolean;
       minimumCompressionSize?: number;
       resourcePolicy?: AwsResourcePolicyStatements;
@@ -1032,6 +1047,7 @@ export interface AWS {
       role?:
         | AwsLambdaRole
         | {
+            mode?: "shared" | "perFunction";
             name?: string;
             path?: string;
             managedPolicies?: AwsArn[];
@@ -1127,6 +1143,7 @@ export interface AWS {
       | "ap-southeast-3"
       | "ap-southeast-4"
       | "ap-southeast-5"
+      | "ap-southeast-6"
       | "ap-southeast-7"
       | "ca-central-1"
       | "ca-west-1"
@@ -1469,29 +1486,6 @@ export interface AWS {
           [k: string]: unknown;
         };
       };
-      /**
-       * This interface was referenced by `undefined`'s JSON-Schema definition
-       * via the `patternProperty` "^[a-zA-Z0-9]{1,255}$".
-       */
-      [k: string]: {
-        Type: string;
-        Properties?: {
-          [k: string]: unknown;
-        };
-        CreationPolicy?: {
-          [k: string]: unknown;
-        };
-        DeletionPolicy?: string;
-        DependsOn?: AwsResourceDependsOn;
-        Metadata?: {
-          [k: string]: unknown;
-        };
-        UpdatePolicy?: {
-          [k: string]: unknown;
-        };
-        UpdateReplacePolicy?: string;
-        Condition?: AwsResourceCondition;
-      };
     };
     Transform?: string[];
     extensions?: {
@@ -1615,7 +1609,11 @@ export interface AwsResourceTags {
    */
   [k: string]: string;
 }
+export interface AwsLambdaTenancy {
+  mode: string;
+}
 export interface AwsLambdaVpcConfig {
+  ipv6AllowedForDualStack?: boolean;
   securityGroupIds: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
   subnetIds: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
 }
