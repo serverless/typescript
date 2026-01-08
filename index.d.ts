@@ -84,7 +84,8 @@ export type AwsLambdaRuntime =
   | "python3.14"
   | "ruby2.7"
   | "ruby3.2"
-  | "ruby3.3";
+  | "ruby3.3"
+  | "ruby3.4";
 export type AwsLambdaRuntimeManagement =
   | ("auto" | "onFunctionUpdate")
   | {
@@ -142,10 +143,6 @@ export type AwsS3BucketName = string;
 export type Stage = string;
 export type AwsCfArrayInstruction = AwsCfInstruction[] | AwsCfSplit;
 export type ServiceName = string;
-/**
- * This interface was referenced by `undefined`'s JSON-Schema definition
- * via the `patternProperty` "^Fn::ForEach::[a-zA-Z0-9]+$".
- */
 export type AwsCfForEach = unknown[];
 
 export interface AWS {
@@ -1491,6 +1488,31 @@ export interface AWS {
           [k: string]: unknown;
         };
       };
+      /**
+       * This interface was referenced by `undefined`'s JSON-Schema definition
+       * via the `patternProperty` "^([a-zA-Z0-9]{1,255}|Fn::ForEach::[a-zA-Z0-9]+)$".
+       */
+      [k: string]:
+        | {
+            Type: string;
+            Properties?: {
+              [k: string]: unknown;
+            };
+            CreationPolicy?: {
+              [k: string]: unknown;
+            };
+            DeletionPolicy?: string;
+            DependsOn?: AwsResourceDependsOn;
+            Metadata?: {
+              [k: string]: unknown;
+            };
+            UpdatePolicy?: {
+              [k: string]: unknown;
+            };
+            UpdateReplacePolicy?: string;
+            Condition?: AwsResourceCondition;
+          }
+        | AwsCfForEach;
     };
     Transform?: string[];
     extensions?: {
