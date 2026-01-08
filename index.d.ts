@@ -761,6 +761,8 @@ export interface AWS {
       runtimeManagement?: AwsLambdaRuntimeManagement;
       tags?: AwsResourceTags;
       tenancy?: AwsLambdaTenancy;
+      durableConfig?: AwsLambdaDurableConfig;
+      capacityProvider?: string | AwsCfFunction | AwsLambdaCapacityProviderFunctionConfig;
       timeout?: AwsLambdaTimeout;
       tracing?: AwsLambdaTracing;
       url?:
@@ -1086,6 +1088,9 @@ export interface AWS {
     kmsKeyArn?: AwsKmsArn;
     lambdaHashingVersion?: "20200924" | "20201221";
     layers?: AwsLambdaLayers;
+    capacityProviders?: {
+      [k: string]: AwsLambdaCapacityProviderConfig;
+    };
     logRetentionInDays?: AwsLogRetentionInDays;
     logDataProtectionPolicy?: AwsLogDataProtectionPolicy;
     logs?: {
@@ -1612,6 +1617,20 @@ export interface AwsResourceTags {
 export interface AwsLambdaTenancy {
   mode: string;
 }
+export interface AwsLambdaDurableConfig {
+  executionTimeout: number;
+  retentionPeriodInDays?: number;
+}
+export interface AwsLambdaCapacityProviderFunctionConfig {
+  name: string | AwsCfFunction;
+  maxConcurrency?: number;
+  memoryPerVCpu?: 2 | 4 | 8;
+  scaling?: AwsLambdaCapacityProviderFunctionScaling;
+}
+export interface AwsLambdaCapacityProviderFunctionScaling {
+  min?: number;
+  max?: number;
+}
 export interface AwsLambdaVpcConfig {
   ipv6AllowedForDualStack?: boolean;
   securityGroupIds: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
@@ -1653,4 +1672,30 @@ export interface AwsCustomDomain {
 }
 export interface AwsCfImportLocallyResolvable {
   "Fn::ImportValue": string;
+}
+export interface AwsLambdaCapacityProviderConfig {
+  permissions?: {
+    operatorRole?: AwsArn;
+  };
+  vpc?: AwsLambdaCapacityProviderVpcConfig;
+  instanceRequirements?: AwsLambdaCapacityProviderInstanceRequirements;
+  scaling?: AwsLambdaCapacityProviderScalingConfig;
+  kmsKeyArn?: AwsKmsArn;
+}
+export interface AwsLambdaCapacityProviderVpcConfig {
+  securityGroupIds: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
+  subnetIds: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
+}
+export interface AwsLambdaCapacityProviderInstanceRequirements {
+  allowedInstanceTypes?: string[];
+  excludedInstanceTypes?: string[];
+  architectures?: AwsLambdaArchitecture[];
+}
+export interface AwsLambdaCapacityProviderScalingConfig {
+  mode?: string;
+  maxVCpuCount?: number;
+  policies?: {
+    predefinedMetricType: "LambdaCapacityProviderAverageCPUUtilization";
+    targetValue: number;
+  }[];
 }
