@@ -1,56 +1,170 @@
 name: Update and Release Serverless Definitions
 on:
+  # Daily check: releases only when npm has a Framework version that
+  # @serverless/typescript has not published yet.
+  schedule:
+    - cron: '37 5 * * *'
   workflow_dispatch:
+    inputs:
+      version:
+        description: Framework version to generate definitions for (defaults to the latest on npm)
+        required: false
   repository_dispatch:
     types: [serverless-released]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: update-and-release
+  cancel-in-progress: false
+
 jobs:
-  generateTSDefinitions:
-    name: Generate serverless/serverless typescript definitions
+  resolveVersion:
+    name: Resolve Framework version
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.resolve.outputs.version }}
+      release: ${{ steps.resolve.outputs.release }}
+    steps:
+      - name: Resolve version and check npm
+        id: resolve
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version || github.event.client_payload.version }}
+        run: |
+          version="${INPUT_VERSION:-$(npm view serverless version)}"
+          version="${version#v}"
+          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid Framework version: $version"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+          if npm view "@serverless/typescript@$version" version 2>/dev/null | grep -q .; then
+            echo "@serverless/typescript@$version is already published"
+            echo "release=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Publishing an older version would move the latest dist-tag back.
+          latest="$(npm view @serverless/typescript version)"
+          if [ "$(printf '%s\n%s\n' "$latest" "$version" | sort -V | tail -1)" != "$version" ]; then
+            echo "::error::$version is older than the published latest, $latest"
+            exit 1
+          fi
+          echo "release=true" >> "$GITHUB_OUTPUT"
+
+  # Runs the Framework CLI, which is installed at run time and not covered by
+  # package-lock.json. This job holds no write permissions and cannot publish;
+  # it hands only index.d.ts to the release job.
+  generate:
+    name: Generate definitions
+    needs: resolveVersion
+    if: needs.resolveVersion.outputs.release == 'true' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ needs.resolveVersion.outputs.version }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Install Node.js and npm
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 20.x
-          registry-url: https://registry.npmjs.org
+          node-version: 24.x
+          check-latest: true
+          package-manager-cache: false
 
       - name: Install dependencies
-        run: npm i
+        run: npm ci --ignore-scripts
 
       - name: Build plugin
         run: npm run build
 
-      - name: Set Serverless latest version
-        id: serverless-version
+      - name: Install the Serverless CLI and verify its provenance
         run: |
-          version=$(npm list serverless | grep serverless@ | sed 's/.*serverless@/v/g' | tr -d '[[:space:]]')
-          echo "version=$version" >> $GITHUB_ENV
+          mkdir -p "$RUNNER_TEMP/installer"
+          cd "$RUNNER_TEMP/installer"
+          npm init -y >/dev/null
+          npm install --ignore-scripts --no-audit --no-fund "serverless@$VERSION"
+          npm audit signatures --json --include-attestations > "$RUNNER_TEMP/signatures.json"
+          node "$GITHUB_WORKSPACE/scripts/verify-installer-provenance.js" "$RUNNER_TEMP/signatures.json" "$VERSION"
 
-      - name: Generate TypeScript Definitions
-        run: npx sls schema
+      - name: Generate TypeScript definitions
         env:
-          SERVERLESS_ACCESS_KEY: ${{secrets.SERVERLESS_ACCESS_KEY}}
+          SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+        run: |
+          # The serverless npm package installs the Framework release that
+          # frameworkVersion names, so the definitions match $VERSION.
+          echo "frameworkVersion: '$VERSION'" >> serverless.yml
+          "$RUNNER_TEMP/installer/node_modules/.bin/serverless" --version 2>&1 | tee "$RUNNER_TEMP/version.txt"
+          grep -q "Framework $VERSION\b" "$RUNNER_TEMP/version.txt"
+          "$RUNNER_TEMP/installer/node_modules/.bin/serverless" schema
+          git diff --stat
 
-      - name: Update package.json version
-        run: npm version ${{ env.version }} --git-tag-version=false
-
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v5
+      - name: Upload definitions
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          author_name: Eslam λ Hefnawy
-          author_email: eslam@serverless.com
-          branch: master
-          message: Add Serverless definitions for ${{ env.version }}
-          add: index.d.ts package.json
-          tag: ${{ env.version }} --force
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: definitions
+          path: index.d.ts
+          if-no-files-found: error
+          retention-days: 7
 
-      - name: Publish
-        uses: JS-DevTools/npm-publish@v1
+  # Starts from a clean checkout and runs only locked dependencies, without
+  # install scripts, next to the npm publishing and push permissions.
+  release:
+    name: Test and publish definitions
+    needs: [resolveVersion, generate]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the definitions commit and tag
+      id-token: write # npm trusted publishing
+    env:
+      VERSION: ${{ needs.resolveVersion.outputs.version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install Node.js and npm
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          token: ${{ secrets.NPM_TOKEN }}
+          node-version: 24.x
+          check-latest: true
+          package-manager-cache: false
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Download definitions
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: definitions
+
+      - name: Test definitions
+        run: |
+          git diff --stat
+          npm run test:lint
+          npm run test:type
+          npm run test:definitions
+
+      - name: Commit and tag definitions
+        run: |
+          npm version "$VERSION" --git-tag-version=false --allow-same-version
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --tags origin "refs/tags/v$VERSION" >/dev/null; then
+            echo "Tag v$VERSION exists, publishing without a new commit"
+            exit 0
+          fi
+          git add index.d.ts package.json package-lock.json
+          git commit -m "chore(release): add Serverless definitions for v$VERSION"
+          git tag "v$VERSION"
+          git push --atomic origin HEAD:master "v$VERSION"
+
+      - name: Publish to npm
+        run: |
+          npm pack --dry-run
+          npm publish

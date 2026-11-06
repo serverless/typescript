@@ -1,5 +1,10 @@
 name: Tests
-on: push
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   tests:
@@ -7,19 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Install Node.js and npm
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 20.x
-          registry-url: https://registry.npmjs.org
+          node-version: 24.x
 
       - name: Install dependencies
-        run: npm i
+        run: npm ci
 
       - name: Run lint tests
         run: npm run test:lint
 
       - name: Run type tests
         run: npm run test:type
+
+      - name: Test definitions against a sample service
+        run: npm run test:definitions

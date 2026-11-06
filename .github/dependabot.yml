@@ -1,0 +1,24 @@
+version: 2
+updates:
+  # The cooldown leaves new releases a few days to be reviewed upstream (and
+  # pulled if compromised) before a pull request proposes them.
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    cooldown:
+      default-days: 5
+      semver-major-days: 30
+      semver-minor-days: 7
+      semver-patch-days: 3
+    groups:
+      dev-dependencies:
+        dependency-type: 'development'
+        update-types: ['minor', 'patch']
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    cooldown:
+      default-days: 5
