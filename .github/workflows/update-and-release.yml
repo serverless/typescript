@@ -13,6 +13,10 @@ on:
         description: Publish even if the new definitions no longer export a type the previous ones did
         type: boolean
         default: false
+      dry-run:
+        description: Generate and test the definitions from any branch without committing or publishing
+        type: boolean
+        default: false
   repository_dispatch:
     types: [serverless-released]
 
@@ -20,7 +24,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: update-and-release
+  group: update-and-release-${{ github.event.inputs['dry-run'] == 'true' && github.ref || 'release' }}
   cancel-in-progress: false
 
 jobs:
@@ -35,6 +39,7 @@ jobs:
         id: resolve
         env:
           INPUT_VERSION: ${{ github.event.inputs.version || github.event.client_payload.version }}
+          DRY_RUN: ${{ github.event.inputs['dry-run'] == 'true' }}
         run: |
           version="${INPUT_VERSION:-$(npm view serverless version)}"
           version="${version#v}"
@@ -43,6 +48,12 @@ jobs:
             exit 1
           fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
+
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "Dry run for $version: nothing will be committed or published"
+            echo "release=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           if npm view "@serverless/typescript@$version" version 2>/dev/null | grep -q .; then
             echo "@serverless/typescript@$version is already published"
@@ -60,11 +71,13 @@ jobs:
 
   # Runs the Framework CLI, which is installed at run time and not covered by
   # package-lock.json. This job holds no write permissions and cannot publish;
-  # it hands only index.d.ts to the release job.
+  # it hands only index.d.ts to the next jobs.
   generate:
     name: Generate definitions
     needs: resolveVersion
-    if: needs.resolveVersion.outputs.release == 'true' && github.ref == 'refs/heads/master'
+    if: >-
+      needs.resolveVersion.outputs.release == 'true' &&
+      (github.ref == 'refs/heads/master' || github.event.inputs['dry-run'] == 'true')
     runs-on: ubuntu-latest
     env:
       VERSION: ${{ needs.resolveVersion.outputs.version }}
@@ -116,20 +129,19 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  # Starts from a clean checkout and runs only locked dependencies, without
-  # install scripts, next to the npm publishing and push permissions.
-  release:
-    name: Test and publish definitions
+  # Tests the generated definitions from a clean checkout, with only locked
+  # dependencies and no install scripts. Read-only, so it also serves dry runs.
+  verify:
+    name: Test definitions
     needs: [resolveVersion, generate]
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # push the definitions commit and tag
-      id-token: write # npm trusted publishing
     env:
       VERSION: ${{ needs.resolveVersion.outputs.version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Install Node.js and npm
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -137,7 +149,6 @@ jobs:
           node-version: 24.x
           check-latest: true
           package-manager-cache: false
-          registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: npm ci --ignore-scripts
@@ -158,8 +169,42 @@ jobs:
           npm run test:definitions
 
       - name: Check that no exported type was removed
-        if: github.event.inputs.allow-removed-types != 'true'
+        if: github.event.inputs['allow-removed-types'] != 'true'
         run: node scripts/check-exported-types.js "$RUNNER_TEMP/previous.d.ts" index.d.ts
+
+      - name: Show the package that would be published
+        run: |
+          npm version "$VERSION" --git-tag-version=false --allow-same-version
+          npm pack --dry-run
+
+  # The only job that can push or publish. It never runs for a dry run or off
+  # master, and it runs no dependencies: npm version and npm publish need none.
+  release:
+    name: Publish definitions
+    needs: [resolveVersion, verify]
+    if: github.ref == 'refs/heads/master' && github.event.inputs['dry-run'] != 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the definitions commit and tag
+      id-token: write # npm trusted publishing
+    env:
+      VERSION: ${{ needs.resolveVersion.outputs.version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install Node.js and npm
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24.x
+          check-latest: true
+          package-manager-cache: false
+          registry-url: https://registry.npmjs.org
+
+      - name: Download definitions
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: definitions
 
       - name: Commit and tag definitions
         run: |
