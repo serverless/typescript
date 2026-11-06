@@ -5,6 +5,23 @@ import type { AWS } from "../index";
 const serverlessConfiguration: AWS = {
   service: "definitions-test",
   frameworkVersion: "4",
+  plugins: ["./local-plugin"],
+  params: {
+    default: { logLevel: "info" },
+    prod: { logLevel: "warn" },
+  },
+  stages: {
+    default: {
+      params: { domain: "dev.example.com" },
+    },
+  },
+  custom: {
+    tableName: "items-${sls:stage}",
+  },
+  package: {
+    individually: true,
+    patterns: ["!tests/**"],
+  },
   provider: {
     name: "aws",
     runtime: "nodejs24.x",
@@ -29,9 +46,24 @@ const serverlessConfiguration: AWS = {
   functions: {
     api: {
       handler: "src/api.handler",
+      layers: [{ Ref: "SharedLambdaLayer" }],
+      url: true,
       events: [
         { httpApi: { method: "GET", path: "/items/{id}" } },
         { http: { method: "post", path: "items", cors: true } },
+      ],
+    },
+    uploads: {
+      handler: "src/uploads.handler",
+      events: [
+        { s3: { bucket: "uploads", event: "s3:ObjectCreated:*", existing: true } },
+        { sns: "notifications" },
+        {
+          eventBridge: {
+            pattern: { source: ["aws.ec2"], "detail-type": ["EC2 Instance State-change Notification"] },
+          },
+        },
+        { stream: { type: "dynamodb", arn: { "Fn::GetAtt": ["Table", "StreamArn"] } } },
       ],
     },
     worker: {
@@ -42,6 +74,12 @@ const serverlessConfiguration: AWS = {
         { sqs: { arn: { "Fn::GetAtt": ["Queue", "Arn"] }, batchSize: 10 } },
         { schedule: "rate(5 minutes)" },
       ],
+    },
+  },
+  layers: {
+    shared: {
+      path: "layers/shared",
+      compatibleRuntimes: ["nodejs24.x"],
     },
   },
   resources: {
