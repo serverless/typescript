@@ -4,3 +4,6 @@ dist
 node_modules
 src
 serverless.yml
+test
+.serverless
+scripts
