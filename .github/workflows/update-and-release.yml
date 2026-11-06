@@ -212,6 +212,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if git ls-remote --exit-code --tags origin "refs/tags/v$VERSION" >/dev/null; then
+            # An earlier run tagged this version but did not publish it: publish
+            # only if the definitions still match the tagged ones.
+            git fetch --no-tags origin "refs/tags/v$VERSION:refs/tags/v$VERSION"
+            if ! git show "refs/tags/v$VERSION:index.d.ts" | cmp -s - index.d.ts; then
+              echo "::error::Generated definitions differ from tag v$VERSION"
+              exit 1
+            fi
             echo "Tag v$VERSION exists, publishing without a new commit"
             exit 0
           fi
