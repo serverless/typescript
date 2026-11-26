@@ -5,8 +5,17 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
+/**
+ * AWS ARN string or CloudFormation intrinsic that resolves to an ARN.
+ */
 export type AwsArn = AwsArnString | AwsCfFunction;
+/**
+ * AWS ARN string starting with arn:.
+ */
 export type AwsArnString = string;
+/**
+ * CloudFormation intrinsic function.
+ */
 export type AwsCfFunction =
   | AwsCfImport
   | AwsCfJoin
@@ -16,21 +25,57 @@ export type AwsCfFunction =
   | AwsCfBase64
   | AwsCfToJsonString;
 export type ErrorCode = string;
+/**
+ * String value or CloudFormation intrinsic function.
+ */
 export type AwsCfInstruction = string | AwsCfFunction;
 export type FunctionName = string;
+/**
+ * AWS Secrets Manager secret ARN.
+ */
 export type AwsSecretsManagerArnString = string;
+/**
+ * Event filter pattern for SQS, DynamoDB Streams, Kinesis.
+ */
 export type FilterPatterns = {
   [k: string]: unknown;
 }[];
+/**
+ * ALB listener ARN string.
+ */
 export type AwsAlbListenerArn = string;
+/**
+ * Alexa Skill or Smart Home application ID token.
+ */
 export type AwsAlexaEventToken = string;
+/**
+ * CloudWatch Logs log group name.
+ */
 export type AwsLogGroupName = string;
+/**
+ * KMS key ARN or CloudFormation intrinsic.
+ */
 export type AwsKmsArn = AwsCfFunction | string;
+/**
+ * Lambda instruction set architecture.
+ * @default 'x86_64'
+ * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions#instruction-set-architecture
+ * @example arm64
+ */
 export type AwsLambdaArchitecture = "arm64" | "x86_64";
 export type AwsResourceCondition = string;
 export type AwsResourceDependsOn = string[];
+/**
+ * ECR container image URI.
+ */
 export type EcrImageUri = string;
+/**
+ * Array of Lambda layer ARNs.
+ */
 export type AwsLambdaLayers = AwsArn[];
+/**
+ * CloudWatch Logs retention period in days.
+ */
 export type AwsLogRetentionInDays =
   | 1
   | 3
@@ -53,24 +98,62 @@ export type AwsLogRetentionInDays =
   | 2922
   | 3288
   | 3653;
+/**
+ * CloudWatch Logs log group class.
+ */
+export type AwsLogGroupClass = string;
+/**
+ * Lambda memory size in MB (128-10240).
+ * @default 1024
+ * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions#configuration
+ * @example 1024
+ */
 export type AwsLambdaMemorySize = number;
+/**
+ * Lambda execution role ARN or CloudFormation reference.
+ * @see https://www.serverless.com/framework/docs/providers/aws/guide/iam#custom-iam-roles
+ */
 export type AwsLambdaRole = string | AwsCfSub | AwsCfImport | AwsCfGetAtt;
+/**
+ * Lambda runtime: a Lambda-managed runtime identifier, or a customer-managed runtime as its runtime alias ARN or a CloudFormation intrinsic that returns one.
+ * @default 'nodejs20.x'
+ * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions
+ * @example nodejs20.x
+ */
 export type AwsLambdaRuntime =
+  | AwsLambdaRuntimeIdentifier
+  | `arn:${string}`
+  | {
+      /**
+       * This interface was referenced by `undefined`'s JSON-Schema definition
+       * via the `patternProperty` "^(Ref|Fn::.+)$".
+       */
+      [k: string]: unknown;
+    };
+/**
+ * Lambda-managed runtime identifier.
+ */
+export type AwsLambdaRuntimeIdentifier =
   | "dotnet6"
   | "dotnet8"
+  | "dotnet10"
   | "go1.x"
   | "java25"
   | "java21"
   | "java17"
+  | "java17.al2023"
   | "java11"
+  | "java11.al2023"
   | "java8"
   | "java8.al2"
+  | "java8.al2023"
   | "nodejs14.x"
   | "nodejs16.x"
   | "nodejs18.x"
   | "nodejs20.x"
   | "nodejs22.x"
   | "nodejs24.x"
+  | "nodejs26.x"
   | "provided"
   | "provided.al2"
   | "provided.al2023"
@@ -82,20 +165,45 @@ export type AwsLambdaRuntime =
   | "python3.12"
   | "python3.13"
   | "python3.14"
+  | "python3.15"
   | "ruby2.7"
   | "ruby3.2"
   | "ruby3.3"
-  | "ruby3.4";
+  | "ruby3.4"
+  | "ruby4.0";
+/**
+ * Lambda runtime management configuration.
+ */
 export type AwsLambdaRuntimeManagement =
   | ("auto" | "onFunctionUpdate")
   | {
+      /**
+       * Runtime management mode.
+       */
       mode?: "auto" | "onFunctionUpdate" | "manual";
       arn?: AwsArn;
     };
+/**
+ * Lambda timeout in seconds (1-1800).
+ * @default 6
+ * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions#configuration
+ */
 export type AwsLambdaTimeout = number;
+/**
+ * Lambda X-Ray tracing mode or boolean toggle.
+ */
 export type AwsLambdaTracing = ("Active" | "PassThrough") | boolean;
 export type AwsLambdaVersioning = boolean;
+/**
+ * HTTP API payload format version.
+ * @default '2.0'
+ * @see https://www.serverless.com/framework/docs/providers/aws/events/http-api#event-payload-format
+ * @example 2.0
+ */
 export type AwsHttpApiPayload = "1.0" | "2.0";
+/**
+ * IAM policy statement array.
+ */
 export type AwsIamPolicyStatements = ({
   [k: string]: unknown;
 } & (
@@ -114,6 +222,9 @@ export type AwsIamPolicyStatements = ({
         [k: string]: unknown;
       }
   ))[];
+/**
+ * API Gateway API key definitions.
+ */
 export type AwsApiGatewayApiKeys = (
   | string
   | AwsApiGatewayApiKeysProperties
@@ -121,6 +232,9 @@ export type AwsApiGatewayApiKeys = (
       [k: string]: (string | AwsApiGatewayApiKeysProperties)[];
     }
 )[];
+/**
+ * API Gateway resource policy statements.
+ */
 export type AwsResourcePolicyStatements = ({
   [k: string]: unknown;
 } & (
@@ -139,15 +253,45 @@ export type AwsResourcePolicyStatements = ({
         [k: string]: unknown;
       }
   ))[];
+/**
+ * Valid S3 bucket name.
+ */
 export type AwsS3BucketName = string;
 export type Stage = string;
+/**
+ * Array of CloudFormation instructions or Fn::Split.
+ */
 export type AwsCfArrayInstruction = AwsCfInstruction[] | AwsCfSplit;
+/**
+ * Service name value used by the framework to group and namespace resources.
+ * @see https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml
+ */
 export type ServiceName = string;
+/**
+ * CloudFormation Fn::ForEach loop construct.
+ */
 export type AwsCfForEach = unknown[];
+/**
+ * IAM policy resource specification.
+ */
+export type AwsIamPolicyResource = "*" | AwsArn | AwsLogicalResourceId | ("*" | AwsArn | AwsLogicalResourceId)[];
+/**
+ * CloudFormation logical resource ID pattern.
+ */
+export type AwsLogicalResourceId = string;
 
 export interface AWS {
+  /**
+   * Serverless Platform organization name.
+   */
   org?: string;
+  /**
+   * Serverless Platform application name.
+   */
   app?: string;
+  /**
+   * Service outputs accessible by other services via the Serverless Platform.
+   */
   outputs?: {
     [k: string]:
       | string
@@ -158,39 +302,108 @@ export interface AWS {
           [k: string]: unknown;
         };
   };
+  /**
+   * Config validation strictness: 'warn', 'error', or 'off'.
+   */
   configValidationMode?: "error" | "warn" | "off";
   console?:
     | boolean
     | {
         [k: string]: unknown;
       };
+  /**
+   * Custom variables accessible via ${self:custom.xxx}.
+   */
   custom?: {
+    /**
+     * Compatibility schema for serverless-iam-roles-per-function plugin options.
+     */
     "serverless-iam-roles-per-function"?: {
       defaultInherit?: boolean;
       iamGlobalPermissionsBoundary?: AwsArn;
+    };
+    prune?: {
+      automatic?: boolean;
+      number?: number;
+      includeLayers?: boolean;
+      includeArtifacts?: boolean;
     };
     [k: string]: unknown;
   };
   dashboard?: {
     disableMonitoring?: boolean;
   };
+  /**
+   * How to handle deprecation warnings.
+   */
   deprecationNotificationMode?: "error" | "warn" | "warn:summary";
+  /**
+   * Array of deprecation codes to suppress.
+   * @example ['LAMBDA_HASHING_VERSION_V2']
+   */
   disabledDeprecations?: "*" | ErrorCode[];
+  /**
+   * Native build configuration for TypeScript/JavaScript bundling.
+   * @since v4
+   * @see https://www.serverless.com/framework/docs/providers/aws/guide/building
+   * @example
+   * build:
+   *   esbuild:
+   *     bundle: true
+   */
   build?:
     | string
     | {
+        /**
+         * esbuild configuration for bundling TypeScript/JavaScript.
+         * @since v4
+         * @see https://www.serverless.com/framework/docs/providers/aws/guide/building#esbuild
+         */
         esbuild?:
           | {
+              /**
+               * Node modules to exclude from bundle.
+               * @example ['aws-sdk']
+               */
               external?: string[];
               exclude?: string[];
               packages?: "external";
+              /**
+               * Number of concurrent unique handler-file builds and per-function packaging operations. Functions sharing a handler file are built once, and by default all unique handler files are built concurrently.
+               */
               buildConcurrency?: number;
               bundle?: boolean;
+              /**
+               * Path to a tsconfig file used to select which TypeScript sources are compiled when bundle is false, and passed to esbuild for compilerOptions.
+               * @example './tsconfig.build.json'
+               * @since v4
+               */
+              tsconfig?: string;
+              /**
+               * Output file extension for the bundled handlers, e.g. { '.js': '.mjs' } to emit ES module bundles.
+               * @example { '.js': '.mjs' }
+               */
+              outExtension?: {
+                ".js"?: ".js" | ".cjs" | ".mjs";
+                [k: string]: unknown;
+              };
               minify?: boolean;
+              /**
+               * Sourcemap generation configuration.
+               * @see https://www.serverless.com/framework/docs/providers/aws/guide/building#configuration
+               */
               sourcemap?:
                 | boolean
                 | {
+                    /**
+                     * Sourcemap generation type.
+                     * @default 'linked'
+                     */
                     type?: "inline" | "linked" | "external";
+                    /**
+                     * Whether to set NODE_OPTIONS=--enable-source-maps.
+                     * @default false
+                     */
                     setNodeOptions?: boolean;
                     [k: string]: unknown;
                   };
@@ -199,7 +412,20 @@ export interface AWS {
           | boolean;
         [k: string]: unknown;
       };
+  /**
+   * Serverless Framework version constraint (e.g., '3', '>=2.0.0 <4.0.0').
+   * @see https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml#root-properties
+   * @example '4'
+   */
   frameworkVersion?: string;
+  /**
+   * Function definitions for the service.
+   * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions
+   * @example
+   * functions:
+   *   hello:
+   *     handler: handler.hello
+   */
   functions?: {
     /**
      * This interface was referenced by `undefined`'s JSON-Schema definition
@@ -212,13 +438,44 @@ export interface AWS {
             __schemaWorkaround__: null;
           }
         | {
+            /**
+             * Schedule event configuration (EventBridge Scheduler).
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/schedule
+             * @example
+             * events:
+             *   - schedule:
+             *       rate: rate(5 minutes)
+             *       enabled: true
+             *       input:
+             *         key: value
+             *   - schedule: cron(0 12 * * ? *)
+             */
             schedule:
               | string
               | {
+                  /**
+                   * Schedule expression (rate or cron).
+                   * @remarks Scheduled event (cron/rate).
+                   * @example 'rate(5 minutes)' | 'cron(0 12 * * ? *)'
+                   */
                   rate: (AwsCfFunction | string)[];
+                  /**
+                   * Whether the schedule is enabled.
+                   * @default true
+                   */
                   enabled?: boolean;
+                  /**
+                   * Schedule name.
+                   */
                   name?: string;
+                  /**
+                   * Schedule description.
+                   */
                   description?: string;
+                  /**
+                   * Input payload to pass to Lambda.
+                   * @example { key: 'value' }
+                   */
                   input?:
                     | string
                     | (
@@ -229,52 +486,143 @@ export interface AWS {
                             [k: string]: unknown;
                           }
                       );
+                  /**
+                   * JSON path to extract input from event.
+                   */
                   inputPath?: string;
+                  /**
+                   * Input transformation configuration.
+                   */
                   inputTransformer?: {
+                    /**
+                     * Template for the transformed input.
+                     * @example '{"instance": <instance>}'
+                     */
                     inputTemplate: string;
+                    /**
+                     * Map of JSON path expressions to variable names.
+                     * @example { instance: '$.detail.instance-id' }
+                     */
                     inputPathsMap?: {
                       [k: string]: unknown;
                     };
                   };
+                  /**
+                   * Scheduler backend mode. `eventBus` uses AWS::Events::Rule, `scheduler` uses AWS::Scheduler::Schedule.
+                   * @default 'eventBus'
+                   */
                   method?: "eventBus" | "scheduler";
+                  /**
+                   * IANA timezone name. Supported only when method is `scheduler`.
+                   */
                   timezone?: string;
                 };
           }
         | {
+            /**
+             * S3 bucket notification event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/s3
+             * @example
+             * s3:
+             *   bucket: my-bucket
+             *   event: s3:ObjectCreated:*
+             */
             s3:
               | string
               | {
+                  /**
+                   * Bucket name or CloudFormation reference.
+                   */
                   bucket: string | AwsCfFunction | AwsCfIf;
+                  /**
+                   * S3 event name (for example `s3:ObjectCreated:*`).
+                   * @see https://www.serverless.com/framework/docs/providers/aws/events/s3#setting-the-specific-trigger-event
+                   * @example 's3:ObjectCreated:*'
+                   */
                   event?: string;
+                  /**
+                   * Whether the bucket already exists.
+                   */
                   existing?: boolean;
+                  /**
+                   * Force custom resource update for existing bucket notifications.
+                   */
                   forceDeploy?: boolean;
+                  /**
+                   * Object key filter rules (prefix/suffix).
+                   * @see https://www.serverless.com/framework/docs/providers/aws/events/s3#setting-filter-rules
+                   */
                   rules?: {
+                    /**
+                     * Object key prefix filter.
+                     */
                     prefix?: string | AwsCfFunction;
+                    /**
+                     * Object key suffix filter.
+                     */
                     suffix?: string | AwsCfFunction;
                   }[];
                 };
           }
         | {
+            /**
+             * REST API Gateway event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway
+             * @example
+             * http:
+             *   path: users/{id}
+             *   method: get
+             */
             http:
               | string
               | {
+                  /**
+                   * Invoke Lambda asynchronously.
+                   * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#using-asynchronous-integration
+                   */
                   async?: boolean;
+                  /**
+                   * Custom/Cognito/IAM authorizer configuration.
+                   * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#http-endpoints-with-custom-authorizers
+                   */
                   authorizer?:
                     | string
                     | {
                         arn?: AwsArn;
                         authorizerId?: AwsCfInstruction;
                         claims?: string[];
+                        /**
+                         * Identity source expression for the authorizer.
+                         * @default 'method.request.header.Authorization'
+                         */
                         identitySource?: string;
                         identityValidationExpression?: string;
                         managedExternally?: boolean;
                         name?: string;
+                        /**
+                         * Authorizer cache TTL in seconds (0-3600).
+                         * @default 300
+                         */
                         resultTtlInSeconds?: number;
+                        /**
+                         * OAuth scopes required for access.
+                         */
                         scopes?: (string | AwsCfInstruction)[];
-                        type?: string | string | string | string | string;
+                        /**
+                         * Authorizer type.
+                         * @example 'token'
+                         */
+                        type?: string | string | string | string | string | string;
                       };
                   connectionId?: AwsCfInstruction;
+                  /**
+                   * Connection type for integration.
+                   */
                   connectionType?: string | string;
+                  /**
+                   * CORS configuration.
+                   * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#enabling-cors
+                   */
                   cors?:
                     | boolean
                     | {
@@ -284,17 +632,51 @@ export interface AWS {
                         maxAge?: number;
                         methods?: ("GET" | "POST" | "PUT" | "PATCH" | "OPTIONS" | "HEAD" | "DELETE" | "ANY")[];
                         origin?: string;
+                        /**
+                         * Allowed origin list.
+                         * @example ['https://example.com']
+                         */
                         origins?: string[];
                       };
+                  /**
+                   * API Gateway integration type.
+                   * @default 'lambda-proxy'
+                   * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#lambda-integration
+                   */
                   integration?: string | string | string | string | string | string | string | string | string | string;
+                  /**
+                   * HTTP method.
+                   * @example 'get'
+                   */
                   method: string;
+                  /**
+                   * OpenAPI operation id.
+                   */
                   operationId?: string;
+                  /**
+                   * HTTP route path.
+                   * @example 'users/{id}'
+                   */
                   path: string;
+                  /**
+                   * Require API key for this route.
+                   * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#setting-api-keys-for-your-rest-api
+                   */
                   private?: boolean;
+                  /**
+                   * Request mapping and validation configuration.
+                   * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#request-schema-validators
+                   */
                   request?: {
                     contentHandling?: "CONVERT_TO_BINARY" | "CONVERT_TO_TEXT";
                     method?: string;
+                    /**
+                     * Request parameter mappings by location.
+                     */
                     parameters?: {
+                      /**
+                       * Request parameter mapping configuration.
+                       */
                       querystrings?: {
                         [k: string]:
                           | boolean
@@ -303,6 +685,9 @@ export interface AWS {
                               mappedValue?: AwsCfInstruction;
                             };
                       };
+                      /**
+                       * Request parameter mapping configuration.
+                       */
                       headers?: {
                         [k: string]:
                           | boolean
@@ -311,6 +696,9 @@ export interface AWS {
                               mappedValue?: AwsCfInstruction;
                             };
                       };
+                      /**
+                       * Request parameter mapping configuration.
+                       */
                       paths?: {
                         [k: string]:
                           | boolean
@@ -321,6 +709,10 @@ export interface AWS {
                       };
                     };
                     passThrough?: "NEVER" | "WHEN_NO_MATCH" | "WHEN_NO_TEMPLATES";
+                    /**
+                     * Request body schemas by content-type.
+                     * @example { 'application/json': 'schemaId' }
+                     */
                     schemas?: {
                       [k: string]:
                         | {
@@ -328,24 +720,48 @@ export interface AWS {
                           }
                         | string;
                     };
+                    /**
+                     * Request templates keyed by content-type.
+                     */
                     template?: {
                       [k: string]: string;
                     };
                     uri?: AwsCfInstruction;
                   };
+                  /**
+                   * Response mapping configuration.
+                   */
                   response?: {
                     contentHandling?: "CONVERT_TO_BINARY" | "CONVERT_TO_TEXT";
+                    /**
+                     * Response header mappings.
+                     */
                     headers?: {
                       [k: string]: string;
                     };
                     template?: string;
+                    /**
+                     * Streaming transfer mode.
+                     */
                     transferMode?: string | string;
+                    /**
+                     * Response mappings keyed by status code.
+                     */
                     statusCodes?: {
+                      /**
+                       * Per-status-code response mapping.
+                       */
                       [k: string]: {
+                        /**
+                         * Headers added to this status response.
+                         */
                         headers?: {
                           [k: string]: string;
                         };
                         pattern?: string;
+                        /**
+                         * Response template string or map keyed by content-type.
+                         */
                         template?:
                           | string
                           | {
@@ -354,15 +770,43 @@ export interface AWS {
                       };
                     };
                   };
+                  /**
+                   * Integration timeout in milliseconds.
+                   */
                   timeoutInMillis?: number;
                 };
           }
         | {
+            /**
+             * WebSocket API event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/websocket
+             * @remarks ID of existing WebSocket API.
+             * @example
+             * events:
+             *   - websocket:
+             *       route: $connect
+             *       authorizer: myAuth
+             *   - websocket:
+             *       route: sendMessage
+             */
             websocket:
               | string
               | {
+                  /**
+                   * WebSocket route key.
+                   * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api-route-keys-connect-disconnect.html
+                   * @example '$connect' | '$disconnect' | '$default' | 'sendMessage'
+                   */
                   route: string;
+                  /**
+                   * Route response selection expression.
+                   * @example '$default'
+                   */
                   routeResponseSelectionExpression?: "$default";
+                  /**
+                   * WebSocket API authorizer configuration.
+                   * @see https://www.serverless.com/framework/docs/providers/aws/events/websocket#using-authorizers
+                   */
                   authorizer?:
                     | AwsArnString
                     | FunctionName
@@ -377,6 +821,17 @@ export interface AWS {
                 };
           }
         | {
+            /**
+             * SNS event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/sns
+             * @example
+             * events:
+             *   - sns:
+             *       arn: arn:aws:sns:region:account:topic
+             *       filterPolicy:
+             *         type:
+             *           - order
+             */
             sns:
               | string
               | AwsArnString
@@ -390,6 +845,20 @@ export interface AWS {
                 );
           }
         | {
+            /**
+             * DynamoDB/Kinesis stream event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/streams
+             * @remarks Stream ARN or CloudFormation reference.
+             * @remarks Stream type.
+             * @example
+             * events:
+             *   - stream:
+             *       arn: arn:aws:dynamodb:region:account:table/name/stream/timestamp
+             *       type: dynamodb
+             *       batchSize: 100
+             *       startingPosition: LATEST
+             *       functionResponseType: ReportBatchItemFailures
+             */
             stream:
               | AwsArnString
               | (
@@ -404,68 +873,284 @@ export interface AWS {
                 );
           }
         | {
+            /**
+             * Self-managed Apache Kafka event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/kafka
+             * @see https://docs.aws.amazon.com/lambda/latest/dg/with-kafka.html
+             * @remarks Self-managed Kafka event.
+             * @example
+             * events:
+             *   - kafka:
+             *       accessConfigurations:
+             *         saslScram512Auth: arn:aws:secretsmanager:region:account:secret:name
+             *       bootstrapServers:
+             *         - broker1.example.com:9092
+             *       topic: my-topic
+             *       batchSize: 100
+             */
             kafka: {
+              /**
+               * Self-managed Kafka access configuration.
+               */
               accessConfigurations: {
+                /**
+                 * VPC subnet ids used by the event source mapping.
+                 */
                 vpcSubnet?: string[];
+                /**
+                 * VPC security group ids used by the event source mapping.
+                 */
                 vpcSecurityGroup?: string[];
+                /**
+                 * Secrets Manager ARNs for SASL/PLAIN auth.
+                 */
                 saslPlainAuth?: AwsSecretsManagerArnString[];
+                /**
+                 * Secrets Manager ARNs for SASL/SCRAM-256 auth.
+                 */
                 saslScram256Auth?: AwsSecretsManagerArnString[];
+                /**
+                 * Secrets Manager ARNs for SASL/SCRAM-512 auth.
+                 */
                 saslScram512Auth?: AwsSecretsManagerArnString[];
+                /**
+                 * Secrets Manager ARNs containing client TLS certificates.
+                 */
                 clientCertificateTlsAuth?: AwsSecretsManagerArnString[];
+                /**
+                 * Secrets Manager ARNs containing server root CA certificates.
+                 */
                 serverRootCaCertificate?: AwsSecretsManagerArnString[];
               };
+              /**
+               * Maximum number of records to retrieve in a single batch.
+               */
               batchSize?: number;
+              /**
+               * Maximum batching window in seconds.
+               */
               maximumBatchingWindow?: number;
+              /**
+               * Enable or disable the event source mapping.
+               */
               enabled?: boolean;
+              /**
+               * Kafka bootstrap servers.
+               */
               bootstrapServers: string[];
+              /**
+               * Where Lambda starts reading in the stream.
+               */
               startingPosition?: "LATEST" | "TRIM_HORIZON" | "AT_TIMESTAMP";
+              /**
+               * Start timestamp used when startingPosition is AT_TIMESTAMP.
+               */
               startingPositionTimestamp?: number;
+              /**
+               * Topic to consume from.
+               */
               topic: string;
+              /**
+               * Consumer group ID for the Kafka consumer.
+               */
               consumerGroupId?: string;
               filterPatterns?: FilterPatterns;
+              /**
+               * Provisioned mode for the event source mapping — dedicated event pollers with min/max bounds and optional poller group. Set to false to disable provisioned mode on an existing mapping.
+               * @see https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html#invocation-eventsourcemapping-provisioned-mode
+               * @example
+               * provisionedPollers:
+               *   min: 1
+               *   max: 100
+               */
+              provisionedPollers?:
+                | false
+                | {
+                    /**
+                     * Minimum number of provisioned event pollers (1-200). AWS default: 1.
+                     */
+                    min?: number;
+                    /**
+                     * Maximum number of provisioned event pollers (1-2000). AWS default: 200.
+                     */
+                    max?: number;
+                    /**
+                     * Provisioned poller group name — groups up to 100 event source mappings in the event source's VPC to share Event Poller Unit capacity. Letters, digits, hyphens and underscores only.
+                     */
+                    group?: string;
+                  };
             };
           }
         | {
+            /**
+             * ActiveMQ event source mapping configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/activemq
+             * @example
+             * activemq:
+             *   arn: arn:aws:mq:us-east-1:123456789:broker:my-broker:b-abc-123
+             *   queue: my-queue
+             *   basicAuthArn: arn:aws:secretsmanager:us-east-1:123456789:secret:my-secret
+             */
             activemq: {
+              /**
+               * Amazon MQ (ActiveMQ) broker ARN.
+               */
               arn: string | AwsCfImport | AwsCfRef;
+              /**
+               * Secrets Manager ARN containing ActiveMQ credentials.
+               */
               basicAuthArn: AwsSecretsManagerArnString | AwsCfImport | AwsCfRef;
+              /**
+               * Maximum number of records to retrieve in a single batch.
+               */
               batchSize?: number;
+              /**
+               * Maximum batching window in seconds.
+               */
               maximumBatchingWindow?: number;
+              /**
+               * Enable or disable the event source mapping.
+               */
               enabled?: boolean;
+              /**
+               * Queue name to consume from.
+               */
               queue: string;
               filterPatterns?: FilterPatterns;
             };
           }
         | {
+            /**
+             * RabbitMQ event source mapping configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/rabbitmq
+             * @example
+             * rabbitmq:
+             *   arn: arn:aws:mq:us-east-1:123456789:broker:my-broker:b-abc-123
+             *   queue: my-queue
+             *   basicAuthArn: arn:aws:secretsmanager:us-east-1:123456789:secret:my-secret
+             */
             rabbitmq: {
+              /**
+               * Amazon MQ (RabbitMQ) broker ARN.
+               */
               arn: string | AwsCfImport | AwsCfRef;
+              /**
+               * Secrets Manager ARN containing RabbitMQ credentials.
+               */
               basicAuthArn: AwsSecretsManagerArnString | AwsCfImport | AwsCfRef;
+              /**
+               * Maximum number of records to retrieve in a single batch.
+               */
               batchSize?: number;
+              /**
+               * Maximum batching window in seconds.
+               */
               maximumBatchingWindow?: number;
+              /**
+               * Enable or disable the event source mapping.
+               */
               enabled?: boolean;
+              /**
+               * Queue name to consume from.
+               */
               queue: string;
+              /**
+               * RabbitMQ virtual host to connect to.
+               */
               virtualHost?: string;
               filterPatterns?: FilterPatterns;
             };
           }
         | {
+            /**
+             * Amazon MSK (Managed Streaming for Kafka) event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/msk
+             * @remarks Amazon MSK event.
+             * @example
+             * msk:
+             *   arn: arn:aws:kafka:us-east-1:123456789:cluster/my-cluster/abc-123
+             *   topic: my-kafka-topic
+             */
             msk: {
+              /**
+               * MSK cluster ARN.
+               */
               arn: AwsArnString | AwsCfImport | AwsCfRef;
+              /**
+               * Maximum number of records to retrieve in a single batch.
+               */
               batchSize?: number;
+              /**
+               * Maximum batching window in seconds.
+               */
               maximumBatchingWindow?: number;
+              /**
+               * Enable or disable the event source mapping.
+               */
               enabled?: boolean;
+              /**
+               * Where Lambda starts reading in the stream.
+               */
               startingPosition?: "LATEST" | "TRIM_HORIZON" | "AT_TIMESTAMP";
+              /**
+               * Start timestamp used when startingPosition is AT_TIMESTAMP.
+               */
               startingPositionTimestamp?: number;
+              /**
+               * Kafka topic to consume from.
+               * @example 'my-kafka-topic'
+               */
               topic: string;
               saslScram512?: AwsArnString;
+              /**
+               * Kafka consumer group id for this mapping.
+               */
               consumerGroupId?: string;
               filterPatterns?: FilterPatterns;
+              /**
+               * Provisioned mode for the event source mapping — dedicated event pollers with min/max bounds and optional poller group. Set to false to disable provisioned mode on an existing mapping.
+               * @see https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html#invocation-eventsourcemapping-provisioned-mode
+               * @example
+               * provisionedPollers:
+               *   min: 1
+               *   max: 100
+               */
+              provisionedPollers?:
+                | false
+                | {
+                    /**
+                     * Minimum number of provisioned event pollers (1-200). AWS default: 1.
+                     */
+                    min?: number;
+                    /**
+                     * Maximum number of provisioned event pollers (1-2000). AWS default: 200.
+                     */
+                    max?: number;
+                    /**
+                     * Provisioned poller group name — groups up to 100 event source mappings in the event source's VPC to share Event Poller Unit capacity. Letters, digits, hyphens and underscores only.
+                     */
+                    group?: string;
+                  };
             };
           }
         | {
+            /**
+             * Application Load Balancer event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/alb
+             */
             alb: {
+              /**
+               * ALB authorizer names configured in provider.alb.authorizers.
+               * @see https://www.serverless.com/framework/docs/providers/aws/events/alb#add-cognitocustom-idp-provider-authentication
+               */
               authorizer?: string[];
+              /**
+               * ALB listener rule conditions.
+               */
               conditions: {
+                /**
+                 * HTTP header match conditions.
+                 */
                 header?:
                   | {
                       name: string;
@@ -475,14 +1160,32 @@ export interface AWS {
                       name: string;
                       values: string[];
                     };
+                /**
+                 * Host header match patterns.
+                 */
                 host?: string[];
+                /**
+                 * Source IP CIDR values.
+                 */
                 ip?: string[];
+                /**
+                 * HTTP method match patterns.
+                 */
                 method?: string[];
+                /**
+                 * Path match patterns.
+                 */
                 path?: string[];
+                /**
+                 * Query string match conditions.
+                 */
                 query?: {
                   [k: string]: string;
                 };
               };
+              /**
+               * Target group health check overrides.
+               */
               healthCheck?:
                 | boolean
                 | {
@@ -495,80 +1198,209 @@ export interface AWS {
                     timeoutSeconds?: number;
                     unhealthyThresholdCount?: number;
                   };
+              /**
+               * ALB listener ARN.
+               */
               listenerArn: AwsAlbListenerArn | AwsCfRef;
+              /**
+               * Enable multi-value headers support.
+               */
               multiValueHeaders?: boolean;
+              /**
+               * Listener rule priority.
+               */
               priority: number;
+              /**
+               * Custom target group name.
+               */
               targetGroupName?: string;
             };
           }
         | {
+            /**
+             * Alexa Skill event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/alexa-skill
+             * @example
+             * alexaSkill:
+             *   appId: amzn1.ask.skill.xxx-xxx-xxx
+             */
             alexaSkill:
               | AwsAlexaEventToken
               | {
                   appId: AwsAlexaEventToken;
+                  /**
+                   * Enable or disable invocation permission.
+                   */
                   enabled?: boolean;
                 };
           }
         | {
+            /**
+             * Alexa Smart Home event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/alexa-smart-home
+             */
             alexaSmartHome:
               | AwsAlexaEventToken
               | {
                   appId: AwsAlexaEventToken;
+                  /**
+                   * Enable or disable invocation permission.
+                   */
                   enabled?: boolean;
                 };
           }
         | {
+            /**
+             * AWS IoT event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/iot
+             * @example
+             * iot:
+             *   sql: "SELECT * FROM 'my/topic'"
+             */
             iot: {
+              /**
+               * SQL statement for the rule query.
+               * @example "SELECT * FROM 'my/topic'"
+               */
               sql: string;
+              /**
+               * SQL version (e.g., '2016-03-23').
+               */
               sqlVersion?: "2015-10-08" | "2016-03-23" | "beta";
+              /**
+               * IoT rule name.
+               */
               name?: string;
+              /**
+               * Enable/disable the rule.
+               */
               enabled?: boolean;
+              /**
+               * Rule description.
+               */
               description?: string;
             };
           }
         | {
+            /**
+             * IoT Fleet Provisioning pre-provisioning hook configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/iot
+             */
             iotFleetProvisioning: {
+              /**
+               * Enable or disable the provisioning template.
+               */
               enabled?: boolean;
               provisioningRoleArn: AwsArn;
+              /**
+               * Provisioning template document body.
+               */
               templateBody: {
                 [k: string]: unknown;
               };
+              /**
+               * Provisioning template name.
+               */
               templateName?: string;
             };
           }
         | {
+            /**
+             * EventBridge rule (formerly CloudWatch Events) configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/cloudwatch-event
+             * @example
+             * cloudwatchEvent:
+             *   event:
+             *     source:
+             *       - aws.ec2
+             *     detail-type:
+             *       - EC2 Instance State-change Notification
+             */
             cloudwatchEvent: {
+              /**
+               * EventBridge pattern object used to match events.
+               * @example
+               * event:
+               *   source:
+               *     - aws.ec2
+               *   detail-type:
+               *     - EC2 Instance State-change Notification
+               */
               event?: {
                 [k: string]: unknown;
               };
+              /**
+               * Static payload passed to the target.
+               */
               input?:
                 | string
                 | {
                     [k: string]: unknown;
                   };
+              /**
+               * JSONPath expression selecting part of the event as input.
+               */
               inputPath?: string;
+              /**
+               * Input transformation template.
+               */
               inputTransformer?: {
                 inputPathsMap?: {
                   [k: string]: string;
                 };
                 inputTemplate: string;
               };
+              /**
+               * Rule description.
+               */
               description?: string;
+              /**
+               * Custom rule name.
+               */
               name?: string;
+              /**
+               * Enable or disable the rule.
+               */
               enabled?: boolean;
             };
           }
         | {
+            /**
+             * CloudWatch Logs subscription event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/cloudwatch-log
+             */
             cloudwatchLog:
               | AwsLogGroupName
               | {
                   logGroup: AwsLogGroupName;
+                  /**
+                   * CloudWatch Logs subscription filter pattern.
+                   * @see https://www.serverless.com/framework/docs/providers/aws/events/cloudwatch-log#specifying-a-filter
+                   * @example '{ $.errorCode != 0 }'
+                   */
                   filter?: string;
                 };
           }
         | {
+            /**
+             * Cognito User Pool trigger event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/cognito-user-pool
+             * @example
+             * cognitoUserPool:
+             *   pool: my-user-pool
+             *   trigger: PreSignUp
+             */
             cognitoUserPool: {
+              /**
+               * User Pool name or ARN.
+               * @example 'my-user-pool'
+               */
               pool: string;
+              /**
+               * Trigger type (e.g., 'PreSignUp', 'PostConfirmation').
+               * @see https://www.serverless.com/framework/docs/providers/aws/events/cognito-user-pool#valid-triggers
+               * @example 'PreSignUp'
+               */
               trigger:
                 | "PreSignUp"
                 | "PostConfirmation"
@@ -580,69 +1412,363 @@ export interface AWS {
                 | "CreateAuthChallenge"
                 | "VerifyAuthChallengeResponse"
                 | "UserMigration"
+                | "InboundFederation"
                 | "CustomSMSSender"
                 | "CustomEmailSender";
+              /**
+               * Set true if User Pool already exists.
+               */
               existing?: boolean;
+              /**
+               * Force custom resource update for existing pool trigger mapping.
+               */
               forceDeploy?: boolean;
               kmsKeyId?: AwsKmsArn;
+              /**
+               * Trigger contract version. Valid for CustomSMSSender/CustomEmailSender and InboundFederation (V1_0 only) and PreTokenGeneration (V1_0, V2_0, V3_0). V2_0/V3_0 require Cognito feature plan Essentials or Plus.
+               */
+              lambdaVersion?: "V1_0" | "V2_0" | "V3_0";
             };
           }
         | {
-            eventBridge:
-              | {
-                  [k: string]: unknown;
-                }
-              | {
-                  [k: string]: unknown;
+            /**
+             * EventBridge event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/event-bridge
+             */
+            eventBridge: {
+              /**
+               * Custom event bus name or ARN.
+               * @see https://www.serverless.com/framework/docs/providers/aws/events/event-bridge#using-a-different-event-bus
+               * @example 'my-custom-bus'
+               */
+              eventBus?:
+                | string
+                | AwsArnString
+                | AwsCfImport
+                | AwsCfRef
+                | {
+                    /**
+                     * GetAtt reference to an EventBus Name or EventBusArn attribute.
+                     */
+                    "Fn::GetAtt": [string, "Name" | "EventBusArn"];
+                  };
+              /**
+               * Schedule expression (rate or cron).
+               */
+              schedule?: string;
+              /**
+               * Custom rule name (up to 64 characters) or subscriber name (up to 256).
+               */
+              name?: string;
+              /**
+               * Rule description.
+               */
+              description?: string;
+              /**
+               * Enable or disable the rule.
+               */
+              enabled?: boolean;
+              /**
+               * EventBridge pattern with full event matching.
+               * @see https://docs.aws.amazon.com/eventbridge/latest/userguide/aws-events.html
+               * @example
+               * pattern:
+               *   source:
+               *     - aws.ec2
+               *   detail-type:
+               *     - EC2 Instance State-change Notification
+               */
+              pattern?: {
+                /**
+                 * Event schema version.
+                 */
+                version?: unknown;
+                /**
+                 * Event id filter.
+                 */
+                id?: unknown;
+                /**
+                 * Detail type filter.
+                 */
+                "detail-type"?: unknown;
+                /**
+                 * Event source identifiers.
+                 */
+                source?: unknown;
+                /**
+                 * AWS account filter.
+                 */
+                account?: unknown;
+                /**
+                 * Event timestamp filter.
+                 */
+                time?: unknown;
+                /**
+                 * AWS region filter.
+                 */
+                region?: unknown;
+                /**
+                 * Resource ARN filter list.
+                 */
+                resources?: unknown;
+                /**
+                 * EventBridge/CloudWatch event detail pattern.
+                 */
+                detail?: unknown;
+                /**
+                 * OR-combined event pattern clauses.
+                 */
+                $or?: unknown[];
+                [k: string]: unknown;
+              };
+              /**
+               * Static payload passed to the target.
+               */
+              input?: {
+                [k: string]: unknown;
+              };
+              /**
+               * JSON path to extract input from event.
+               */
+              inputPath?: string;
+              /**
+               * EventBridge/CloudWatch input transformer.
+               * @see https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-transform-target-input.html
+               */
+              inputTransformer?: {
+                /**
+                 * Map of JSON path expressions to variable names.
+                 * @example { instance: '$.detail.instance-id' }
+                 */
+                inputPathsMap?: {
+                  [k: string]: string;
                 };
+                /**
+                 * Template for the transformed input.
+                 * @example '{"instance": <instance>}'
+                 */
+                inputTemplate: string;
+              };
+              /**
+               * Retry behavior for failed target invocations.
+               */
+              retryPolicy?: {
+                /**
+                 * Maximum event age in seconds before EventBridge drops the event.
+                 */
+                maximumEventAge?: number;
+                /**
+                 * Maximum number of retry attempts.
+                 */
+                maximumRetryAttempts?: number;
+                [k: string]: unknown;
+              };
+              deadLetterQueueArn?: AwsArn;
+              /**
+               * Delivery order of a Custom Event Bus subscriber.
+               * @example 'fifo'
+               */
+              ordering?: string | string;
+              /**
+               * Maximum number of events in one invocation of a Custom Event Bus subscriber.
+               */
+              batchSize?: number;
+              /**
+               * Seconds a Custom Event Bus subscriber waits to fill a batch.
+               */
+              maximumBatchingWindow?: number;
+              /**
+               * Invoke the function asynchronously instead of waiting for it (Custom Event Bus only).
+               */
+              async?: boolean;
+              /**
+               * Where a Custom Event Bus subscriber resumes after it is started again.
+               * @example 'latest'
+               */
+              resumePosition?: string | string;
+              /**
+               * IAM role EventBridge uses to invoke the function (Custom Event Bus only).
+               */
+              role?: AwsArnString | AwsCfFunction;
+              [k: string]: unknown;
+            };
           }
         | {
+            /**
+             * SQS event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/sqs
+             * @example
+             * events:
+             *   - sqs:
+             *       arn: arn:aws:sqs:region:account:queue
+             *       batchSize: 10
+             *       functionResponseType: ReportBatchItemFailures
+             */
             sqs:
               | AwsArnString
               | {
                   arn: AwsArn;
+                  /**
+                   * Number of messages to retrieve per batch (1-10000).
+                   * @default 10
+                   */
                   batchSize?: number;
+                  /**
+                   * Enable or disable the event source mapping.
+                   * @default true
+                   */
                   enabled?: boolean;
+                  /**
+                   * Maximum time to wait for a full batch in seconds (0-300).
+                   */
                   maximumBatchingWindow?: number;
+                  /**
+                   * Enable partial batch failure reporting.
+                   */
                   functionResponseType?: "ReportBatchItemFailures";
                   filterPatterns?: FilterPatterns;
+                  /**
+                   * Maximum concurrent batches processed by Lambda.
+                   */
                   maximumConcurrency?: number;
+                  /**
+                   * Provisioned mode for the event source mapping — dedicated event pollers with min/max bounds. Mutually exclusive with maximumConcurrency. Set to false to disable provisioned mode on an existing mapping.
+                   * @see https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-scaling.html
+                   * @example
+                   * provisionedPollers:
+                   *   min: 2
+                   *   max: 500
+                   */
+                  provisionedPollers?:
+                    | false
+                    | {
+                        /**
+                         * Minimum number of provisioned event pollers (2-200). AWS default: 2.
+                         */
+                        min?: number;
+                        /**
+                         * Maximum number of provisioned event pollers (2-10000). AWS default: 200.
+                         */
+                        max?: number;
+                      };
                 };
           }
         | {
+            /**
+             * CloudFront Lambda@Edge event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/cloudfront
+             * @example
+             * cloudFront:
+             *   eventType: origin-request
+             *   origin:
+             *     DomainName: my-bucket.s3.amazonaws.com
+             */
             cloudFront: {
+              /**
+               * CloudFront cache behavior overrides for this Lambda@Edge trigger.
+               * @see https://www.serverless.com/framework/docs/providers/aws/events/cloudfront#cache-behavior-configuration
+               */
               behavior?: {
+                /**
+                 * Allowed HTTP methods for this cache behavior.
+                 */
                 AllowedMethods?:
                   | ("GET" | "HEAD")[]
                   | ("GET" | "HEAD" | "OPTIONS")[]
                   | ("GET" | "HEAD" | "OPTIONS" | "PUT" | "PATCH" | "POST" | "DELETE")[];
+                /**
+                 * Methods cached by CloudFront.
+                 */
                 CachedMethods?: ("GET" | "HEAD")[] | ("GET" | "HEAD" | "OPTIONS")[];
+                /**
+                 * CloudFront Cache Policy ID.
+                 */
                 CachePolicyId?: string;
+                /**
+                 * Enable automatic compression.
+                 */
                 Compress?: boolean;
+                /**
+                 * Field-level encryption configuration ID.
+                 */
                 FieldLevelEncryptionId?: string;
+                /**
+                 * CloudFront Origin Request Policy ID.
+                 */
                 OriginRequestPolicyId?: string | AwsCfFunction;
+                /**
+                 * CloudFront Response Headers Policy ID.
+                 */
                 ResponseHeadersPolicyId?: string | AwsCfFunction;
+                /**
+                 * Enable Microsoft Smooth Streaming.
+                 */
                 SmoothStreaming?: boolean;
+                /**
+                 * AWS account IDs trusted to sign private content URLs.
+                 */
                 TrustedSigners?: string[];
+                /**
+                 * Viewer protocol policy.
+                 */
                 ViewerProtocolPolicy?: "allow-all" | "redirect-to-https" | "https-only";
+                /**
+                 * Trusted key groups for signed URLs/cookies.
+                 */
                 TrustedKeyGroups?: (string | AwsCfRef)[];
+                /**
+                 * Maximum TTL in seconds.
+                 */
                 MaxTTL?: number;
+                /**
+                 * Minimum TTL in seconds.
+                 */
                 MinTTL?: number;
+                /**
+                 * Default TTL in seconds.
+                 */
                 DefaultTTL?: number;
+                /**
+                 * Legacy forwarding configuration.
+                 */
                 ForwardedValues?: {
+                  /**
+                   * Cookie forwarding settings.
+                   */
                   Cookies?:
                     | {
+                        /**
+                         * Cookie forwarding mode.
+                         */
                         Forward: "all" | "none";
                       }
                     | {
+                        /**
+                         * Cookie forwarding mode.
+                         */
                         Forward: "whitelist";
+                        /**
+                         * Cookie names to forward.
+                         */
                         WhitelistedNames: string[];
                       };
+                  /**
+                   * Request headers to forward.
+                   */
                   Headers?: string[];
+                  /**
+                   * Whether to forward query strings.
+                   */
                   QueryString: boolean;
+                  /**
+                   * Query string keys included in cache key.
+                   */
                   QueryStringCacheKeys?: string[];
                 };
               };
+              /**
+               * Cache policy reference by id or name.
+               */
               cachePolicy?:
                 | {
                     [k: string]: unknown;
@@ -650,9 +1776,21 @@ export interface AWS {
                 | {
                     [k: string]: unknown;
                   };
+              /**
+               * Lambda@Edge trigger: 'viewer-request', 'origin-request', 'origin-response', 'viewer-response'.
+               */
               eventType?: "viewer-request" | "origin-request" | "origin-response" | "viewer-response";
+              /**
+               * Treat this origin as the default distribution origin.
+               */
               isDefaultOrigin?: boolean;
+              /**
+               * Include request body in Lambda event.
+               */
               includeBody?: boolean;
+              /**
+               * CloudFront origin configuration.
+               */
               origin?:
                 | string
                 | (
@@ -663,13 +1801,31 @@ export interface AWS {
                         [k: string]: unknown;
                       }
                   );
+              /**
+               * URL path pattern to match.
+               */
               pathPattern?: string;
             };
           }
         | {
+            /**
+             * HTTP API Gateway event configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/http-api
+             * @example
+             * events:
+             *   - httpApi:
+             *       path: /users/{id}
+             *       method: GET
+             *       authorizer:
+             *         name: myAuth
+             */
             httpApi:
               | string
               | {
+                  /**
+                   * Authorizer configuration or reference.
+                   * @see https://www.serverless.com/framework/docs/providers/aws/events/http-api#jwt-authorizers
+                   */
                   authorizer?:
                     | string
                     | (
@@ -683,7 +1839,15 @@ export interface AWS {
                             [k: string]: unknown;
                           }
                       );
+                  /**
+                   * HTTP method.
+                   * @example 'GET'
+                   */
                   method?: string;
+                  /**
+                   * HTTP route path.
+                   * @example '/users/{id}'
+                   */
                   path: string;
                 };
           }
@@ -692,14 +1856,31 @@ export interface AWS {
       awsKmsKeyArn?: AwsKmsArn;
       condition?: AwsResourceCondition;
       dependsOn?: AwsResourceDependsOn;
+      /**
+       * Function description shown in Lambda console.
+       */
       description?: string;
+      /**
+       * Lambda destination configuration for asynchronous invocation outcomes.
+       * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions#destinations
+       * @example
+       * destinations:
+       *   onSuccess: arn:aws:sns:us-east-1:123456789012:my-topic
+       *   onFailure: arn:aws:sqs:us-east-1:123456789012:my-dlq
+       */
       destinations?: {
+        /**
+         * Destination for successful asynchronous invocations.
+         */
         onSuccess?:
           | string
           | {
               arn: AwsCfFunction;
               type: "function" | "sns" | "sqs" | "eventBus";
             };
+        /**
+         * Destination for failed asynchronous invocations.
+         */
         onFailure?:
           | string
           | {
@@ -707,33 +1888,93 @@ export interface AWS {
               type: "function" | "sns" | "sqs" | "eventBus";
             };
       };
+      /**
+       * Disable creation of default CloudWatch log group for this function.
+       */
       disableLogs?: boolean;
       environment?: AwsLambdaEnvironment;
+      /**
+       * Ephemeral storage size in MB for /tmp (512-10240; up to 32768 for functions with capacityProvider.gpu).
+       * @default 512
+       * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions#ephemeral-storage
+       */
       ephemeralStorageSize?: number;
+      /**
+       * File system mount configuration (EFS or S3 Files).
+       * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions#file-system-configuration
+       */
       fileSystemConfig?: {
+        /**
+         * File system access point ARN (EFS or S3 Files).
+         */
         arn: string | AwsCfGetAtt | AwsCfJoin | AwsCfImport;
+        /**
+         * Local mount path in the Lambda function (/mnt/...).
+         */
         localMountPath: string;
+        /**
+         * File system type. Auto-detected from literal ARN strings. Required when using CloudFormation references with S3 Files.
+         */
+        type?: "efs" | "s3files";
       };
+      /**
+       * Function handler entrypoint.
+       * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions#configuration
+       * @example handler: handler.hello
+       */
       handler?: string;
+      /**
+       * Container image configuration.
+       */
       image?:
         | EcrImageUri
         | {
+            /**
+             * Name of the local image definition in provider.ecr.images.
+             */
             name?: string;
             uri?: EcrImageUri;
+            /**
+             * Container working directory override.
+             */
             workingDirectory?: string;
+            /**
+             * Container command override.
+             */
             command?: string[];
+            /**
+             * Container entrypoint override.
+             */
             entryPoint?: string[];
           };
       kmsKeyArn?: AwsKmsArn;
+      /**
+       * Enable Lambda SnapStart. Supported for Java 11+, Python 3.12+ and .NET 8+ runtimes and for container images; publishes a version and a "snapstart" alias that event sources invoke.
+       * @since v4
+       * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions#snapstart
+       */
       snapStart?: boolean;
       layers?: AwsLambdaLayers;
       logRetentionInDays?: AwsLogRetentionInDays;
       logDataProtectionPolicy?: AwsLogDataProtectionPolicy;
       logs?: AwsLambdaLoggingConfiguration;
+      /**
+       * Maximum age in seconds for async events before discard (60-21600).
+       */
       maximumEventAge?: number;
+      /**
+       * Maximum retry attempts for async invocations (0-2).
+       */
       maximumRetryAttempts?: number;
       memorySize?: AwsLambdaMemorySize;
+      /**
+       * Dead-letter destination for failed asynchronous invocations.
+       */
       onError?: string | AwsCfFunction;
+      /**
+       * Function-level packaging overrides.
+       * @see https://www.serverless.com/framework/docs/providers/aws/guide/packaging
+       */
       package?: {
         artifact?: string;
         exclude?: string[];
@@ -751,66 +1992,183 @@ export interface AWS {
           )
         | AwsCfFunction
         | AwsCfIf;
+      /**
+       * Recursive loop detection setting for this function. Case-insensitive.
+       */
+      recursiveLoop?: string;
       reservedConcurrency?: number | AwsCfFunction | AwsCfIf;
       role?: AwsLambdaRole;
       runtime?: AwsLambdaRuntime;
-      build?: string;
+      /**
+       * Function-level build strategy, or `false` to exclude this function from building.
+       * @since v4
+       * @example build: false
+       */
+      build?: false | string;
       runtimeManagement?: AwsLambdaRuntimeManagement;
       tags?: AwsResourceTags;
       tenancy?: AwsLambdaTenancy;
       durableConfig?: AwsLambdaDurableConfig;
+      /**
+       * Capacity provider assignment for this function.
+       * @since v4
+       */
       capacityProvider?: string | AwsCfFunction | AwsLambdaCapacityProviderFunctionConfig;
       timeout?: AwsLambdaTimeout;
       tracing?: AwsLambdaTracing;
+      /**
+       * Lambda Function URL configuration.
+       * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions#lambda-function-urls
+       */
       url?:
         | boolean
         | {
+            /**
+             * Function URL authorizer type.
+             */
             authorizer?: "aws_iam";
+            /**
+             * CORS configuration for the Function URL.
+             */
             cors?:
               | boolean
               | {
+                  /**
+                   * Allow credentials in cross-origin requests.
+                   */
                   allowCredentials?: boolean;
+                  /**
+                   * Allowed request headers.
+                   */
                   allowedHeaders?: string[];
+                  /**
+                   * Allowed HTTP methods.
+                   */
                   allowedMethods?: string[];
+                  /**
+                   * Allowed origin domains.
+                   */
                   allowedOrigins?: string[];
+                  /**
+                   * Response headers exposed to browsers.
+                   */
                   exposedResponseHeaders?: string[];
+                  /**
+                   * Preflight cache duration in seconds.
+                   */
                   maxAge?: number;
                 };
-            invokeMode?: "BUFFERED" | "RESPONSE_STREAM";
+            /**
+             * Function URL invoke mode.
+             */
+            invokeMode?: string;
           };
       versionFunction?: AwsLambdaVersioning;
       vpc?: AwsLambdaVpcConfig;
+      /**
+       * Function-level HTTP API event defaults.
+       */
       httpApi?: {
         payload?: AwsHttpApiPayload;
       };
+      /**
+       * IAM role settings of this function.
+       */
       iam?: {
         inheritStatements?: boolean;
+        /**
+         * The function's own IAM role.
+         */
         role?: {
-          name?: string;
+          name?: string | AwsCfFunction | AwsCfIf;
           statements?: AwsIamPolicyStatements;
           permissionsBoundary?: AwsArn;
+          /**
+           * Managed policy ARNs attached to this function's role.
+           */
           managedPolicies?: AwsArn[];
+          /**
+           * IAM role path for this function's role.
+           */
           path?: string;
-          tags?: AwsResourceTags;
+          tags?: {
+            /**
+             * This interface was referenced by `undefined`'s JSON-Schema definition
+             * via the `patternProperty` "^(?!aws:)[\w./=+:\-_\x20]{1,128}$".
+             */
+            [k: string]: string | AwsCfFunction | AwsCfIf;
+          };
         };
       };
       iamRoleStatementsInherit?: boolean;
       iamRoleStatementsName?: string;
       iamPermissionsBoundary?: AwsArn;
       iamRoleStatements?: AwsIamPolicyStatements;
+      /**
+       * CloudWatch alarm definitions to attach to this function via the alerts plugin.
+       * @see https://www.serverless.com/framework/docs/providers/aws/guide/alerts
+       * @example
+       * alarms:
+       *   - functionErrors
+       *   - functionThrottles
+       */
       alarms?: unknown[];
     };
   };
+  /**
+   * Serverless Framework license key.
+   * @since v4
+   * @see https://www.serverless.com/framework/docs/guides/license-keys
+   * @example '${env:SERVERLESS_LICENSE_KEY}'
+   */
   licenseKey?: string;
+  /**
+   * Packaging configuration for deployment artifacts.
+   */
   package?: {
+    /**
+     * Path to a pre-built deployment artifact.
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/packaging#artifact
+     * @example '.serverless/my-artifact.zip'
+     */
     artifact?: string;
+    /**
+     * Glob patterns of files to exclude.
+     * @deprecated Use patterns instead.
+     */
     exclude?: string[];
+    /**
+     * Whether to exclude devDependencies from the package.
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/packaging#development-dependencies
+     * @default true
+     */
     excludeDevDependencies?: boolean;
+    /**
+     * Glob patterns of files to include.
+     * @deprecated Use patterns instead.
+     */
     include?: string[];
+    /**
+     * Package each function as an individual artifact.
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/packaging#packaging-functions-separately
+     * @default false
+     */
     individually?: boolean;
+    /**
+     * Path to a pre-existing package directory.
+     */
     path?: string;
+    /**
+     * Glob patterns for including/excluding files (prefix with ! to exclude).
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/packaging#patterns
+     * @example ['!node_modules/**', 'src/**']
+     */
     patterns?: string[];
   };
+  /**
+   * Stage-specific parameters accessible via ${param:xxx}.
+   * @deprecated Use stages instead.
+   */
   params?: {
     /**
      * This interface was referenced by `undefined`'s JSON-Schema definition
@@ -820,6 +2178,16 @@ export interface AWS {
       [k: string]: unknown;
     };
   };
+  /**
+   * Stage-specific configuration for parameters, observability, and integrations.
+   * @since v4
+   * @see https://www.serverless.com/framework/docs/guides/stages
+   * @example
+   * stages:
+   *   default:
+   *     params:
+   *       tableName: users
+   */
   stages?: {
     /**
      * This interface was referenced by `undefined`'s JSON-Schema definition
@@ -839,6 +2207,11 @@ export interface AWS {
       [k: string]: unknown;
     };
   };
+  /**
+   * Plugins to extend Serverless functionality.
+   * @see https://www.serverless.com/framework/docs/guides/plugins/creating-plugins
+   * @example ['serverless-offline', 'serverless-webpack']
+   */
   plugins?:
     | {
         localPath?: string;
@@ -846,58 +2219,203 @@ export interface AWS {
       }
     | string[];
   projectDir?: string;
+  /**
+   * AWS provider configuration.
+   * @see https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml
+   * @example
+   * provider:
+   *   name: aws
+   *   runtime: nodejs20.x
+   *   region: us-east-1
+   */
   provider: {
     name: "aws";
+    /**
+     * Application Load Balancer configuration.
+     * @see https://www.serverless.com/framework/docs/providers/aws/events/alb
+     */
     alb?: {
+      /**
+       * Prefix for generated ALB target group names.
+       * @example 'myapp'
+       */
       targetGroupPrefix?: string;
+      /**
+       * Named ALB authorizer definitions.
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/alb#add-cognitocustom-idp-provider-authentication
+       */
       authorizers?: {
         [k: string]:
           | {
+              /**
+               * Authorizer type discriminator.
+               */
               type: "oidc";
+              /**
+               * OIDC authorization endpoint URL.
+               */
               authorizationEndpoint: string;
+              /**
+               * OIDC client identifier.
+               */
               clientId: string;
+              /**
+               * OIDC client secret.
+               */
               clientSecret?: string;
+              /**
+               * OIDC issuer URL.
+               */
               issuer: string;
+              /**
+               * OIDC token endpoint URL.
+               */
               tokenEndpoint: string;
+              /**
+               * OIDC userinfo endpoint URL.
+               */
               userInfoEndpoint: string;
+              /**
+               * Behavior when the incoming request is unauthenticated.
+               */
               onUnauthenticatedRequest?: "allow" | "authenticate" | "deny";
+              /**
+               * Additional query parameters forwarded to the identity provider.
+               */
               requestExtraParams?: {
                 [k: string]: string;
               };
+              /**
+               * OAuth scope string requested during authentication.
+               */
               scope?: string;
+              /**
+               * Name of the authentication session cookie.
+               */
               sessionCookieName?: string;
+              /**
+               * Session timeout in seconds.
+               */
               sessionTimeout?: number;
             }
           | {
+              /**
+               * Authorizer type discriminator.
+               */
               type: "cognito";
               userPoolArn: AwsArn;
+              /**
+               * Cognito app client identifier.
+               */
               userPoolClientId: string;
+              /**
+               * Cognito User Pool domain prefix or domain name.
+               */
               userPoolDomain: string;
+              /**
+               * Behavior when the incoming request is unauthenticated.
+               */
               onUnauthenticatedRequest?: "allow" | "authenticate" | "deny";
+              /**
+               * Additional query parameters forwarded to the identity provider.
+               */
               requestExtraParams?: {
                 [k: string]: string;
               };
+              /**
+               * OAuth scope string requested during authentication.
+               */
               scope?: string;
+              /**
+               * Name of the authentication session cookie.
+               */
               sessionCookieName?: string;
+              /**
+               * Session timeout in seconds.
+               */
               sessionTimeout?: number;
             };
       };
     };
+    /**
+     * REST API Gateway (v1) configuration.
+     * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway
+     */
     apiGateway?: {
       apiKeys?: AwsApiGatewayApiKeys;
+      /**
+       * Named JWT authorizers for the REST API, referenced by name from http events.
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#jwt-authorizers
+       * @example
+       * authorizers:
+       *   orders:
+       *     type: jwt
+       *     algorithms: [RS256]
+       *     issuerUrl: https://idp.example.com/
+       *     audience: api://orders
+       */
+      authorizers?: {
+        /**
+         * JWT authorizer definition.
+         */
+        [k: string]: {
+          [k: string]: unknown;
+        };
+      };
+      /**
+       * Location where API Gateway reads API keys from.
+       * @default 'HEADER'
+       * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-key-source.html
+       */
       apiKeySourceType?: string;
+      /**
+       * MIME types treated as binary payloads.
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#binary-media-types
+       * @example ['image/*', 'application/pdf']
+       */
       binaryMediaTypes?: string[];
+      /**
+       * REST API description.
+       */
       description?: string;
+      /**
+       * Disable the default execute-api endpoint.
+       */
       disableDefaultEndpoint?: boolean;
+      /**
+       * REST API endpoint configuration.
+       */
       endpoint?: {
+        /**
+         * TLS security policy for custom domain endpoints.
+         */
         securityPolicy?: string;
+        /**
+         * Private API endpoint access mode.
+         */
         accessMode?: string;
+        /**
+         * Disable endpoint creation for this API.
+         */
         disable?: boolean;
       };
+      /**
+       * Enable CloudWatch metrics for API Gateway.
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#detailed-cloudwatch-metrics
+       */
       metrics?: boolean;
+      /**
+       * Minimum response size in bytes before compression is applied.
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#compression
+       * @example 1024
+       */
       minimumCompressionSize?: number;
       resourcePolicy?: AwsResourcePolicyStatements;
       restApiId?: AwsCfInstruction;
+      /**
+       * Existing REST API resource path-to-id mappings.
+       * @example { '/users': 'abc123' }
+       */
       restApiResources?:
         | {
             path?: string;
@@ -907,148 +2425,476 @@ export interface AWS {
             [k: string]: unknown;
           };
       restApiRootResourceId?: AwsCfInstruction;
+      /**
+       * Request schema definitions for API Gateway models.
+       */
       request?: {
+        /**
+         * Named request model schemas.
+         */
         schemas?: {
           [k: string]: {
+            /**
+             * JSON Schema object.
+             */
             schema: {
               [k: string]: unknown;
             };
+            /**
+             * Display name for this model.
+             */
             name?: string;
+            /**
+             * Model description.
+             */
             description?: string;
           };
         };
       };
+      /**
+       * Prefix API name with service name.
+       */
       shouldStartNameWithService?: boolean;
+      /**
+       * Custom stage name for the REST API deployment.
+       */
       stage?: string;
+      /**
+       * Integration timeout in milliseconds.
+       */
       timeoutInMillis?: number;
+      /**
+       * Usage plan definition for this REST API.
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#setting-api-keys-for-your-rest-api
+       */
       usagePlan?:
         | {
+            /**
+             * Daily/weekly/monthly request quota limits.
+             */
             quota?: {
+              /**
+               * Maximum number of requests allowed in the period.
+               */
               limit?: number;
+              /**
+               * Number of requests subtracted from the initial quota window.
+               */
               offset?: number;
+              /**
+               * Quota period unit.
+               */
               period?: "DAY" | "WEEK" | "MONTH";
             };
+            /**
+             * Burst and steady-state request rate controls.
+             */
             throttle?: {
+              /**
+               * Maximum requests allowed in a short burst.
+               */
               burstLimit?: number;
+              /**
+               * Steady-state requests per second.
+               */
               rateLimit?: number;
             };
           }
         | {
+            /**
+             * API Gateway usage plan throttling and quota configuration.
+             * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#setting-api-keys-for-your-rest-api
+             * @example
+             * usagePlan:
+             *   quota:
+             *     limit: 5000
+             *     period: MONTH
+             *   throttle:
+             *     burstLimit: 200
+             *     rateLimit: 100
+             */
             [k: string]: {
+              /**
+               * Daily/weekly/monthly request quota limits.
+               */
               quota?: {
+                /**
+                 * Maximum number of requests allowed in the period.
+                 */
                 limit?: number;
+                /**
+                 * Number of requests subtracted from the initial quota window.
+                 */
                 offset?: number;
+                /**
+                 * Quota period unit.
+                 */
                 period?: "DAY" | "WEEK" | "MONTH";
               };
+              /**
+               * Burst and steady-state request rate controls.
+               */
               throttle?: {
+                /**
+                 * Maximum requests allowed in a short burst.
+                 */
                 burstLimit?: number;
+                /**
+                 * Steady-state requests per second.
+                 */
                 rateLimit?: number;
               };
             };
           }[];
       websocketApiId?: AwsCfInstruction;
     };
+    /**
+     * Custom REST API name.
+     */
     apiName?: string;
+    /**
+     * Single custom domain configuration entry.
+     */
     domain?: string | AwsCustomDomain;
+    /**
+     * Domain configuration entries for API Gateway custom domains.
+     */
     domains?: (string | AwsCustomDomain)[] | AwsCustomDomain;
     architecture?: AwsLambdaArchitecture;
     cfnRole?: AwsArn;
+    /**
+     * CloudFront cache policy configuration for edge/event integrations.
+     * @see https://www.serverless.com/framework/docs/providers/aws/events/cloudfront
+     */
     cloudFront?: {
+      /**
+       * Named CloudFront cache policy definitions.
+       */
       cachePolicies?: {
         [k: string]: {
           Comment?: string;
           DefaultTTL: number;
           MaxTTL: number;
           MinTTL: number;
+          /**
+           * Parameters included in the cache key and forwarded to the origin.
+           */
           ParametersInCacheKeyAndForwardedToOrigin: {
+            /**
+             * Cookie forwarding and caching behavior.
+             */
             CookiesConfig: {
+              /**
+               * Cookie inclusion behavior for cache key.
+               */
               CookieBehavior: "none" | "whitelist" | "allExcept" | "all";
+              /**
+               * Cookie names to include in the cache key.
+               */
               Cookies?: string[];
             };
             EnableAcceptEncodingBrotli?: boolean;
             EnableAcceptEncodingGzip: boolean;
+            /**
+             * Header forwarding and caching behavior.
+             */
             HeadersConfig: {
               HeaderBehavior: "none" | "whitelist";
+              /**
+               * Header names to include in the cache key.
+               */
               Headers?: string[];
             };
+            /**
+             * Query string forwarding and caching behavior.
+             */
             QueryStringsConfig: {
+              /**
+               * Query string inclusion behavior for cache key.
+               */
               QueryStringBehavior: "none" | "whitelist" | "allExcept" | "all";
+              /**
+               * Query string names to include in the cache key.
+               */
               QueryStrings?: string[];
             };
           };
         };
       };
     };
+    /**
+     * S3 deployment bucket configuration.
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml#deployment-bucket
+     * @example
+     * deploymentBucket:
+     *   name: my-company-deployments
+     */
     deploymentBucket?:
       | AwsS3BucketName
       | {
+          /**
+           * Block all public access settings on the bucket.
+           * @default false
+           */
           blockPublicAccess?: boolean;
+          /**
+           * Lambda code storage mode for functions and layers deployed from this bucket.
+           * 'copy' (default) uploads a copy of your code to Lambda-managed storage. 'reference' configures Lambda to run your code directly from the deployment bucket (self-managed S3 code storage): code no longer counts against the Lambda storage quota and deploys activate faster, but deployment artifacts become live infrastructure managed via the prune command.
+           * @default 'copy'
+           * @see https://docs.aws.amazon.com/lambda/latest/dg/configuration-self-managed-storage.html
+           */
+          codeStorageMode?: "copy" | "reference";
+          /**
+           * Skip automatic deployment bucket policy setup.
+           */
           skipPolicySetup?: boolean;
+          /**
+           * Maximum number of previous deployment artifacts to retain.
+           * @default 5
+           */
           maxPreviousDeploymentArtifacts?: number;
           name?: AwsS3BucketName;
+          /**
+           * Enable bucket versioning.
+           */
           versioning?: boolean;
+          /**
+           * Server-side encryption algorithm.
+           * @example 'AES256'
+           */
           serverSideEncryption?: "AES256" | "aws:kms";
+          /**
+           * SSE-C algorithm.
+           */
           sseCustomerAlgorithim?: string;
+          /**
+           * SSE-C key.
+           */
           sseCustomerKey?: string;
+          /**
+           * MD5 digest for the SSE-C key.
+           */
           sseCustomerKeyMD5?: string;
+          /**
+           * KMS key id used for SSE-KMS encryption.
+           */
           sseKMSKeyId?: string;
           tags?: AwsResourceTags;
         };
+    /**
+     * S3 key prefix for deployment artifacts.
+     * @default 'serverless'
+     */
     deploymentPrefix?: string;
+    /**
+     * Disable automatic CloudFormation rollback on failure.
+     * @default false
+     */
     disableRollback?: boolean;
+    /**
+     * REST API Gateway endpoint type.
+     * @default 'edge'
+     * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#configuring-endpoint-types
+     */
     endpointType?: string;
     environment?: AwsLambdaEnvironment;
+    /**
+     * EventBridge provider-level configuration.
+     * @see https://www.serverless.com/framework/docs/providers/aws/events/event-bridge
+     */
     eventBridge?: {
+      /**
+       * Use CloudFormation for EventBridge rules instead of direct AWS API.
+       * @default true
+       */
       useCloudFormation?: boolean;
     };
+    /**
+     * HTTP API Gateway (v2) configuration.
+     * @see https://www.serverless.com/framework/docs/providers/aws/events/http-api
+     * @example
+     * httpApi:
+     *   cors: true
+     *   authorizers:
+     *     myAuthorizer:
+     *       type: jwt
+     *       identitySource: $request.header.Authorization
+     *       issuerUrl: https://example.com/
+     *       audience:
+     *         - my-audience
+     */
     httpApi?: {
+      /**
+       * Named HTTP API authorizer definitions.
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/http-api#jwt-authorizers
+       */
       authorizers?: {
         [k: string]:
           | {
+              /**
+               * Authorizer type discriminator.
+               */
               type?: "jwt";
+              /**
+               * Logical authorizer name.
+               */
               name?: string;
               identitySource: AwsCfInstruction;
               issuerUrl: AwsCfInstruction;
+              /**
+               * JWT audience values.
+               */
               audience: AwsCfInstruction | AwsCfInstruction[];
             }
           | {
+              /**
+               * Authorizer type discriminator.
+               */
               type: "request";
+              /**
+               * Logical authorizer name.
+               */
               name?: string;
+              /**
+               * Authorizer function name in this service.
+               */
               functionName?: string;
               functionArn?: AwsCfInstruction;
+              /**
+               * Mark authorizer as externally managed.
+               */
               managedExternally?: boolean;
+              /**
+               * Authorizer cache TTL in seconds.
+               * @default 300
+               */
               resultTtlInSeconds?: number;
+              /**
+               * Enable simple response format.
+               */
               enableSimpleResponses?: boolean;
               payloadVersion?: AwsHttpApiPayload;
+              /**
+               * Identity sources that contribute to cache key.
+               * @default '$request.header.Authorization'
+               */
               identitySource?: AwsCfInstruction | AwsCfInstruction[];
               [k: string]: unknown;
             };
       };
+      /**
+       * CORS settings for HTTP API routes.
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/http-api#cors-setup
+       * @example
+       * cors:
+       *   allowedOrigins:
+       *     - https://example.com
+       *   allowedHeaders:
+       *     - Content-Type
+       *     - Authorization
+       *   allowedMethods:
+       *     - GET
+       *     - POST
+       */
       cors?:
         | boolean
         | {
+            /**
+             * Allow credentials in cross-origin requests.
+             */
             allowCredentials?: boolean;
+            /**
+             * Allowed request headers.
+             */
             allowedHeaders?: string[];
+            /**
+             * Allowed HTTP methods.
+             */
             allowedMethods?: string[];
+            /**
+             * Allowed origin domains.
+             * @example ['https://example.com']
+             */
             allowedOrigins?: string[];
+            /**
+             * Headers exposed to browsers.
+             */
             exposedResponseHeaders?: string[];
+            /**
+             * Preflight cache duration in seconds.
+             * @example 86400
+             */
             maxAge?: number;
           };
+      /**
+       * Existing HTTP API id.
+       */
       id?: string | AwsCfImportLocallyResolvable;
+      /**
+       * Custom HTTP API name.
+       */
       name?: string;
+      /**
+       * Default payload format version.
+       * @default '2.0'
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/http-api#event-payload-format
+       * @example '1.0'
+       */
       payload?: string;
+      /**
+       * Enable CloudWatch metrics for HTTP API.
+       * @default false
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/http-api#detailed-metrics
+       */
       metrics?: boolean;
+      /**
+       * Inherit provider tags for HTTP API resources.
+       */
       useProviderTags?: true;
+      /**
+       * Disable the default execute-api endpoint.
+       */
       disableDefaultEndpoint?: boolean;
+      /**
+       * Prefix HTTP API name with service name.
+       */
       shouldStartNameWithService?: boolean;
     };
+    /**
+     * IAM configuration for Lambda execution and deployment roles.
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/iam
+     * @example
+     * iam:
+     *   role:
+     *     statements:
+     *       - Effect: Allow
+     *         Action:
+     *           - dynamodb:Query
+     *           - dynamodb:Scan
+     *         Resource: arn:aws:dynamodb:*:*:table/my-table
+     */
     iam?: {
+      /**
+       * Execution role ARN or role configuration object.
+       */
       role?:
         | AwsLambdaRole
         | {
+            /**
+             * IAM role management mode.
+             */
             mode?: "shared" | "perFunction";
+            /**
+             * Custom IAM role name.
+             */
             name?: string;
+            /**
+             * IAM role path.
+             */
             path?: string;
+            /**
+             * Managed policy ARNs attached to this role.
+             */
             managedPolicies?: AwsArn[];
             statements?: AwsIamPolicyStatements;
             permissionBoundary?: AwsArn;
@@ -1057,10 +2903,28 @@ export interface AWS {
           };
       deploymentRole?: AwsArn;
     };
+    /**
+     * Managed policy ARNs attached to the default execution role.
+     * @deprecated Use provider.iam.role.managedPolicies instead.
+     */
     iamManagedPolicies?: AwsArn[];
     iamRoleStatements?: AwsIamPolicyStatements;
+    /**
+     * ECR image build configuration for container-based Lambda functions.
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml#docker-image-deployments-in-ecr
+     */
     ecr?: {
+      /**
+       * Enable ECR vulnerability scanning on image push.
+       */
       scanOnPush?: boolean;
+      /**
+       * Cap on how many superseded image versions the ECR repository retains. When set, the framework installs an ECR lifecycle rule that expires older untagged versions beyond this count. Currently-tagged images (the live digest for every entry under provider.ecr.images) are never expired.
+       */
+      maxImages?: number;
+      /**
+       * Named local image build definitions.
+       */
       images: {
         /**
          * This interface was referenced by `undefined`'s JSON-Schema definition
@@ -1069,60 +2933,170 @@ export interface AWS {
         [k: string]:
           | {
               uri?: EcrImageUri;
+              /**
+               * Directory containing Docker build context.
+               */
               path?: string;
+              /**
+               * Dockerfile path relative to build context.
+               */
               file?: string;
+              /**
+               * Docker build arguments.
+               */
               buildArgs?: {
                 [k: string]: string;
               };
+              /**
+               * Additional docker build options.
+               */
               buildOptions?: string[];
+              /**
+               * Images used as build cache sources.
+               */
               cacheFrom?: string[];
+              /**
+               * Image platform target, for example linux/arm64.
+               */
               platform?: string;
+              /**
+               * Build provenance mode.
+               */
               provenance?: string;
             }
           | string;
       };
     };
     kmsKeyArn?: AwsKmsArn;
+    /**
+     * Lambda artifact hashing strategy.
+     * @deprecated No longer needed in v4.
+     */
     lambdaHashingVersion?: "20200924" | "20201221";
     layers?: AwsLambdaLayers;
+    /**
+     * Lambda capacity provider definitions.
+     * @since v4
+     */
     capacityProviders?: {
       [k: string]: AwsLambdaCapacityProviderConfig;
     };
     logRetentionInDays?: AwsLogRetentionInDays;
     logDataProtectionPolicy?: AwsLogDataProtectionPolicy;
+    /**
+     * CloudWatch logging configuration for Lambda, REST API, HTTP API, and WebSocket API.
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml#logs
+     * @example
+     * logs:
+     *   restApi:
+     *     accessLogging: true
+     *     executionLogging: true
+     *     level: INFO
+     *   httpApi: true
+     */
     logs?: {
+      /**
+       * Enable or disable Serverless Framework internal Lambda logging.
+       */
       frameworkLambda?: boolean;
       lambda?: AwsLambdaLoggingConfiguration;
+      /**
+       * HTTP API logging configuration.
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/http-api#access-logs
+       * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-logging.html
+       */
       httpApi?:
         | boolean
         | {
+            /**
+             * Access log format string.
+             */
             format?: string;
           };
+      /**
+       * REST API CloudWatch logging configuration.
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#logs
+       * @see https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
+       */
       restApi?:
         | boolean
         | {
+            /**
+             * Enable access logs.
+             */
             accessLogging?: boolean;
+            /**
+             * Enable execution logs.
+             */
             executionLogging?: boolean;
+            /**
+             * Access log format string.
+             */
             format?: string;
+            /**
+             * Include full request/response data in execution logs.
+             */
             fullExecutionData?: boolean;
+            /**
+             * Execution log level.
+             */
             level?: "INFO" | "ERROR";
             role?: AwsArn;
+            /**
+             * Set true when the log delivery role is managed outside the service.
+             */
             roleManagedExternally?: boolean;
           };
+      /**
+       * WebSocket API logging configuration.
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/websocket#logs
+       */
       websocket?:
         | boolean
         | {
+            /**
+             * Enable access logs.
+             */
             accessLogging?: boolean;
+            /**
+             * Enable execution logs.
+             */
             executionLogging?: boolean;
+            /**
+             * Access log format string.
+             */
             format?: string;
+            /**
+             * Include full request/response data in execution logs.
+             */
             fullExecutionData?: boolean;
+            /**
+             * Execution log level.
+             */
             level?: "INFO" | "ERROR";
           };
       [k: string]: unknown;
     };
     memorySize?: AwsLambdaMemorySize;
+    /**
+     * SNS topic ARNs for CloudFormation stack notifications.
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml#general-settings
+     * @example ['arn:aws:sns:us-east-1:123456789:my-topic']
+     */
     notificationArns?: AwsArnString[];
+    /**
+     * AWS shared credentials profile name.
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/credentials
+     * @example 'my-company-profile'
+     */
     profile?: string;
+    /**
+     * AWS region for deployment.
+     * @default 'us-east-1'
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml#general-settings
+     * @see https://docs.aws.amazon.com/general/latest/gr/lambda-service.html
+     * @example us-east-1
+     */
     region?:
       | "us-east-1"
       | "us-east-2"
@@ -1135,6 +3109,7 @@ export interface AWS {
       | "us-west-2"
       | "af-south-1"
       | "ap-east-1"
+      | "ap-east-2"
       | "ap-northeast-1"
       | "ap-northeast-2"
       | "ap-northeast-3"
@@ -1164,10 +3139,20 @@ export interface AWS {
       | "me-south-1"
       | "sa-east-1"
       | "mx-central-1";
+    /**
+     * Custom variable resolver name.
+     */
     resolver?: string;
     role?: AwsLambdaRole;
     rolePermissionsBoundary?: AwsArnString;
+    /**
+     * CloudFormation rollback trigger configuration.
+     * @see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-rollback-triggers.html
+     */
     rollbackConfiguration?: {
+      /**
+       * CloudWatch Alarms that trigger an automatic rollback.
+       */
       RollbackTriggers?: {
         Arn: AwsArnString;
         Type: "AWS::CloudWatch::Alarm";
@@ -1176,69 +3161,213 @@ export interface AWS {
     };
     runtime?: AwsLambdaRuntime;
     runtimeManagement?: AwsLambdaRuntimeManagement;
+    /**
+     * Provider-level build strategy.
+     * @since v4
+     */
     build?: string;
+    /**
+     * CloudFormation deployment strategy.
+     * @default 'direct'
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/deploying#deployment-method
+     */
     deploymentMethod?: "changesets" | "direct";
+    /**
+     * Use legacy stack-managed deployment bucket behavior.
+     * @since v4
+     */
     enableLegacyDeploymentBucket?: boolean;
+    /**
+     * Named S3 bucket definitions for reuse from function `s3` events.
+     * @see https://www.serverless.com/framework/docs/providers/aws/events/s3
+     */
     s3?: {
+      /**
+       * Provider-level S3 bucket definition used by `provider.s3`.
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/s3
+       */
       [k: string]: {
+        /**
+         * S3 Transfer Acceleration configuration.
+         */
         accelerateConfiguration?: {
+          /**
+           * Transfer Acceleration status.
+           */
           AccelerationStatus: "Enabled" | "Suspended";
         };
+        /**
+         * Canned ACL that grants predefined permissions to the bucket.
+         */
         accessControl?: string;
+        /**
+         * S3 Analytics storage class analysis configurations.
+         */
         analyticsConfigurations?: {
+          /**
+           * Unique identifier for this analytics configuration.
+           */
           Id: string;
+          /**
+           * Object key prefix that filters the analytics scope.
+           */
           Prefix?: string;
+          /**
+           * Storage class analysis configuration for data export.
+           */
           StorageClassAnalysis: {
+            /**
+             * Data export destination configuration.
+             */
             DataExport?: {
               Destination: {
+                /**
+                 * AWS account ID that owns the destination bucket.
+                 */
                 BucketAccountId?: string;
                 BucketArn: AwsArn;
+                /**
+                 * Output format for analytics or inventory data.
+                 */
                 Format: "CSV" | "ORC" | "Parquet";
+                /**
+                 * S3 key prefix applied to output objects.
+                 */
                 Prefix?: string;
               };
+              /**
+               * Schema version of the exported analytics data.
+               */
               OutputSchemaVersion: "V_1";
             };
           };
+          /**
+           * Tag-based filter conditions.
+           */
           TagFilters?: {
+            /**
+             * Tag key name.
+             */
             Key: string;
+            /**
+             * Tag value.
+             */
             Value: string;
           }[];
         }[];
+        /**
+         * Default server-side encryption configuration.
+         */
         bucketEncryption?: {
+          /**
+           * Server-side encryption rules.
+           */
           ServerSideEncryptionConfiguration: {
+            /**
+             * Default encryption algorithm and key.
+             */
             ServerSideEncryptionByDefault?: {
+              /**
+               * KMS key ID or ARN for SSE-KMS encryption.
+               */
               KMSMasterKeyID?: AwsArn | string;
+              /**
+               * Server-side encryption algorithm.
+               */
               SSEAlgorithm: "AES256" | "aws:kms";
             };
+            /**
+             * Enable S3 Bucket Key to reduce KMS costs.
+             */
             BucketKeyEnabled?: boolean;
           }[];
         };
         bucketName?: AwsS3BucketName;
+        /**
+         * Cross-origin resource sharing (CORS) configuration.
+         */
         corsConfiguration?: {
+          /**
+           * CORS access rules.
+           */
           CorsRules: {
+            /**
+             * HTTP headers allowed in preflight requests.
+             */
             AllowedHeaders?: string[];
+            /**
+             * HTTP methods allowed for cross-origin requests.
+             */
             AllowedMethods: ("GET" | "PUT" | "HEAD" | "POST" | "DELETE")[];
+            /**
+             * Origins allowed to make cross-origin requests.
+             */
             AllowedOrigins: string[];
+            /**
+             * Response headers exposed to browsers.
+             */
             ExposedHeaders?: string[];
+            /**
+             * Unique identifier for this CORS rule.
+             */
             Id?: string;
+            /**
+             * Preflight cache duration in seconds.
+             */
             MaxAge?: number;
           }[];
         };
+        /**
+         * S3 Inventory report configurations.
+         */
         inventoryConfigurations?: {
           Destination: {
+            /**
+             * AWS account ID that owns the destination bucket.
+             */
             BucketAccountId?: string;
             BucketArn: AwsArn;
+            /**
+             * Output format for analytics or inventory data.
+             */
             Format: "CSV" | "ORC" | "Parquet";
+            /**
+             * S3 key prefix applied to output objects.
+             */
             Prefix?: string;
           };
+          /**
+           * Whether the inventory report is enabled.
+           */
           Enabled: boolean;
+          /**
+           * Unique identifier for this inventory configuration.
+           */
           Id: string;
+          /**
+           * Object version scope: all versions or current only.
+           */
           IncludedObjectVersions: "All" | "Current";
+          /**
+           * Additional metadata fields to include in the report.
+           */
           OptionalFields?: string[];
+          /**
+           * Object key prefix filter for inventory scope.
+           */
           Prefix?: string;
+          /**
+           * Inventory report generation frequency.
+           */
           ScheduleFrequency: "Daily" | "Weekly";
         }[];
+        /**
+         * S3 object lifecycle management rules.
+         */
         lifecycleConfiguration?: {
+          /**
+           * Lifecycle rules defining transition and expiration actions.
+           */
           Rules: (
             | {
                 [k: string]: unknown;
@@ -1266,50 +3395,134 @@ export interface AWS {
               }
           )[];
         };
+        /**
+         * Server access logging configuration.
+         */
         loggingConfiguration?: {
+          /**
+           * Name of the bucket that receives access logs.
+           */
           DestinationBucketName?: AwsS3BucketName | AwsCfFunction;
+          /**
+           * Key prefix for log objects.
+           */
           LogFilePrefix?: string;
         };
+        /**
+         * CloudWatch request metrics configurations.
+         */
         metricsConfigurations?: {
+          /**
+           * Unique identifier for this metrics configuration.
+           */
           Id: string;
+          /**
+           * Object key prefix filter for metrics scope.
+           */
           Prefix?: string;
+          /**
+           * Tag-based filter conditions.
+           */
           TagFilters?: {
+            /**
+             * Tag key name.
+             */
             Key: string;
+            /**
+             * Tag value.
+             */
             Value: string;
           }[];
         }[];
         name?: AwsS3BucketName;
+        /**
+         * S3 event notification configuration.
+         */
         notificationConfiguration?: {
+          /**
+           * Lambda function notification targets.
+           */
           LambdaConfigurations?: {
+            /**
+             * S3 event type that triggers the notification.
+             */
             Event: string;
             Filter?: {
+              /**
+               * S3 object key filter configuration.
+               */
               S3Key: {
+                /**
+                 * Filter rules for matching S3 object keys.
+                 */
                 Rules: {
+                  /**
+                   * Filter rule type: prefix or suffix.
+                   */
                   Name: "prefix" | "suffix";
+                  /**
+                   * Filter rule value to match against the object key.
+                   */
                   Value: string;
                 }[];
               };
             };
             Function: AwsArn;
           }[];
+          /**
+           * SQS queue notification targets.
+           */
           QueueConfigurations?: {
+            /**
+             * S3 event type that triggers the notification.
+             */
             Event: string;
             Filter?: {
+              /**
+               * S3 object key filter configuration.
+               */
               S3Key: {
+                /**
+                 * Filter rules for matching S3 object keys.
+                 */
                 Rules: {
+                  /**
+                   * Filter rule type: prefix or suffix.
+                   */
                   Name: "prefix" | "suffix";
+                  /**
+                   * Filter rule value to match against the object key.
+                   */
                   Value: string;
                 }[];
               };
             };
             Queue: AwsArn;
           }[];
+          /**
+           * SNS topic notification targets.
+           */
           TopicConfigurations?: {
+            /**
+             * S3 event type that triggers the notification.
+             */
             Event: string;
             Filter?: {
+              /**
+               * S3 object key filter configuration.
+               */
               S3Key: {
+                /**
+                 * Filter rules for matching S3 object keys.
+                 */
                 Rules: {
+                  /**
+                   * Filter rule type: prefix or suffix.
+                   */
                   Name: "prefix" | "suffix";
+                  /**
+                   * Filter rule value to match against the object key.
+                   */
                   Value: string;
                 }[];
               };
@@ -1317,50 +3530,140 @@ export interface AWS {
             Topic: AwsArn;
           }[];
         };
+        /**
+         * S3 Object Lock configuration.
+         */
         objectLockConfiguration?: {
+          /**
+           * Enable Object Lock on the bucket.
+           */
           ObjectLockEnabled?: "Enabled";
+          /**
+           * Default retention rule for Object Lock.
+           */
           Rule?: {
+            /**
+             * Default retention period applied to new objects.
+             */
             DefaultRetention?: {
+              /**
+               * Retention period in days.
+               */
               Days?: number;
+              /**
+               * Retention mode: COMPLIANCE or GOVERNANCE.
+               */
               Mode?: "COMPLIANCE" | "GOVERNANCE";
+              /**
+               * Retention period in years.
+               */
               Years?: number;
             };
           };
         };
+        /**
+         * Whether Object Lock is enabled on the bucket.
+         */
         objectLockEnabled?: boolean;
+        /**
+         * S3 public access block settings.
+         */
         publicAccessBlockConfiguration?: {
+          /**
+           * Block new public ACLs and uploading public objects.
+           */
           BlockPublicAcls?: boolean;
+          /**
+           * Block new public bucket policies.
+           */
           BlockPublicPolicy?: boolean;
+          /**
+           * Ignore all public ACLs on the bucket.
+           */
           IgnorePublicAcls?: boolean;
+          /**
+           * Restrict access to the bucket to only authorized principals.
+           */
           RestrictPublicBuckets?: boolean;
         };
+        /**
+         * S3 cross-region or same-region replication configuration.
+         */
         replicationConfiguration?: {
           Role: AwsArn;
+          /**
+           * Replication rules.
+           */
           Rules: {
+            /**
+             * Whether to replicate delete markers.
+             */
             DeleteMarkerReplication?: {
+              /**
+               * Whether this configuration is enabled or disabled.
+               */
               Status?: "Disabled" | "Enabled";
             };
+            /**
+             * Replication destination configuration.
+             */
             Destination: {
+              /**
+               * Ownership override for replicated objects.
+               */
               AccessControlTranslation?: {
+                /**
+                 * Set destination account as object owner.
+                 */
                 Owner: "Destination";
               };
+              /**
+               * Destination AWS account ID for cross-account replication.
+               */
               Account?: string;
               Bucket: AwsArn;
+              /**
+               * Encryption settings for replicated objects.
+               */
               EncryptionConfiguration?: {
+                /**
+                 * KMS key ID used to encrypt replicated objects.
+                 */
                 ReplicaKmsKeyID: string;
               };
+              /**
+               * Replication metrics configuration.
+               */
               Metrics?: {
                 EventThreshold: {
+                  /**
+                   * Time threshold in minutes.
+                   */
                   Minutes: number;
                 };
+                /**
+                 * Whether this configuration is enabled or disabled.
+                 */
                 Status: "Disabled" | "Enabled";
               };
+              /**
+               * Replication time control configuration.
+               */
               ReplicationTime?: {
+                /**
+                 * Whether this configuration is enabled or disabled.
+                 */
                 Status: "Disabled" | "Enabled";
                 Time: {
+                  /**
+                   * Time threshold in minutes.
+                   */
                   Minutes: number;
                 };
               };
+              /**
+               * Storage class for replicated objects.
+               */
               StorageClass?:
                 | "DEEP_ARCHIVE"
                 | "GLACIER"
@@ -1371,55 +3674,166 @@ export interface AWS {
                 | "STANDARD"
                 | "STANDARD_IA";
             };
+            /**
+             * Replication rule filter.
+             */
             Filter?: {
+              /**
+               * Logical AND of multiple filter conditions.
+               */
               And?: {
+                /**
+                 * Object key prefix filter.
+                 */
                 Prefix?: string;
+                /**
+                 * Tag-based filter conditions.
+                 */
                 TagFilters?: {
+                  /**
+                   * Tag key name.
+                   */
                   Key: string;
+                  /**
+                   * Tag value.
+                   */
                   Value: string;
                 }[];
               };
+              /**
+               * Object key prefix filter.
+               */
               Prefix?: string;
               TagFilter?: {
+                /**
+                 * Tag key name.
+                 */
                 Key: string;
+                /**
+                 * Tag value.
+                 */
                 Value: string;
               };
             };
+            /**
+             * Unique identifier for this replication rule.
+             */
             Id?: string;
+            /**
+             * Legacy prefix filter for this rule.
+             */
             Prefix?: string;
+            /**
+             * Rule priority for conflict resolution.
+             */
             Priority?: number;
+            /**
+             * Criteria for selecting source objects to replicate.
+             */
             SourceSelectionCriteria?: {
+              /**
+               * Whether to replicate SSE-KMS encrypted objects.
+               */
               SseKmsEncryptedObjects: {
+                /**
+                 * Whether this configuration is enabled or disabled.
+                 */
                 Status: "Disabled" | "Enabled";
               };
             };
+            /**
+             * Whether this configuration is enabled or disabled.
+             */
             Status: "Disabled" | "Enabled";
           }[];
         };
+        /**
+         * Resource tags applied to the bucket.
+         */
         tags?: {
+          /**
+           * Tag key name.
+           */
           Key: string;
+          /**
+           * Tag value.
+           */
           Value: string;
         }[];
+        /**
+         * Bucket versioning configuration.
+         */
         versioningConfiguration?: {
+          /**
+           * Whether this configuration is enabled or disabled.
+           */
           Status: "Enabled" | "Suspended";
         };
+        /**
+         * Static website hosting configuration.
+         */
         websiteConfiguration?: {
+          /**
+           * Error page document key.
+           */
           ErrorDocument?: string;
+          /**
+           * Index page document key.
+           */
           IndexDocument?: string;
+          /**
+           * Redirect all requests to another host.
+           */
           RedirectAllRequestsTo?: {
+            /**
+             * Target host name for the redirect.
+             */
             HostName: string;
+            /**
+             * Protocol used for the redirect.
+             */
             Protocol?: "http" | "https";
           };
+          /**
+           * URL redirect and rewrite rules.
+           */
           RoutingRules?: {
+            /**
+             * Redirect action configuration.
+             */
             RedirectRule: {
+              /**
+               * Target host name for the redirect.
+               */
               HostName?: string;
+              /**
+               * HTTP redirect status code.
+               */
               HttpRedirectCode?: string;
+              /**
+               * Protocol used for the redirect.
+               */
               Protocol?: "http" | "https";
+              /**
+               * Replacement key prefix for the redirect target.
+               */
               ReplaceKeyPrefixWith?: string;
+              /**
+               * Replacement key for the redirect target.
+               */
               ReplaceKeyWith?: string;
             };
+            /**
+             * Condition that triggers this routing rule.
+             */
             RoutingRuleCondition?: {
+              /**
+               * HTTP error code that triggers the redirect.
+               */
               HttpErrorCodeReturnedEquals?: string;
+              /**
+               * Object key prefix that triggers the redirect.
+               */
               KeyPrefixEquals?: string;
             };
           }[];
@@ -1427,7 +3841,15 @@ export interface AWS {
       };
     };
     stage?: Stage;
+    /**
+     * Custom CloudFormation stack name.
+     * @example my-service-prod
+     */
     stackName?: string;
+    /**
+     * CloudFormation stack parameter overrides.
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml
+     */
     stackParameters?: {
       ParameterKey?: string;
       ParameterValue?: string;
@@ -1438,21 +3860,56 @@ export interface AWS {
     stackTags?: AwsResourceTags;
     tags?: AwsResourceTags;
     timeout?: AwsLambdaTimeout;
+    /**
+     * X-Ray tracing settings for Lambda and API Gateway.
+     * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions#aws-x-ray-tracing
+     * @example
+     * tracing:
+     *   apiGateway: true
+     *   lambda: true
+     */
     tracing?: {
+      /**
+       * Enable tracing on API Gateway stages.
+       * @see https://www.serverless.com/framework/docs/providers/aws/events/apigateway#aws-x-ray-tracing
+       */
       apiGateway?: boolean;
       lambda?: AwsLambdaTracing;
     };
     vpc?: AwsLambdaVpcConfig;
     vpcEndpointIds?: AwsCfArrayInstruction;
     versionFunctions?: AwsLambdaVersioning;
+    /**
+     * WebSocket API provider options.
+     * @see https://www.serverless.com/framework/docs/providers/aws/events/websocket
+     */
     websocket?: {
+      /**
+       * Apply provider.tags to WebSocket resources.
+       */
       useProviderTags?: boolean;
     };
+    /**
+     * Custom WebSocket API name.
+     */
     websocketsApiName?: string;
+    /**
+     * Kinesis stream integration settings.
+     */
     kinesis?: {
+      /**
+       * Kinesis consumer naming mode.
+       */
       consumerNamingMode?: "serviceSpecific";
     };
+    /**
+     * WebSocket route selection expression.
+     * @default '$request.body.action'
+     */
     websocketsApiRouteSelectionExpression?: string;
+    /**
+     * WebSocket API description.
+     */
     websocketsDescription?: string;
   };
   service: ServiceName;
@@ -1461,29 +3918,71 @@ export interface AWS {
         resolver: string;
       }
     | string;
-  useDotenv?: true;
+  /**
+   * Controls loading of environment variables from .env files. Set to true (or omit) to load local .env and .env.${stage} from the service directory. Set to false to explicitly disable .env loading entirely. Pass a path (or array of paths, file or directory, relative to the service directory) to load additional shared files on top of the locals. Custom paths are loaded with lower precedence than the local files.
+   */
+  useDotenv?: true | false | string | string[];
   variablesResolutionMode?: "20210219" | "20210326";
+  /**
+   * CloudFormation template extensions merged into the generated stack.
+   */
   resources?: {
+    /**
+     * CloudFormation template format version.
+     */
     AWSTemplateFormatVersion?: string;
+    /**
+     * CloudFormation condition definitions.
+     * @see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/conditions-section-structure.html
+     */
     Conditions?: {
       [k: string]: unknown;
     };
+    /**
+     * CloudFormation template description.
+     */
     Description?: string;
+    /**
+     * CloudFormation mapping definitions.
+     */
     Mappings?: {
       [k: string]: unknown;
     };
+    /**
+     * CloudFormation template metadata block.
+     */
     Metadata?: {
       [k: string]: unknown;
     };
+    /**
+     * CloudFormation outputs section.
+     * @see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html
+     */
     Outputs?: {
       [k: string]: unknown;
     };
+    /**
+     * CloudFormation parameters section.
+     */
     Parameters?: {
       [k: string]: unknown;
     };
+    /**
+     * Additional CloudFormation resources and transform macros.
+     * @see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
+     */
     Resources?: {
+      /**
+       * CloudFormation transform declaration.
+       */
       "Fn::Transform"?: {
+        /**
+         * Transform name.
+         */
         Name: string;
+        /**
+         * Transform parameters.
+         */
         Parameters?: {
           [k: string]: unknown;
         };
@@ -1494,90 +3993,1014 @@ export interface AWS {
        */
       [k: string]:
         | {
+            /**
+             * CloudFormation resource type.
+             */
             Type: string;
+            /**
+             * CloudFormation resource properties.
+             */
             Properties?: {
               [k: string]: unknown;
             };
+            /**
+             * CreationPolicy attribute.
+             */
             CreationPolicy?: {
               [k: string]: unknown;
             };
+            /**
+             * DeletionPolicy attribute.
+             */
             DeletionPolicy?: string;
             DependsOn?: AwsResourceDependsOn;
+            /**
+             * Metadata attribute.
+             */
             Metadata?: {
               [k: string]: unknown;
             };
+            /**
+             * UpdatePolicy attribute.
+             */
             UpdatePolicy?: {
               [k: string]: unknown;
             };
+            /**
+             * UpdateReplacePolicy attribute.
+             */
             UpdateReplacePolicy?: string;
             Condition?: AwsResourceCondition;
           }
         | AwsCfForEach;
     };
+    /**
+     * CloudFormation transforms list.
+     */
     Transform?: string[];
+    /**
+     * Resource extensions for resources generated by the framework.
+     */
     extensions?: {
       /**
        * This interface was referenced by `undefined`'s JSON-Schema definition
        * via the `patternProperty` "^[a-zA-Z0-9]{1,255}$".
        */
       [k: string]: {
+        /**
+         * Properties override.
+         */
         Properties?: {
           [k: string]: unknown;
         };
+        /**
+         * CreationPolicy override.
+         */
         CreationPolicy?: {
           [k: string]: unknown;
         };
+        /**
+         * DeletionPolicy override.
+         */
         DeletionPolicy?: string;
         DependsOn?: AwsResourceDependsOn;
+        /**
+         * Metadata override.
+         */
         Metadata?: {
           [k: string]: unknown;
         };
+        /**
+         * UpdatePolicy override.
+         */
         UpdatePolicy?: {
           [k: string]: unknown;
         };
+        /**
+         * UpdateReplacePolicy override.
+         */
         UpdateReplacePolicy?: string;
         Condition?: AwsResourceCondition;
       };
     };
   };
+  /**
+   * Layer definitions for AWS Lambda layers.
+   */
   layers?: {
     [k: string]: {
+      /**
+       * AWS accounts allowed to access the published layer version.
+       */
       allowedAccounts?: string[];
+      /**
+       * Architectures supported by the layer.
+       */
       compatibleArchitectures?: AwsLambdaArchitecture[];
-      compatibleRuntimes?: AwsLambdaRuntime[];
+      /**
+       * Lambda runtimes compatible with this layer.
+       */
+      compatibleRuntimes?: (
+        | "dotnet6"
+        | "dotnet8"
+        | "dotnet10"
+        | "go1.x"
+        | "java25"
+        | "java21"
+        | "java17"
+        | "java17.al2023"
+        | "java11"
+        | "java11.al2023"
+        | "java8"
+        | "java8.al2"
+        | "java8.al2023"
+        | "nodejs14.x"
+        | "nodejs16.x"
+        | "nodejs18.x"
+        | "nodejs20.x"
+        | "nodejs22.x"
+        | "nodejs24.x"
+        | "nodejs26.x"
+        | "provided"
+        | "provided.al2"
+        | "provided.al2023"
+        | "python3.7"
+        | "python3.8"
+        | "python3.9"
+        | "python3.10"
+        | "python3.11"
+        | "python3.12"
+        | "python3.13"
+        | "python3.14"
+        | "python3.15"
+        | "ruby2.7"
+        | "ruby3.2"
+        | "ruby3.3"
+        | "ruby3.4"
+        | "ruby4.0"
+        | "custom"
+      )[];
+      /**
+       * Layer description.
+       */
       description?: string;
+      /**
+       * Layer license information string.
+       */
       licenseInfo?: string;
+      /**
+       * Layer name or full layer ARN prefix.
+       */
       name?: string;
+      /**
+       * Layer packaging configuration.
+       */
       package?: {
+        /**
+         * Path to prebuilt layer artifact zip.
+         */
         artifact?: string;
+        /**
+         * Legacy exclude globs for layer packaging.
+         */
         exclude?: string[];
+        /**
+         * Legacy include globs for layer packaging.
+         */
         include?: string[];
+        /**
+         * Include/exclude glob patterns for layer packaging.
+         */
         patterns?: string[];
       };
+      /**
+       * Directory containing layer source files.
+       */
       path?: string;
+      /**
+       * Retain previous layer versions on stack updates.
+       */
       retain?: boolean;
     };
   };
+  mcp?: {
+    servers: {
+      [k: string]: {
+        /**
+         * Path to a module whose default export exposes the MCP SDK handler's web-standard fetch.
+         */
+        server: string;
+        /**
+         * Gateway-level access control for this server's MCP route: a user authorizer function name, the name of a JWT authorizer in "provider.apiGateway.authorizers", an http-event-style authorizer object (request-type, Cognito user pool, JWT, existing authorizer id), or "aws_iam". Rejection happens before the function is invoked. The Framework never verifies tokens itself.
+         */
+        authorizer?:
+          | string
+          | {
+              arn?: AwsArn;
+              authorizerId?: AwsCfInstruction;
+              claims?: string[];
+              identitySource?: string;
+              identityValidationExpression?: string;
+              managedExternally?: boolean;
+              name?: string;
+              resultTtlInSeconds?: number;
+              scopes?: (string | AwsCfInstruction)[];
+              type?: string;
+            };
+        /**
+         * Publish this server's OAuth protected-resource metadata (RFC 9728) so interactive clients can discover where to log in. Advertisement only - enforcement is your "authorizer" or your module code.
+         */
+        oauthDiscovery?: {
+          /**
+           * The authorization server that issues this server's tokens: its https issuer identifier, or a CloudFormation intrinsic resolving to one - a user pool created in this service's own "resources" has no literal URL until the stack is created. Optional when "authorizer" names a JWT authorizer in "provider.apiGateway.authorizers": its issuers are published instead.
+           */
+          issuer?: string | AwsCfFunction;
+          /**
+           * The public URL clients use to reach this service - scheme, host, and any base path, everything before "/<name>/mcp". Set it when the domain is configured outside this service; otherwise it is derived from "provider.domain", falling back to the stage URL. Literal only: it names a front door that already exists, and the deploy prints it.
+           */
+          publicUrl?: string;
+        };
+        /**
+         * Max tool duration in seconds; drives the function timeout and the streaming integration timeout together.
+         * @default 60
+         */
+        timeout?: number;
+        memorySize?: number;
+        environment?: AwsLambdaEnvironment;
+        /**
+         * Elicitation round-trip key: true auto-provisions a Secrets Manager secret; a literal SSM or Secrets Manager ARN brings your own.
+         */
+        state?: boolean | AwsArnString;
+      };
+    };
+  };
+  ai?: {
+    agents?: {
+      [k: string]: {
+        description?: string;
+        tags?: {
+          [k: string]: string;
+        };
+        role?:
+          | string
+          | {
+              name?: string;
+              statements?: {
+                Sid?: string;
+                Effect: "Allow" | "Deny";
+                Action?: string | string[];
+                NotAction?: string | string[];
+                Resource?: AwsIamPolicyResource;
+                NotResource?: AwsIamPolicyResource;
+                Condition?: {
+                  [k: string]: unknown;
+                };
+                Principal?:
+                  | string
+                  | {
+                      [k: string]: unknown;
+                    };
+                NotPrincipal?:
+                  | string
+                  | {
+                      [k: string]: unknown;
+                    };
+              }[];
+              managedPolicies?: string[];
+              permissionsBoundary?: string;
+              tags?: {
+                [k: string]: string;
+              };
+            }
+          | {
+              [k: string]: unknown;
+            };
+        memory?:
+          | string
+          | {
+              expiration?: number;
+              encryptionKey?: string;
+              strategies?: {
+                [k: string]: unknown;
+              }[];
+              role?:
+                | string
+                | {
+                    name?: string;
+                    statements?: {
+                      Sid?: string;
+                      Effect: "Allow" | "Deny";
+                      Action?: string | string[];
+                      NotAction?: string | string[];
+                      Resource?: AwsIamPolicyResource;
+                      NotResource?: AwsIamPolicyResource;
+                      Condition?: {
+                        [k: string]: unknown;
+                      };
+                      Principal?:
+                        | string
+                        | {
+                            [k: string]: unknown;
+                          };
+                      NotPrincipal?:
+                        | string
+                        | {
+                            [k: string]: unknown;
+                          };
+                    }[];
+                    managedPolicies?: string[];
+                    permissionsBoundary?: string;
+                    tags?: {
+                      [k: string]: string;
+                    };
+                  }
+                | {
+                    [k: string]: unknown;
+                  };
+              description?: string;
+              tags?: {
+                [k: string]: string;
+              };
+            };
+        gateway?: string;
+        handler?: string;
+        runtime?: string;
+        artifact?: {
+          image?:
+            | string
+            | {
+                file?: string;
+                path?: string;
+                repository?: string;
+                buildArgs?: {
+                  [k: string]: string;
+                };
+                builder?: string;
+                [k: string]: unknown;
+              };
+          s3?: {
+            bucket?: string;
+            key?: string;
+            versionId?: string;
+            [k: string]: unknown;
+          };
+          [k: string]: unknown;
+        };
+        package?: {
+          patterns?: string[];
+          include?: string[];
+          exclude?: string[];
+          artifact?: string;
+          [k: string]: unknown;
+        };
+        protocol?: string;
+        environment?: AwsLambdaEnvironment;
+        network?: {
+          mode?: string;
+          subnets?: string[];
+          securityGroups?: string[];
+          [k: string]: unknown;
+        };
+        authorizer?:
+          | string
+          | {
+              type: string;
+              jwt?: {
+                discoveryUrl: string;
+                allowedAudience?: string[];
+                allowedClients?: string[];
+                allowedScopes?: string[];
+                customClaims?: {
+                  inboundTokenClaimName?: string;
+                  inboundTokenClaimValueType?: string | string;
+                  authorizingClaimMatchValue?: {
+                    claimMatchOperator?: string | string | string;
+                    claimMatchValue?: {
+                      matchValueString?: string;
+                      matchValueStringList?: string[];
+                      [k: string]: unknown;
+                    };
+                    [k: string]: unknown;
+                  };
+                  [k: string]: unknown;
+                }[];
+                [k: string]: unknown;
+              };
+              [k: string]: unknown;
+            };
+        lifecycle?: {
+          idleRuntimeSessionTimeout?: number;
+          maxLifetime?: number;
+          [k: string]: unknown;
+        };
+        endpoints?: {
+          name?: string;
+          version?: string;
+          description?: string;
+          [k: string]: unknown;
+        }[];
+        requestHeaders?: {
+          allowlist?: string[];
+          [k: string]: unknown;
+        };
+        [k: string]: unknown;
+      };
+    };
+    memory?: {
+      [k: string]: {
+        expiration?: number;
+        encryptionKey?: string;
+        strategies?: {
+          [k: string]: unknown;
+        }[];
+        role?:
+          | string
+          | {
+              name?: string;
+              statements?: {
+                Sid?: string;
+                Effect: "Allow" | "Deny";
+                Action?: string | string[];
+                NotAction?: string | string[];
+                Resource?: AwsIamPolicyResource;
+                NotResource?: AwsIamPolicyResource;
+                Condition?: {
+                  [k: string]: unknown;
+                };
+                Principal?:
+                  | string
+                  | {
+                      [k: string]: unknown;
+                    };
+                NotPrincipal?:
+                  | string
+                  | {
+                      [k: string]: unknown;
+                    };
+              }[];
+              managedPolicies?: string[];
+              permissionsBoundary?: string;
+              tags?: {
+                [k: string]: string;
+              };
+            }
+          | {
+              [k: string]: unknown;
+            };
+        description?: string;
+        tags?: {
+          [k: string]: string;
+        };
+      };
+    };
+    tools?: {
+      [k: string]:
+        | string
+        | {
+            function?:
+              | string
+              | {
+                  name?: string;
+                  arn?: string;
+                };
+            openapi?: string;
+            smithy?: string;
+            mcp?: string;
+            toolSchema?: unknown;
+            credentials?: {
+              type?: string;
+              provider?: string;
+              scopes?: string[];
+              grantType?: string;
+              defaultReturnUrl?: string;
+              customParameters?: {
+                [k: string]: string;
+              };
+              location?: string;
+              parameterName?: string;
+              prefix?: string;
+              [k: string]: unknown;
+            };
+            description?: string;
+          };
+    };
+    gateways?: {
+      [k: string]: {
+        authorizer?:
+          | string
+          | {
+              type: string;
+              jwt?: {
+                discoveryUrl: string;
+                allowedAudience?: string[];
+                allowedClients?: string[];
+                allowedScopes?: string[];
+                customClaims?: {
+                  inboundTokenClaimName?: string;
+                  inboundTokenClaimValueType?: string | string;
+                  authorizingClaimMatchValue?: {
+                    claimMatchOperator?: string | string | string;
+                    claimMatchValue?: {
+                      matchValueString?: string;
+                      matchValueStringList?: string[];
+                      [k: string]: unknown;
+                    };
+                    [k: string]: unknown;
+                  };
+                  [k: string]: unknown;
+                }[];
+                [k: string]: unknown;
+              };
+              [k: string]: unknown;
+            };
+        tools?: string[];
+        protocol?: {
+          type?: string;
+          supportedVersions?: string[];
+          instructions?: string;
+          searchType?: string;
+          [k: string]: unknown;
+        };
+        description?: string;
+        role?:
+          | string
+          | {
+              name?: string;
+              statements?: {
+                Sid?: string;
+                Effect: "Allow" | "Deny";
+                Action?: string | string[];
+                NotAction?: string | string[];
+                Resource?: AwsIamPolicyResource;
+                NotResource?: AwsIamPolicyResource;
+                Condition?: {
+                  [k: string]: unknown;
+                };
+                Principal?:
+                  | string
+                  | {
+                      [k: string]: unknown;
+                    };
+                NotPrincipal?:
+                  | string
+                  | {
+                      [k: string]: unknown;
+                    };
+              }[];
+              managedPolicies?: string[];
+              permissionsBoundary?: string;
+              tags?: {
+                [k: string]: string;
+              };
+            }
+          | {
+              [k: string]: unknown;
+            };
+        kmsKey?: string;
+        exceptionLevel?: string;
+        tags?: {
+          [k: string]: string;
+        };
+        [k: string]: unknown;
+      };
+    };
+    browsers?: {
+      [k: string]: {
+        description?: string;
+        tags?: {
+          [k: string]: string;
+        };
+        role?:
+          | string
+          | {
+              name?: string;
+              statements?: {
+                Sid?: string;
+                Effect: "Allow" | "Deny";
+                Action?: string | string[];
+                NotAction?: string | string[];
+                Resource?: AwsIamPolicyResource;
+                NotResource?: AwsIamPolicyResource;
+                Condition?: {
+                  [k: string]: unknown;
+                };
+                Principal?:
+                  | string
+                  | {
+                      [k: string]: unknown;
+                    };
+                NotPrincipal?:
+                  | string
+                  | {
+                      [k: string]: unknown;
+                    };
+              }[];
+              managedPolicies?: string[];
+              permissionsBoundary?: string;
+              tags?: {
+                [k: string]: string;
+              };
+            }
+          | {
+              [k: string]: unknown;
+            };
+        recording?: {
+          enabled?: boolean;
+          s3Location?: {
+            bucket: string;
+            prefix: string;
+            [k: string]: unknown;
+          };
+          [k: string]: unknown;
+        };
+        signing?: {
+          enabled?: boolean;
+          [k: string]: unknown;
+        };
+        network?: {
+          mode?: string;
+          subnets?: string[];
+          securityGroups?: string[];
+          [k: string]: unknown;
+        };
+      };
+    };
+    codeInterpreters?: {
+      [k: string]: {
+        description?: string;
+        tags?: {
+          [k: string]: string;
+        };
+        role?:
+          | string
+          | {
+              name?: string;
+              statements?: {
+                Sid?: string;
+                Effect: "Allow" | "Deny";
+                Action?: string | string[];
+                NotAction?: string | string[];
+                Resource?: AwsIamPolicyResource;
+                NotResource?: AwsIamPolicyResource;
+                Condition?: {
+                  [k: string]: unknown;
+                };
+                Principal?:
+                  | string
+                  | {
+                      [k: string]: unknown;
+                    };
+                NotPrincipal?:
+                  | string
+                  | {
+                      [k: string]: unknown;
+                    };
+              }[];
+              managedPolicies?: string[];
+              permissionsBoundary?: string;
+              tags?: {
+                [k: string]: string;
+              };
+            }
+          | {
+              [k: string]: unknown;
+            };
+        network?: {
+          mode?: string;
+          subnets?: string[];
+          securityGroups?: string[];
+          [k: string]: unknown;
+        };
+      };
+    };
+  };
+  sandboxes?: {
+    [k: string]: {
+      artifact: string;
+      package?: {
+        patterns?: string[];
+      };
+      architecture?: string;
+      minimumMemory?: 512 | 1024 | 2048 | 4096 | 8192;
+      description?: string;
+      environment?: AwsLambdaEnvironment;
+      osCapabilities?: string[];
+      hooks?: {
+        port?: number;
+        ready?:
+          | boolean
+          | {
+              timeout?: number;
+            };
+        validate?:
+          | boolean
+          | {
+              timeout?: number;
+            };
+        run?:
+          | boolean
+          | {
+              timeout?: number;
+            };
+        resume?:
+          | boolean
+          | {
+              timeout?: number;
+            };
+        suspend?:
+          | boolean
+          | {
+              timeout?: number;
+            };
+        terminate?:
+          | boolean
+          | {
+              timeout?: number;
+            };
+      };
+      vpc?: {
+        /**
+         * Subnet IDs where Lambda creates network interfaces.
+         */
+        subnetIds?: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
+        /**
+         * Security group IDs for the Lambda network interfaces.
+         */
+        securityGroupIds?: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
+        protocol?: string;
+      };
+      iam?: {
+        buildRole?:
+          | string
+          | {
+              statements?: {
+                [k: string]: unknown;
+              }[];
+              managedPolicies?: string[];
+              permissionsBoundary?: string;
+            }
+          | {
+              Ref?: unknown;
+              "Fn::GetAtt"?: unknown;
+              "Fn::ImportValue"?: unknown;
+              "Fn::Sub"?: unknown;
+            };
+        executionRole?:
+          | string
+          | {
+              statements?: {
+                [k: string]: unknown;
+              }[];
+              managedPolicies?: string[];
+              permissionsBoundary?: string;
+            }
+          | {
+              Ref?: unknown;
+              "Fn::GetAtt"?: unknown;
+              "Fn::ImportValue"?: unknown;
+              "Fn::Sub"?: unknown;
+            };
+        operatorRole?:
+          | string
+          | {
+              statements?: {
+                [k: string]: unknown;
+              }[];
+              managedPolicies?: string[];
+              permissionsBoundary?: string;
+            }
+          | {
+              Ref?: unknown;
+              "Fn::GetAtt"?: unknown;
+              "Fn::ImportValue"?: unknown;
+              "Fn::Sub"?: unknown;
+            };
+      };
+      observability?:
+        | boolean
+        | {
+            logs?: {
+              enabled?: boolean;
+              retentionDays?: number;
+              logGroup?: string;
+            };
+            metrics?: {
+              enabled?: boolean;
+              filters?: {
+                [k: string]: string;
+              };
+            };
+            alarms?: {
+              notify?: unknown;
+              thresholds?: {
+                [k: string]: {
+                  threshold?: number;
+                  period?: number;
+                  evaluationPeriods?: number;
+                  datapointsToAlarm?: number;
+                  comparisonOperator?: string;
+                  treatMissingData?: string;
+                };
+              };
+            };
+            dashboard?: {
+              enabled?: boolean;
+            };
+          };
+      tags?: {
+        [k: string]: string;
+      };
+    };
+  };
+  webApps?: {
+    /**
+     * This interface was referenced by `undefined`'s JSON-Schema definition
+     * via the `patternProperty` "^[a-zA-Z0-9-_]*[a-zA-Z0-9]$".
+     */
+    [k: string]: {
+      /**
+       * The file that starts the HTTP server, relative to the service directory (or the path inside a package.artifact zip).
+       * @example entry: src/server.ts
+       */
+      entry: string;
+      /**
+       * Lambda runtime: Node.js 24 or newer. Defaults to provider.runtime when that is nodejs24.x or newer, else nodejs24.x.
+       * @default 'nodejs24.x'
+       */
+      runtime?: string;
+      /**
+       * Lambda function name override: letters, digits, hyphens and underscores, up to 64 characters.
+       * @default '<service>-<stage>-<key>'
+       */
+      name?: string;
+      /**
+       * Web function description.
+       */
+      description?: string;
+      /**
+       * Request timeout in seconds (3-900).
+       * @default provider.timeout when set, otherwise 30
+       */
+      timeout?: number;
+      /**
+       * Concurrent requests per execution environment (1-128).
+       */
+      maxConcurrency?: number;
+      environment?: AwsLambdaEnvironment;
+      /**
+       * Log levels. Case-insensitive.
+       */
+      logs?: {
+        applicationLogLevel?: string;
+        systemLogLevel?: string;
+      };
+      logRetentionInDays?: AwsLogRetentionInDays;
+      logDataProtectionPolicy?: AwsLogDataProtectionPolicy;
+      /**
+       * Execution role: an ARN, a role name, or a CloudFormation intrinsic.
+       */
+      role?: AwsLambdaRole | AwsCfFunction | AwsCfIf;
+      /**
+       * IAM role settings of this web app.
+       */
+      iam?: {
+        inheritStatements?: boolean;
+        /**
+         * The web app's own IAM role.
+         */
+        role?: {
+          name?: string | AwsCfFunction | AwsCfIf;
+          statements?: AwsIamPolicyStatements;
+          permissionsBoundary?: AwsArn;
+          /**
+           * Managed policy ARNs attached to this web app's role.
+           */
+          managedPolicies?: AwsArn[];
+          /**
+           * IAM role path for this web app's role.
+           */
+          path?: string;
+          tags?: {
+            /**
+             * This interface was referenced by `undefined`'s JSON-Schema definition
+             * via the `patternProperty` "^(?!aws:)[\w./=+:\-_\x20]{1,128}$".
+             */
+            [k: string]: string | AwsCfFunction | AwsCfIf;
+          };
+        };
+      };
+      vpc?: AwsLambdaVpcConfig;
+      kmsKeyArn?: AwsKmsArn;
+      /**
+       * Resource tags, merged over provider.tags. Values may be CloudFormation intrinsics.
+       */
+      tags?: {
+        /**
+         * This interface was referenced by `undefined`'s JSON-Schema definition
+         * via the `patternProperty` "^(?!aws:)[\w./=+:\-_\x20]{1,128}$".
+         */
+        [k: string]: string | AwsCfFunction | AwsCfIf;
+      };
+      /**
+       * Packaging overrides.
+       */
+      package?: {
+        patterns?: string[];
+        artifact?: string;
+      };
+      /**
+       * Build strategy, or `false` to skip building this web app.
+       * @example build: false
+       */
+      build?: false | string;
+      /**
+       * Dev Mode settings.
+       */
+      dev?: {
+        /**
+         * Command that starts this web app's server on your machine in serverless dev, run in your shell like an npm script. The Framework sets PORT and HOSTNAME.
+         */
+        command: string;
+      };
+      /**
+       * The web app's endpoint: `true` (public, the default) or its settings. A web app always has an endpoint, so `false` is not accepted.
+       */
+      url?:
+        | true
+        | {
+            /**
+             * Case-insensitive.
+             */
+            authorizer?: string;
+            maxEnvironments?: number | AwsCfFunction;
+            rateLimit?:
+              | (
+                  | 0
+                  | 100
+                  | 200
+                  | 300
+                  | 400
+                  | 500
+                  | 600
+                  | 700
+                  | 800
+                  | 900
+                  | 1000
+                  | 2000
+                  | 3000
+                  | 4000
+                  | 5000
+                  | 6000
+                  | 7000
+                  | 8000
+                  | 9000
+                  | 10000
+                )
+              | AwsCfFunction;
+          };
+    };
+  };
 }
+/**
+ * CloudFormation Fn::ImportValue intrinsic function.
+ */
 export interface AwsCfImport {
   "Fn::ImportValue": unknown;
 }
+/**
+ * CloudFormation Fn::Join intrinsic function.
+ */
 export interface AwsCfJoin {
   "Fn::Join": [string, unknown[]];
 }
+/**
+ * CloudFormation Fn::GetAtt intrinsic function.
+ */
 export interface AwsCfGetAtt {
   "Fn::GetAtt": string[];
 }
+/**
+ * CloudFormation Ref intrinsic function.
+ */
 export interface AwsCfRef {
   Ref: string;
 }
+/**
+ * CloudFormation Fn::Sub intrinsic function.
+ */
 export interface AwsCfSub {
   "Fn::Sub": unknown;
 }
+/**
+ * CloudFormation Fn::Base64 intrinsic function.
+ */
 export interface AwsCfBase64 {
   "Fn::Base64"?: unknown;
   [k: string]: unknown;
 }
+/**
+ * CloudFormation Fn::ToJsonString intrinsic function.
+ */
 export interface AwsCfToJsonString {
   "Fn::ToJsonString":
     | {
@@ -1585,9 +5008,20 @@ export interface AwsCfToJsonString {
       }
     | unknown[];
 }
+/**
+ * CloudFormation Fn::If conditional intrinsic function.
+ */
 export interface AwsCfIf {
   "Fn::If": AwsCfInstruction[];
 }
+/**
+ * Lambda environment variables map.
+ * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions#environment-variables
+ * @example
+ * environment:
+ *   TABLE_NAME: my-table
+ *   STAGE: ${sls:stage}
+ */
 export interface AwsLambdaEnvironment {
   /**
    * This interface was referenced by `AwsLambdaEnvironment`'s JSON-Schema definition
@@ -1595,6 +5029,9 @@ export interface AwsLambdaEnvironment {
    */
   [k: string]: "" | AwsCfInstruction | AwsCfIf | AwsCfSelect;
 }
+/**
+ * CloudFormation Fn::Select intrinsic function.
+ */
 export interface AwsCfSelect {
   "Fn::Select": (
     | number
@@ -1608,27 +5045,75 @@ export interface AwsCfSelect {
     | AwsCfRef
   )[];
 }
+/**
+ * CloudFormation Fn::FindInMap intrinsic function.
+ */
 export interface AwsCfFindInMap {
   "Fn::FindInMap": (string | AwsCfFunction)[];
 }
+/**
+ * CloudFormation Fn::GetAZs intrinsic function.
+ */
 export interface AwsCfGetAZs {
   "Fn::GetAZs": string | AwsCfRef;
 }
+/**
+ * CloudFormation Fn::Split intrinsic function.
+ */
 export interface AwsCfSplit {
   "Fn::Split": (string | AwsCfFunction)[];
 }
+/**
+ * CloudWatch Logs data protection policy document.
+ */
 export interface AwsLogDataProtectionPolicy {
+  /**
+   * Policy name.
+   */
   Name: string;
+  /**
+   * Policy description.
+   */
   Description?: string;
+  /**
+   * Policy document version.
+   */
   Version: string;
+  /**
+   * Policy statements.
+   */
   Statement: unknown[];
 }
+/**
+ * Lambda advanced logging configuration.
+ */
 export interface AwsLambdaLoggingConfiguration {
-  applicationLogLevel?: "DEBUG" | "ERROR" | "FATAL" | "INFO" | "TRACE" | "WARN";
+  /**
+   * Application log level threshold. Case-insensitive.
+   */
+  applicationLogLevel?: string;
+  /**
+   * Log output format.
+   */
   logFormat?: "JSON" | "Text";
+  /**
+   * CloudWatch Logs group name.
+   */
   logGroup?: string;
-  systemLogLevel?: "DEBUG" | "INFO" | "WARN";
+  logGroupClass?: AwsLogGroupClass;
+  /**
+   * System log level threshold. Case-insensitive.
+   */
+  systemLogLevel?: string;
 }
+/**
+ * AWS resource tags map.
+ * @example
+ * tags:
+ *   Environment: production
+ *   Team: backend
+ *   Project: my-service
+ */
 export interface AwsResourceTags {
   /**
    * This interface was referenced by `AwsResourceTags`'s JSON-Schema definition
@@ -1636,66 +5121,237 @@ export interface AwsResourceTags {
    */
   [k: string]: string;
 }
+/**
+ * Lambda tenancy settings for dedicated tenancy environments.
+ */
 export interface AwsLambdaTenancy {
+  /**
+   * Tenancy mode.
+   */
   mode: string;
 }
+/**
+ * Durable function execution configuration.
+ */
 export interface AwsLambdaDurableConfig {
+  /**
+   * Maximum execution time in seconds for durable functions.
+   */
   executionTimeout: number;
+  /**
+   * Execution history retention period in days.
+   */
   retentionPeriodInDays?: number;
 }
+/**
+ * Function-specific capacity provider assignment settings.
+ */
 export interface AwsLambdaCapacityProviderFunctionConfig {
+  /**
+   * Capacity provider name.
+   */
   name: string | AwsCfFunction;
+  /**
+   * Maximum concurrency routed to this capacity provider.
+   */
   maxConcurrency?: number;
+  /**
+   * Memory-to-vCPU ratio.
+   */
   memoryPerVCpu?: 2 | 4 | 8;
+  /**
+   * GPU for this function. Requires a container image and a capacity provider with GPU instance types.
+   * @see https://www.serverless.com/framework/docs/providers/aws/guide/managed-instances#run-functions-on-gpus
+   * @example
+   * gpu:
+   *   memory: 24
+   */
+  gpu?: {
+    /**
+     * Minimum GPU memory in GB for each execution environment (AWS accepts 3, 6, 12, 16, 24 or 48).
+     */
+    memory: number | AwsCfFunction;
+  };
   scaling?: AwsLambdaCapacityProviderFunctionScaling;
 }
+/**
+ * Function-level scaling limits for a capacity provider.
+ */
 export interface AwsLambdaCapacityProviderFunctionScaling {
+  /**
+   * Minimum number of execution environments. 0 lets the function scale to zero when idle, or deactivates it when max is also 0.
+   */
   min?: number;
+  /**
+   * Maximum number of execution environments.
+   */
   max?: number;
 }
+/**
+ * VPC configuration for Lambda functions.
+ * @see https://www.serverless.com/framework/docs/providers/aws/guide/functions#vpc-configuration
+ * @example
+ * vpc:
+ *   securityGroupIds:
+ *     - sg-xxxxxxxx
+ *   subnetIds:
+ *     - subnet-xxxxxxxx
+ *     - subnet-yyyyyyyy
+ */
 export interface AwsLambdaVpcConfig {
   ipv6AllowedForDualStack?: boolean;
+  /**
+   * Security group IDs for the Lambda network interfaces.
+   */
   securityGroupIds: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
+  /**
+   * Subnet IDs where Lambda creates network interfaces.
+   */
   subnetIds: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
 }
+/**
+ * API Gateway API key configuration.
+ */
 export interface AwsApiGatewayApiKeysProperties {
+  /**
+   * API key name.
+   */
   name?: string;
+  /**
+   * API key value (20-128 characters).
+   */
   value?: string;
+  /**
+   * Description of the API key.
+   */
   description?: string;
+  /**
+   * Customer ID for usage tracking.
+   */
   customerId?: string;
+  /**
+   * Whether the API key is enabled.
+   * @default true
+   */
   enabled?: boolean;
 }
+/**
+ * Custom domain configuration object.
+ */
 export interface AwsCustomDomain {
+  /**
+   * Custom domain name.
+   */
   name?: string;
+  /**
+   * Base path mapping for the API.
+   */
   basePath?: string;
+  /**
+   * Certificate name in ACM.
+   */
   certificateName?: string;
+  /**
+   * ACM certificate ARN.
+   */
   certificateArn?: string;
+  /**
+   * Create Route53 A alias record.
+   */
   createRoute53Record?: boolean;
+  /**
+   * Create Route53 AAAA alias record. Set explicitly to true to also create the domain as dualstack (IPv4 and IPv6).
+   */
   createRoute53IPv6Record?: boolean;
+  /**
+   * AWS profile used for Route53 operations.
+   */
   route53Profile?: string;
+  /**
+   * Region used for Route53 and ACM lookups.
+   */
   route53Region?: string;
+  /**
+   * API Gateway endpoint type for the domain.
+   */
   endpointType?: string;
+  /**
+   * API type for domain mapping.
+   */
   apiType?: string;
+  /**
+   * S3 URI of the truststore for mutual TLS.
+   */
   tlsTruststoreUri?: string;
+  /**
+   * S3 version id of the truststore.
+   */
   tlsTruststoreVersion?: string;
+  /**
+   * Route53 hosted zone id for DNS records.
+   */
   hostedZoneId?: string;
+  /**
+   * Whether the hosted zone is private.
+   */
   hostedZonePrivate?: boolean;
+  /**
+   * Enable split-horizon DNS behavior.
+   */
   splitHorizonDns?: boolean;
+  /**
+   * Enable domain manager execution.
+   */
   enabled?: boolean | string;
+  /**
+   * TLS security policy for the domain.
+   */
   securityPolicy?: string;
+  /**
+   * Endpoint access mode of the domain.
+   */
+  accessMode?: string;
+  /**
+   * Automatically create or update the custom domain.
+   */
   autoDomain?: boolean;
+  /**
+   * Wait duration before giving up domain creation.
+   */
   autoDomainWaitFor?: string;
+  /**
+   * Match existing base paths when mapping routes.
+   */
   allowPathMatching?: boolean;
+  /**
+   * Additional Route53 record parameters.
+   */
   route53Params?: {
     [k: string]: unknown;
   };
+  /**
+   * Keep path mappings not managed by this service.
+   */
   preserveExternalPathMappings?: boolean;
+  /**
+   * Name of the web app (under webApps) this hostname serves.
+   */
+  webApp?: string;
   [k: string]: unknown;
 }
+/**
+ * CloudFormation Fn::ImportValue that resolves to a string.
+ */
 export interface AwsCfImportLocallyResolvable {
   "Fn::ImportValue": string;
 }
+/**
+ * Capacity provider configuration with permissions, VPC, and scaling.
+ */
 export interface AwsLambdaCapacityProviderConfig {
+  /**
+   * IAM permission configuration for the capacity provider.
+   */
   permissions?: {
     operatorRole?: AwsArn;
   };
@@ -1704,20 +5360,59 @@ export interface AwsLambdaCapacityProviderConfig {
   scaling?: AwsLambdaCapacityProviderScalingConfig;
   kmsKeyArn?: AwsKmsArn;
 }
+/**
+ * VPC configuration for capacity provider compute resources.
+ */
 export interface AwsLambdaCapacityProviderVpcConfig {
+  /**
+   * Security group IDs for compute instances.
+   */
   securityGroupIds: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
+  /**
+   * Subnet IDs for compute instances.
+   */
   subnetIds: (AwsCfInstruction | AwsCfIf)[] | AwsCfSplit | AwsCfFindInMap;
 }
+/**
+ * EC2 instance type requirements for capacity provider compute.
+ */
 export interface AwsLambdaCapacityProviderInstanceRequirements {
+  /**
+   * Allowed EC2 instance types.
+   */
   allowedInstanceTypes?: string[];
+  /**
+   * Excluded EC2 instance types.
+   */
   excludedInstanceTypes?: string[];
+  /**
+   * Required CPU architectures for compute instances.
+   */
   architectures?: AwsLambdaArchitecture[];
 }
+/**
+ * Auto-scaling configuration for a capacity provider.
+ */
 export interface AwsLambdaCapacityProviderScalingConfig {
+  /**
+   * Scaling mode: auto or manual.
+   */
   mode?: string;
+  /**
+   * Maximum vCPU count for the capacity provider fleet.
+   */
   maxVCpuCount?: number;
+  /**
+   * Target tracking scaling policies.
+   */
   policies?: {
-    predefinedMetricType: "LambdaCapacityProviderAverageCPUUtilization";
+    /**
+     * Predefined metric used for target tracking.
+     */
+    predefinedMetricType: "LambdaCapacityProviderAverageCPUUtilization" | "LambdaCapacityProviderAverageGPUUtilization";
+    /**
+     * Target value for the scaling metric.
+     */
     targetValue: number;
   }[];
 }
