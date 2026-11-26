@@ -9,7 +9,8 @@
     "watch": "tsc -w",
     "test:lint": "eslint src",
     "test:type": "tsc --noEmit",
-    "test:definitions": "tsc --noEmit -p test"
+    "test:definitions": "tsc --noEmit -p test",
+    "test:plugin": "npm run build && node test/plugin/run.js"
   },
   "repository": {
     "type": "git",

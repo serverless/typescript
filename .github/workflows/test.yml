@@ -30,3 +30,6 @@ jobs:
 
       - name: Test definitions against a sample service
         run: npm run test:definitions
+
+      - name: Test the plugin's schema handling
+        run: npm run test:plugin
